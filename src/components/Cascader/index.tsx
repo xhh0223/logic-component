@@ -1,20 +1,25 @@
-import cloneDeep from "lodash/cloneDeep";
-import isEqual from "lodash/isEqual";
-import last from "lodash/last";
 import React, { useEffect, useMemo, useState } from "react";
 
 import "./index.scss";
+import { clone, equals, flatten, last } from "ramda";
 
 export interface Option<ValueType> {
     key?: React.Key;
     node:
         | React.ReactNode
         | ((nodeInfo: {
+              /** 当前节点是否被选中 */
               isChecked: boolean;
+              /** 当前节点是否是叶子节点 */
               isLeaf: boolean;
+              /** 当前节点的孩子节点 */
               children?: Option<ValueType>[];
+              /** 当前节点下选中的孩子节点 */
               getCheckedChildren?: () => Option<ValueType>[];
-              /** //todo是否有子孙节点被选中 */
+              /**
+               * 当前节点下是否有后代节点被选中,
+               * 主要用于判断祖先节点是否处于选中状态
+               */
               hasDescendantNodeChecked?: () => boolean;
           }) => React.ReactNode);
     value: ValueType;
@@ -22,6 +27,7 @@ export interface Option<ValueType> {
 }
 
 export interface CascaderCheckListProps<ValueType> {
+    className?: string;
     value?: ValueType | ValueType[];
     multiple?: boolean;
     options: Option<ValueType>[];
@@ -29,13 +35,36 @@ export interface CascaderCheckListProps<ValueType> {
         value: ValueType | ValueType[],
         path: number[] | number[][]
     ) => void;
+    /** 每列全选节点, 仅多选有效，按顺序添加，不用则在对应的位置填null或者undefined */
+    allSelectedNodes?: (
+        | ((params: { isChecked: boolean }) => React.ReactNode)
+        | null
+    )[];
+    /** 每一列的className */
+    everyLevelClassName?: (string | "" | null | undefined)[];
+    /** 是否展开第一项 */
+    isExpandFirstOption?: boolean;
 }
 
 export function CascaderCheckList<ValueType>(
     props: CascaderCheckListProps<ValueType>
 ) {
-    const { options, onChange, multiple = false, value } = props;
-    const [_, setRefresh] = useState(0);
+    const {
+        className,
+
+        options,
+
+        onChange,
+
+        multiple = false,
+
+        value,
+        allSelectedNodes = [],
+        everyLevelClassName = [],
+
+        isExpandFirstOption = true,
+    } = props;
+    const [_, update] = useState({});
     const state = useMemo(
         () => ({
             // 每一层展开的选项列表
@@ -45,16 +74,19 @@ export function CascaderCheckList<ValueType>(
         }),
         [options]
     );
+
     // 选中值
     const selected = useMemo(() => {
         let initSelectedValue;
         let initSelectedPath;
         /** 初始化选中值 */
-        if (multiple && value instanceof Array) {
-            initSelectedPath = value
+        if (multiple) {
+            initSelectedValue = value ?? [];
+            initSelectedPath = initSelectedValue
                 .map((item) => findValuePath(options, item))
                 .filter(Boolean);
-            initSelectedValue = initSelectedPath.map((path) =>
+
+            initSelectedValue = initSelectedPath.map((path: number[]) =>
                 getValueOfPath(options, path!)
             );
         } else if (!multiple) {
@@ -77,12 +109,20 @@ export function CascaderCheckList<ValueType>(
             selected.value.forEach((item) => {
                 nodeCheckedMap.set(item, true);
             });
-            // 展开最近选中的选项
+
             if (selected.path instanceof Array && selected.path.length > 0) {
-                state.everyLevelOptions = getEveryLevelOptionsOfPath(
-                    last(selected.path),
-                    options
-                );
+                if (isExpandFirstOption) {
+                    state.everyLevelOptions = getEveryLevelOptionsOfPath(
+                        [0],
+                        options
+                    );
+                } else {
+                    // 展开最近选中的选项
+                    state.everyLevelOptions = getEveryLevelOptionsOfPath(
+                        last(selected.path),
+                        options
+                    );
+                }
             }
         } else if (selected.value && selected.path) {
             // 设置选中
@@ -94,19 +134,86 @@ export function CascaderCheckList<ValueType>(
             );
         }
         state.nodeCheckedMap = nodeCheckedMap;
-        setRefresh((count) => count + 1);
+        update({});
     }, [options, selected, state]);
 
     const actions = useMemo(
         () => ({
             // 设置某一层options
-            setLevelOptions: (level, opts) => {
+            setLevelOptions: (level: number, opts: Option<ValueType>[]) => {
                 state.everyLevelOptions[level] = opts;
                 state.everyLevelOptions.splice(
                     level + 1,
                     state.everyLevelOptions.length - level
                 );
-                setRefresh((count) => count + 1);
+                update({});
+            },
+            // 全选
+            setAllSelected(opts: Option<ValueType>[]) {
+                function setAll(arr: Option<ValueType>[]) {
+                    arr.forEach((item) => {
+                        const isLeaf = !(
+                            item?.children instanceof Array &&
+                            item?.children?.length
+                        );
+                        if (isLeaf) {
+                            if (!state.nodeCheckedMap.get(item.value)) {
+                                state.nodeCheckedMap.set(item.value, true);
+                                selected.value.push(item.value);
+                            }
+                        } else {
+                            setAll(item.children!);
+                        }
+                    });
+                }
+                setAll(opts);
+                /** 获取path */
+                const allPath = selected.value
+                    .map((tempValue: ValueType) =>
+                        findValuePath(options, tempValue)
+                    )
+                    .filter(Boolean);
+                selected.path = allPath;
+                if (onChange) {
+                    onChange(selected.value, allPath);
+                }
+                update({});
+            },
+            // 取消全选
+            setCancelAllSelected(opts: Option<ValueType>[]) {
+                function setAllCancel(arr: Option<ValueType>[]) {
+                    arr.forEach((item) => {
+                        const isLeaf = !(
+                            item?.children instanceof Array &&
+                            item?.children?.length
+                        );
+                        if (isLeaf) {
+                            if (state.nodeCheckedMap.get(item.value) === true) {
+                                state.nodeCheckedMap.set(item.value, false);
+                                const deleteIndex = selected.value.findIndex(
+                                    (val: ValueType) => val === item.value
+                                );
+                                if (deleteIndex > -1) {
+                                    selected.value.splice(deleteIndex, 1);
+                                }
+                            }
+                        } else {
+                            setAllCancel(item.children!);
+                        }
+                    });
+                }
+                setAllCancel(opts);
+                /** 获取path */
+                const allPath = selected.value
+                    .map((tempValue: ValueType) =>
+                        findValuePath(options, tempValue)
+                    )
+                    .filter(Boolean);
+                selected.path = allPath;
+                if (onChange) {
+                    onChange(selected.value, allPath);
+                }
+                update({});
             },
             // 设置节点选中
             setNodeChecked: (option: Option<ValueType>) => {
@@ -121,7 +228,7 @@ export function CascaderCheckList<ValueType>(
                     if (state.nodeCheckedMap.get(nodeValue)) {
                         // 重复点击取消选中
                         const beforeChosenNodeIndex = selected.value.findIndex(
-                            (temp) => isEqual(temp, nodeValue)
+                            (temp) => equals(temp, nodeValue)
                         );
                         if (beforeChosenNodeIndex >= 0) {
                             selected.value.splice(beforeChosenNodeIndex, 1);
@@ -131,44 +238,28 @@ export function CascaderCheckList<ValueType>(
                         state.nodeCheckedMap.set(nodeValue, true);
                         selected.value.push(nodeValue);
                     }
+                    /** 获取path */
+                    const allPath = selected.value
+                        .map((tempValue) => findValuePath(options, tempValue))
+                        .filter(Boolean);
+                    selected.path = allPath;
                     if (onChange) {
-                        /** 获取path */
-                        const allPath = selected.value
-                            .map((tempValue) =>
-                                findValuePath(options, tempValue)
-                            )
-                            .filter(Boolean);
-                        onChange(
-                            cloneDeep(selected.value),
-                            allPath as number[][]
-                        );
+                        onChange(clone(selected.value), selected.path);
                     }
                 }
                 // 单选
-                if (!multiple && !(selected.value instanceof Array) && isLeaf) {
-                    actions.resetNodeChecked();
+                if (!multiple && isLeaf) {
+                    state.nodeCheckedMap.clear();
                     state.nodeCheckedMap.set(nodeValue, true);
-                    if (onChange && !multiple) {
-                        // 获取path
-                        const path =
-                            findValuePath(
-                                options,
-                                selected.value as ValueType
-                            ) ?? [];
-                        onChange(cloneDeep(selected.value), path);
+                    // 获取path
+                    const path = findValuePath(options, nodeValue) ?? [];
+                    selected.path = path;
+                    selected.value = nodeValue;
+                    if (onChange) {
+                        onChange(clone(selected.value), selected.path);
                     }
                 }
-                setRefresh((count) => count + 1);
-            },
-            // 重置节点选中
-            resetNodeChecked: () => {
-                state.nodeCheckedMap.clear();
-                if (selected.value instanceof Array) {
-                    selected.value.splice(0, selected.value.length);
-                } else {
-                    selected.value = undefined!;
-                }
-                setRefresh((count) => count + 1);
+                update({});
             },
         }),
         [
@@ -181,9 +272,39 @@ export function CascaderCheckList<ValueType>(
         ]
     );
     return (
-        <div className="cascader-check-list">
+        <div className={`cascader-check-list ${className ?? ""}`}>
             {state.everyLevelOptions.map((opts, level) => (
-                <div className="cascader-check-list-group" key={level}>
+                <div
+                    key={level}
+                    className={`cascader-check-list-group ${
+                        everyLevelClassName[level] ?? ""
+                    }`}
+                >
+                    {/* //!notice 全选节点 */}
+                    <div
+                        onClick={() => {
+                            // 当前层是否已经全选
+                            const currentLevelOptionsIsAllSelected = opts
+                                ?.filter((item) => !item.children)
+                                ?.every((item) =>
+                                    state.nodeCheckedMap.get(item.value)
+                                );
+                            if (!currentLevelOptionsIsAllSelected) {
+                                actions.setAllSelected(opts);
+                            } else {
+                                actions.setCancelAllSelected(opts);
+                            }
+                        }}
+                    >
+                        {typeof allSelectedNodes[level] === "function" &&
+                            allSelectedNodes?.[level]?.({
+                                isChecked: !opts
+                                    ?.filter((item) => !item?.children?.length)
+                                    ?.every((item) =>
+                                        state.nodeCheckedMap.get(item.value)
+                                    ),
+                            })}
+                    </div>
                     {opts.map((item, index) => (
                         <div
                             key={item.key ?? index}
@@ -205,8 +326,8 @@ export function CascaderCheckList<ValueType>(
                             {typeof item.node === "function"
                                 ? item.node({
                                       isLeaf: !(
-                                          item.children instanceof Array &&
-                                          item.children.length > 0
+                                          item?.children instanceof Array &&
+                                          item?.children?.length > 0
                                       ),
                                       isChecked:
                                           state.nodeCheckedMap.get(
@@ -219,6 +340,76 @@ export function CascaderCheckList<ValueType>(
                                               )
                                           ) ?? [],
                                       children: item?.children,
+                                      hasDescendantNodeChecked() {
+                                          const isLeaf = !(
+                                              item?.children instanceof Array &&
+                                              item?.children?.length > 0
+                                          );
+                                          if (isLeaf) {
+                                              return false;
+                                          }
+                                          /** 多选 */
+                                          if (
+                                              multiple &&
+                                              selected?.path?.length
+                                          ) {
+                                              /** 路径上每个节点的值 */
+                                              const allValue =
+                                                  selected.path.map(
+                                                      (p: any[]) => {
+                                                          const tempValue =
+                                                              [] as ValueType[];
+                                                          let tempOptions =
+                                                              options;
+                                                          for (
+                                                              let i = 0;
+                                                              i < p.length;
+
+                                                          ) {
+                                                              tempValue.push(
+                                                                  tempOptions[
+                                                                      p[i]
+                                                                  ].value
+                                                              );
+                                                              tempOptions =
+                                                                  tempOptions[
+                                                                      p[i]
+                                                                  ].children!;
+                                                              i += 1;
+                                                          }
+                                                          return tempValue;
+                                                      }
+                                                  );
+                                              return flatten(
+                                                  allValue
+                                              )?.includes(item.value);
+                                          }
+                                          if (!multiple && selected?.path) {
+                                              const tempValue =
+                                                  [] as ValueType[];
+                                              let tempOptions = options;
+                                              for (
+                                                  let i = 0;
+                                                  i < selected.path.length;
+
+                                              ) {
+                                                  tempValue.push(
+                                                      tempOptions[
+                                                          selected.path?.[i]
+                                                      ].value
+                                                  );
+                                                  tempOptions =
+                                                      tempOptions[
+                                                          selected.path?.[i]
+                                                      ].children!;
+                                                  i += 1;
+                                              }
+                                              return tempValue.includes(
+                                                  item.value
+                                              );
+                                          }
+                                          return false;
+                                      },
                                   })
                                 : item.node}
                         </div>
@@ -230,10 +421,12 @@ export function CascaderCheckList<ValueType>(
 }
 
 // 根据路径得到路径值
-function getValueOfPath(options, path: number[]) {
+function getValueOfPath<ValueType>(
+    options: Option<ValueType>[],
+    path: number[]
+) {
     path.forEach((item) => {
-        // eslint-disable-next-line no-param-reassign
-        options = options[item]?.children ?? options[item]?.value;
+        options = options[item]?.children ?? (options[item]?.value as any);
     });
     return options;
 }
@@ -248,13 +441,14 @@ function findValuePath<ValueType>(
     const [path] = pathAndIsFindFlag;
     const optionsLength = options.length;
     for (let index = 0; index < optionsLength; ) {
+        if (pathAndIsFindFlag[1]) {
+            break;
+        }
         path[level] = index;
-        if (isEqual(options[index].value, value)) {
-            // eslint-disable-next-line no-param-reassign
+        if (equals(options[index].value, value)) {
             pathAndIsFindFlag[1] = true;
-            // eslint-disable-next-line no-param-reassign
             pathAndIsFindFlag[0] = path.slice(0, level + 1);
-            return undefined;
+            break;
         }
         if (options[index]?.children?.length) {
             findValuePath(
@@ -263,9 +457,6 @@ function findValuePath<ValueType>(
                 pathAndIsFindFlag,
                 level + 1
             );
-            if (pathAndIsFindFlag[1]) {
-                break;
-            }
         }
         index += 1;
     }

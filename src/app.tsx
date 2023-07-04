@@ -1,14 +1,17 @@
-import { HashRouter as Router } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import "./app.css";
-// import { Routes } from "./routes";
-import "./routes";
-import Index from "./pages/Index";
+import { lazy } from "react";
+const modules = import.meta.glob("./components/**/*.tsx");
+const components = Object.entries(modules).map(
+    ([path, page]: [string, any]) => {
+        const Component = lazy(page);
+        return {
+            path: "/" + path.split("/")[2].toLocaleLowerCase(),
+            element: <Component />,
+        };
+    }
+);
+const router = createHashRouter(components);
 export function App() {
-    return (
-        <Router>
-            {/* <Routes /> */}
-            <Index />
-            <img src="/59.png"/>
-        </Router>
-    );
+    return <RouterProvider router={router} />;
 }
