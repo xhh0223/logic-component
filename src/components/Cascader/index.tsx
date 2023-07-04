@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-import "./index.scss";
 import { clone, equals, flatten, last } from "ramda";
-
 export interface Option<ValueType> {
     key?: React.Key;
     node:
@@ -51,17 +49,12 @@ export function CascaderCheckList<ValueType>(
 ) {
     const {
         className,
-
         options,
-
         onChange,
-
         multiple = false,
-
         value,
         allSelectedNodes = [],
         everyLevelClassName = [],
-
         isExpandFirstOption = true,
     } = props;
     const [_, update] = useState({});
@@ -83,6 +76,7 @@ export function CascaderCheckList<ValueType>(
         if (multiple) {
             initSelectedValue = value ?? [];
             initSelectedPath = initSelectedValue
+                // @ts-ignore
                 .map((item) => findValuePath(options, item))
                 .filter(Boolean);
 
@@ -90,6 +84,7 @@ export function CascaderCheckList<ValueType>(
                 getValueOfPath(options, path!)
             );
         } else if (!multiple) {
+            // @ts-ignore
             initSelectedPath = findValuePath(options, value);
             if (initSelectedPath) {
                 initSelectedValue = getValueOfPath(options, initSelectedPath);
