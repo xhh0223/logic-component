@@ -6,12 +6,12 @@
   "files": [
     "lib"
   ],
-  "main": "lib",
-  "module": "lib",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
   "exports": {
     ".": {
-      "import": "./lib/my-lib.js",
-      "require": "./lib/my-lib.umd.cjs"
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
     }
   },
   "scripts": {
