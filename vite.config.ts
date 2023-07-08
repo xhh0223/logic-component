@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { visualizer } from 'rollup-plugin-visualizer'
+import dts from 'rollup-plugin-dts'
 export default defineConfig({
   plugins: [react(), visualizer(/* { open: true } */)],
   resolve: {
@@ -21,11 +22,6 @@ export default defineConfig({
     minify: false,
     rollupOptions: {
       external: ['react'],
-      output: {
-        chunkFileNames: '[name].js', // 引入文件名的名称
-        entryFileNames: 'index.js', // 包的入口文件名称
-        assetFileNames: '[ext]/[name].[ext]', // 资源文件像 字体，图片等
-      }
     }
   },
 });

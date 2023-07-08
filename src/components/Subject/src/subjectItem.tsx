@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useId, useMemo, useState } from "react";
 import { SubjectContext } from "./context";
-import useMountBefore from "@/components/utils/useMountBefore";
 
 export interface SubjectItemOnMessageHandler {
     (message: any): void;
@@ -15,7 +14,7 @@ export interface SubjectItemProps {
         | ((message: any, fromSubjectId: string) => React.ReactNode);
 }
 
-export const SubjectItem: React.FC<SubjectItemProps> = (props) => {
+export const SubjectItem: React.FC<SubjectItemProps> = (props:any) => {
     const { children, subject } = props;
     const subjectItemId = useId();
     const context = useContext(SubjectContext);
@@ -30,10 +29,10 @@ export const SubjectItem: React.FC<SubjectItemProps> = (props) => {
     }, []);
     const [_, update] = useState({});
 
-    useMountBefore(() => {
+    useEffect(() => {
         const decoratedSubject = {};
         if (typeof subject === "object" && subject) {
-            Object.entries(subject).forEach(([subject, handler]) => {
+            Object.entries(subject).forEach(([subject, handler]:any) => {
                 Object.assign(decoratedSubject, {
                     [subject](message: any) {
                         state.message = message;
@@ -49,13 +48,13 @@ export const SubjectItem: React.FC<SubjectItemProps> = (props) => {
                 update({});
             },
         });
-    }, []);
-    useEffect(() => {
         return () => {
             context?.deleteSubjectItem(subjectItemId);
         };
     }, []);
-    return typeof children === "function"
-        ? children(state.message, state.fromSubjectId)
-        : children;
+
+    if (typeof children === "function") {
+        return children(state.message, state.fromSubjectId);
+    }
+    return children;
 };
