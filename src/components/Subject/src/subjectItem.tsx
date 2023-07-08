@@ -2,24 +2,26 @@ import React, { useContext, useEffect, useId, useMemo, useState } from "react";
 import { SubjectContext } from "./context";
 import useMountBefore from "@/components/utils/useMountBefore";
 
-export interface  SubjectItemOnMessageHandler {
+export interface SubjectItemOnMessageHandler {
     (message: any): void;
 }
-export type Subject = {
-    [key: string]:  SubjectItemOnMessageHandler;
-};
 
-export interface  SubjectItemProps {
-    subject?: Subject;
+export interface SubjectItemProps {
+    subject?: {
+        [key: string]: SubjectItemOnMessageHandler;
+    };
     children?:
         | React.ReactNode
         | ((message: any, fromSubjectId: string) => React.ReactNode);
 }
 
-export const  SubjectItem: React.FC< SubjectItemProps> = (props) => {
+export const SubjectItem: React.FC<SubjectItemProps> = (props) => {
     const { children, subject } = props;
-    const  subjectItemId = useId();
+    const subjectItemId = useId();
     const context = useContext(SubjectContext);
+    if (!context) {
+        console.error("请配合Subject一起使用");
+    }
     const state = useMemo(() => {
         return {
             message: undefined as any,
@@ -29,7 +31,7 @@ export const  SubjectItem: React.FC< SubjectItemProps> = (props) => {
     const [_, update] = useState({});
 
     useMountBefore(() => {
-        const decoratedSubject: Subject = {};
+        const decoratedSubject = {};
         if (typeof subject === "object" && subject) {
             Object.entries(subject).forEach(([subject, handler]) => {
                 Object.assign(decoratedSubject, {
@@ -41,7 +43,7 @@ export const  SubjectItem: React.FC< SubjectItemProps> = (props) => {
                 });
             });
         }
-        context.addSubjectItem( subjectItemId, {
+        context?.addSubjectItem(subjectItemId, {
             subject: decoratedSubject,
             refreshHandler() {
                 update({});
@@ -50,7 +52,7 @@ export const  SubjectItem: React.FC< SubjectItemProps> = (props) => {
     }, []);
     useEffect(() => {
         return () => {
-            context.deleteSubjectItem( subjectItemId);
+            context?.deleteSubjectItem(subjectItemId);
         };
     }, []);
     return typeof children === "function"

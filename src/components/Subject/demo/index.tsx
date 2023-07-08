@@ -1,9 +1,5 @@
 import React from "react";
-import {
-    Subject,
-    SubjectItem,
-    useSubjectInstance,
-} from "../src";
+import { Subject, SubjectItem, useSubjectInstance } from "../src";
 const index = () => {
     const instance = useSubjectInstance();
     return (

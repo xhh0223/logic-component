@@ -1,8 +1,10 @@
 import { createContext } from "react";
-import { Subject } from "./subjectItem";
+import { SubjectItemOnMessageHandler } from "./subjectItem";
 
 export interface SubjectItemInstance {
-  subject?: Subject,
+  subject?: {
+    [key: string]: SubjectItemOnMessageHandler
+  },
   refreshHandler: () => void
 }
 export interface SubjectContextInterface {
