@@ -2,9 +2,8 @@ import { defineConfig } from "vite";
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { visualizer } from 'rollup-plugin-visualizer'
-import dts from 'rollup-plugin-dts'
+
 export default defineConfig({
-  plugins: [react(), visualizer(/* { open: true } */)],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
@@ -13,15 +12,27 @@ export default defineConfig({
   publicDir: "static",
   build: {
     lib: {
+      entry: path.resolve(__dirname, "src", "components"),
+      // name: "logicComponent"
       formats: ['es'],
-      entry: {
-        component: path.resolve(__dirname, "src", "components")
-      },
     },
     outDir: 'lib',
     minify: false,
     rollupOptions: {
+      plugins: [react(), visualizer(/* { open: true } */),],
       external: ['react'],
+      output: {
+        globals: {
+          react: "React"
+        },
+        entryFileNames: "[name].js",
+        chunkFileNames: "[name].js"
+      },
     }
   },
+  // esbuild: {
+  //   jsx: 'transform',
+  //   jsxFragment: 'Fragment',
+  //   loader: 'jsx',
+  // }
 });

@@ -6,7 +6,7 @@
       "DOM.Iterable",
       "ESNext"
     ],
-    "downlevelIteration":true,
+    "downlevelIteration": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": false,
@@ -32,6 +32,5 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
   ],
-  "references": [
-  ]
+  "references": []
 }

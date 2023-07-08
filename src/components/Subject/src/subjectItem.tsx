@@ -14,7 +14,7 @@ export interface SubjectItemProps {
         | ((message: any, fromSubjectId: string) => React.ReactNode);
 }
 
-export const SubjectItem: React.FC<SubjectItemProps> = (props:any) => {
+export const SubjectItem: React.FC<SubjectItemProps> = (props) => {
     const { children, subject } = props;
     const subjectItemId = useId();
     const context = useContext(SubjectContext);

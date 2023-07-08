@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "types": [],
+    "outDir": "lib/types"
+  },
+  "include": [
+    "src/components/**/*.ts",
+    "src/components/**/*.d.ts",
+    "src/components/**/*.tsx",
+  ],
+  "references": []
+}
