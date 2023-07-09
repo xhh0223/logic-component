@@ -1,30 +1,63 @@
 import React from "react";
-import { Select } from "../src/select";
-import { SelectItem } from "../src/selectItem";
-import { json } from "react-router-dom";
+import { Select, useSelectInstance } from "../src";
 
 const index = () => {
+    const multipleInstance = useSelectInstance();
+    const singeInstance = useSelectInstance();
     return (
-        <Select
-            mode='multiple'
-            repeatClickDeselect={false}
-            onChange={(v) => {
-                console.log(v);
-            }}
-        >
-            {Array.from({ length: 10 }).map((item, index) => {
-                return (
-                    <SelectItem key={index} value={index}>
-                        {({ isChecked }) => (
-                            <div>
-                                {index}
-                                {JSON.stringify(isChecked)}
-                            </div>
-                        )}
-                    </SelectItem>
-                );
-            })}
-        </Select>
+        <>
+            <Select
+                mode="multiple"
+                instance={multipleInstance}
+                selectedValue={[1, 2, 3, 4]}
+                repeatTriggerUnselected={false}
+                onChange={(v) => {}}
+                options={Array.from({ length: 10 }).map((item, index) => {
+                    return {
+                        node({ isChecked }) {
+                            return (
+                                <div
+                                    key={index}
+                                    onClick={() => {
+                                        multipleInstance.triggerSelect([index]);
+                                    }}
+                                >
+                                    {index}
+                                    {JSON.stringify(isChecked)}
+                                </div>
+                            );
+                        },
+                        value: index,
+                    };
+                })}
+            />
+            <hr />
+            <Select
+                mode="single"
+                instance={singeInstance}
+                selectedValue={1}
+                repeatTriggerUnselected={false}
+                onChange={(v) => {}}
+                options={Array.from({ length: 10 }).map((item, index) => {
+                    return {
+                        node({ isChecked }) {
+                            return (
+                                <div
+                                    key={index}
+                                    onClick={() => {
+                                        singeInstance.triggerSelect(index);
+                                    }}
+                                >
+                                    {index}
+                                    {JSON.stringify(isChecked)}
+                                </div>
+                            );
+                        },
+                        value: index,
+                    };
+                })}
+            />
+        </>
     );
 };
 

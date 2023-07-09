@@ -32,7 +32,7 @@ export const SubjectItem: React.FC<SubjectItemProps> = (props) => {
     useEffect(() => {
         const decoratedSubject = {};
         if (typeof subject === "object" && subject) {
-            Object.entries(subject).forEach(([subject, handler]:any) => {
+            Object.entries(subject).forEach(([subject, handler]: any) => {
                 Object.assign(decoratedSubject, {
                     [subject](message: any) {
                         state.message = message;

@@ -1,8 +1,8 @@
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 
+import React, { lazy, Suspense } from "react";
 import "./app.css";
-import { lazy, Suspense } from "react";
 const modules = import.meta.glob("./components/**/*.tsx");
 const components = Object.entries(modules)
     .filter(([path]) => {

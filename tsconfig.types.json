@@ -16,5 +16,10 @@
     "src/components/**/*.d.ts",
     "src/components/**/*.tsx",
   ],
+  "exclude": [
+    "src/components/**/demo/*.ts",
+    "src/components/**/demo/*.d.ts",
+    "src/components/**/demo/*.tsx",
+  ],
   "references": []
 }

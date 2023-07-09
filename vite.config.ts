@@ -25,6 +25,11 @@ export default defineConfig({
         globals: {
           react: "React"
         },
+        manualChunks(id) {
+          if (id.includes("component")) {
+            console.log(id)
+          }
+        },
         entryFileNames: "[name].js",
         chunkFileNames: "[name].js"
       },
