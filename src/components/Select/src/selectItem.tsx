@@ -11,15 +11,18 @@ export interface SelectItemProps {
 
 export const SelectItem: React.FC<SelectItemProps> = (props) => {
     const { value, children } = props;
-    const { selectItemMap } = useContext(SelectContext) ?? {};
+    const { selectItemMap, selectItemValueMap } =
+        useContext(SelectContext) ?? {};
     const currentId = useId();
     useEffect(() => {
         selectItemMap.set(currentId, {
             value,
             isChecked: false,
         });
+        selectItemValueMap.set(value, currentId);
         return () => {
             selectItemMap.delete(currentId);
+            selectItemValueMap.delete(value);
         };
     }, [value]);
 

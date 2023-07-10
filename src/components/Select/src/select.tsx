@@ -40,46 +40,44 @@ export const Select: React.FC<SelectProps> = (props) => {
     const subjectInstance = useSubjectInstance();
     const context = useMemo<SelectContextInterface>(() => {
         const selectItemMap = new Map();
+        const selectItemValueMap = new Map();
         if (typeof instance === "object" && instance) {
             Object.assign(instance, {
                 triggerSelect(selectedValue: any) {
                     const triggerMap = {
                         single() {
+                            const selectedId =
+                                selectItemValueMap.get(selectedValue);
                             for (let [key, item] of selectItemMap) {
-                                if (equals(item.value, selectedValue)) {
+                                if (key === selectedId) {
                                     if (repeatTriggerUnselected) {
                                         if (item.isChecked) {
                                             item.isChecked = false;
                                         } else {
                                             item.isChecked = true;
                                         }
-                                        selectItemMap.forEach((i, id) => {
-                                            if (id !== key) {
-                                                i.isChecked = false;
-                                            }
-                                        });
                                     } else {
-                                        selectItemMap.forEach((i, id) => {
-                                            i.isChecked = false;
-                                        });
                                         item.isChecked = true;
                                     }
                                     if (onChange) {
                                         onChange(
-                                            item.isChecked
+                                            item?.isChecked
                                                 ? clone(item.value)
                                                 : undefined
                                         );
                                     }
-                                    update({});
-                                    break;
+                                } else if (selectedId) {
+                                    item.isChecked = false;
                                 }
                             }
+
+                            update({});
                         },
                         multiple() {
                             selectedValue?.forEach((value: any) => {
                                 for (let [key, i] of selectItemMap) {
-                                    if (equals(i.value, value)) {
+                                    const selectedId = selectItemMap.get(value);
+                                    if (selectedId === key) {
                                         if (i.isChecked) {
                                             i.isChecked = false;
                                         } else {
@@ -106,6 +104,7 @@ export const Select: React.FC<SelectProps> = (props) => {
         }
         return {
             selectItemMap,
+            selectItemValueMap,
         };
     }, []);
 
