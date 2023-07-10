@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { TreeSelectContext } from "./context";
 import { TreeSelectItem, TreeSelectItemProps } from "./treeSelectItem";
-import { Subject, SubjectItem } from "@/components/Subject/src";
+import { TreeSelectGroup } from "./treeSelectGroup";
 
 export interface TreeSelectInstance {
     /** 触发选中 */
@@ -12,7 +12,8 @@ export interface TreeSelectOption {
     key?: React.Key;
     node: TreeSelectItemProps["children"];
     value: any;
-    childrenOption: TreeSelectOption[];
+    childrenOption?: TreeSelectOption[];
+    // | (() => TreeSelectOption[]);
 }
 
 export interface TreeSelectProps {
@@ -24,21 +25,31 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
     const { options, instance } = props;
     const context = useMemo(
         () => ({
-            treeSelectItemMap: new Map(),
+            treeSelectGroupMap: new Map(),
         }),
         []
     );
-    const [_, update] = useState();
-
-    return (
-        <TreeSelectContext.Provider value={context}>
-            <Subject>
-                {options.map((item, index) => (
-                    <TreeSelectItem key={item.key ?? index} value={item.value}>
+    console.log(context.treeSelectGroupMap);
+    const GenTreeSelect = useCallback(
+        (props: { options: TreeSelectOption[] }) => {
+            const { options } = props;
+            return options.map((item, index) => (
+                <TreeSelectGroup key={item.key ?? index} value={item.value}>
+                    <TreeSelectItem value={item.value}>
                         {item.node}
                     </TreeSelectItem>
-                ))}
-            </Subject>
+                    {Array.isArray(item.childrenOption) &&
+                        !!item.childrenOption.length && (
+                            <GenTreeSelect options={item.childrenOption} />
+                        )}
+                </TreeSelectGroup>
+            ));
+        },
+        [options]
+    );
+    return (
+        <TreeSelectContext.Provider value={context}>
+            <GenTreeSelect options={options} />
         </TreeSelectContext.Provider>
     );
 };
