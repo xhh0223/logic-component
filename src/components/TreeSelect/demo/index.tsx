@@ -1,8 +1,11 @@
 import React from "react";
 import { TreeSelect } from "../src";
+import { useTreeSelectInstance } from "../src/hook";
 const index = () => {
+    const instance = useTreeSelectInstance();
     return (
         <TreeSelect
+            instance={instance}
             options={Array.from({ length: 3 }).map((item, index) => ({
                 node: (
                     <div
@@ -37,9 +40,6 @@ const index = () => {
                     ),
                 })),
             }))}
-            instance={{
-                triggerSelect() {},
-            }}
         />
     );
 };

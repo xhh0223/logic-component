@@ -23,13 +23,13 @@ export interface TreeSelectProps {
 }
 
 export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
-    const { options /* instance */ } = props;
-    const context = useMemo(
-        () => ({
+    const { options, instance } = props;
+    const context = useMemo(() => {
+        
+        return {
             treeSelectGroupItemMap: new Map(),
-        }),
-        []
-    );
+        };
+    }, []);
     const GenTreeSelect = useCallback(
         (props: { options: TreeSelectOption[] }) => {
             const { options } = props;
