@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useId } from "react";
-import { TreeSelectContext } from "./context";
-import { SubjectItem } from "@/components/Subject/src";
+import { TreeSelectContext, TreeSelectGroupContext } from "./context";
 
 export interface TreeSelectItemProps {
     value?: any;
@@ -11,8 +10,7 @@ export interface TreeSelectItemProps {
 export const TreeSelectItem: React.FC<TreeSelectItemProps> = (props) => {
     const { children, value } = props;
     const id = useId();
-    const { treeSelectItemMap, treeSelectItemValueMap } =
-        useContext(TreeSelectContext);
+    const { treeSelectItemMap } = useContext(TreeSelectGroupContext);
     useEffect(() => {
         treeSelectItemMap.set(id, {
             value,
