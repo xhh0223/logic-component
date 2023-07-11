@@ -11,8 +11,8 @@ const index = () => {
                 instance={multipleInstance}
                 selectedValue={[1, 2, 3, 4]}
                 repeatTriggerUnselected={false}
-                onChange={(v) => {}}
-                options={Array.from({ length: 10 }).map((item, index) => {
+                onChange={(_) => {}}
+                options={Array.from({ length: 10 }).map((_, index) => {
                     return {
                         node({ isChecked }) {
                             return (
@@ -37,8 +37,8 @@ const index = () => {
                 instance={singeInstance}
                 selectedValue={1}
                 repeatTriggerUnselected={false}
-                onChange={(v) => {}}
-                options={Array.from({ length: 10 }).map((item, index) => {
+                onChange={(_) => {}}
+                options={Array.from({ length: 10 }).map((_, index) => {
                     return {
                         node({ isChecked }) {
                             return (

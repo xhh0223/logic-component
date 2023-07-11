@@ -15,7 +15,7 @@ export interface SubjectItemProps {
 }
 
 export const SubjectItem: React.FC<SubjectItemProps> = (props) => {
-    const { children, subject } = props;
+    const { children, subject } = props as any;
     const subjectItemId = useId();
     const context = useContext(SubjectContext);
     if (!context) {

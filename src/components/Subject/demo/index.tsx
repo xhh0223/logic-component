@@ -28,7 +28,7 @@ const index = () => {
                     )}
                 </SubjectItem>
                 <SubjectItem>
-                    {(v, id) => (
+                    {() => (
                         <div
                             onClick={() => {
                                 instance.send("b", Math.random());

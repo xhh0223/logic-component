@@ -1,5 +1,5 @@
 import React from "react";
-import { TreeSelect, TreeSelectItem } from "../src";
+import { TreeSelect } from "../src";
 
 const index = () => {
     return (
@@ -9,13 +9,8 @@ const index = () => {
                     console.log(value);
                 },
             }}
-        >
-            {Array.from({ length: 3 }).map((item, index) => (
-                <TreeSelectItem value={index}>
-                    <TreeSelectItem />
-                </TreeSelectItem>
-            ))}
-        </TreeSelect>
+            options={[]}
+        />
     );
 };
 

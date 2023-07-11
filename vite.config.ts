@@ -11,6 +11,7 @@ export default defineConfig({
   },
   publicDir: "static",
   build: {
+    target:'esnext',
     lib: {
       entry: path.resolve(__dirname, "src", "components"),
       // name: "logicComponent"
@@ -19,7 +20,7 @@ export default defineConfig({
     outDir: 'lib',
     minify: false,
     rollupOptions: {
-      plugins: [react(), visualizer(/* { open: true } */),],
+      plugins: [react(), /* visualizer({ open: true } ),*/],
       external: ['react'],
       output: {
         globals: {

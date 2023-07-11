@@ -1,4 +1,3 @@
-import { SubjectInstance } from "@/components/Subject/src"
 import React from "react"
 
 export interface SelectContextInterface {

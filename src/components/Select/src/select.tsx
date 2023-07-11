@@ -41,64 +41,61 @@ export const Select: React.FC<SelectProps> = (props) => {
     const context = useMemo<SelectContextInterface>(() => {
         const selectItemMap = new Map();
         const selectItemValueMap = new Map();
+        const triggerMap = {
+            single(selectedValue) {
+                const selectedId = selectItemValueMap.get(selectedValue);
+                for (let [key, item] of selectItemMap) {
+                    if (key === selectedId) {
+                        if (repeatTriggerUnselected) {
+                            if (item.isChecked) {
+                                item.isChecked = false;
+                            } else {
+                                item.isChecked = true;
+                            }
+                        } else {
+                            item.isChecked = true;
+                        }
+                        if (onChange) {
+                            onChange(
+                                item?.isChecked ? clone(item.value) : undefined
+                            );
+                        }
+                    } else if (selectedId) {
+                        item.isChecked = false;
+                    }
+                }
+
+                update({});
+            },
+            multiple(selectedValue) {
+                selectedValue?.forEach((value: any) => {
+                    for (let [key, i] of selectItemMap) {
+                        const selectedId = selectItemMap.get(value);
+                        if (selectedId === key) {
+                            if (i.isChecked) {
+                                i.isChecked = false;
+                            } else {
+                                i.isChecked = true;
+                            }
+                            subjectInstance.send(key, undefined);
+                        }
+                    }
+                });
+                if (onChange) {
+                    const selectValues: any = [];
+                    selectItemMap.forEach((item) => {
+                        if (item.isChecked) {
+                            selectValues.push(item.value);
+                        }
+                    });
+                    onChange(clone(selectValues));
+                }
+            },
+        };
         if (typeof instance === "object" && instance) {
             Object.assign(instance, {
                 triggerSelect(selectedValue: any) {
-                    const triggerMap = {
-                        single() {
-                            const selectedId =
-                                selectItemValueMap.get(selectedValue);
-                            for (let [key, item] of selectItemMap) {
-                                if (key === selectedId) {
-                                    if (repeatTriggerUnselected) {
-                                        if (item.isChecked) {
-                                            item.isChecked = false;
-                                        } else {
-                                            item.isChecked = true;
-                                        }
-                                    } else {
-                                        item.isChecked = true;
-                                    }
-                                    if (onChange) {
-                                        onChange(
-                                            item?.isChecked
-                                                ? clone(item.value)
-                                                : undefined
-                                        );
-                                    }
-                                } else if (selectedId) {
-                                    item.isChecked = false;
-                                }
-                            }
-
-                            update({});
-                        },
-                        multiple() {
-                            selectedValue?.forEach((value: any) => {
-                                for (let [key, i] of selectItemMap) {
-                                    const selectedId = selectItemMap.get(value);
-                                    if (selectedId === key) {
-                                        if (i.isChecked) {
-                                            i.isChecked = false;
-                                        } else {
-                                            i.isChecked = true;
-                                        }
-                                        subjectInstance.send(key, undefined);
-                                    }
-                                }
-                            });
-                            if (onChange) {
-                                const selectValues: any = [];
-                                selectItemMap.forEach((item) => {
-                                    if (item.isChecked) {
-                                        selectValues.push(item.value);
-                                    }
-                                });
-                                onChange(clone(selectValues));
-                            }
-                        },
-                    };
-                    triggerMap?.[mode]?.();
+                    triggerMap[mode]?.(selectedValue);
                 },
             });
         }

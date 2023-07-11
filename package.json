@@ -1,6 +1,6 @@
 {
   "name": "react-logic-component",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "types": "lib/types/index.d.ts",
   "files": [
@@ -42,5 +42,6 @@
     "typescript": "^5.1.6",
     "vite": "^4.0.0",
     "yarn": "^1.22.19"
-  }
+  },
+  "license": "MIT"
 }

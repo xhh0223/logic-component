@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { TreeSelectContext } from "./context";
 import { TreeSelectItem, TreeSelectItemProps } from "./treeSelectItem";
-import { Subject, SubjectItem } from "@/components/Subject/src";
+import { Subject } from "../../Subject/src";
 
 export interface TreeSelectInstance {
     /** 触发选中 */
@@ -21,14 +21,15 @@ export interface TreeSelectProps {
 }
 
 export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
-    const { options, instance } = props;
+    const { options /* instance */ } = props;
     const context = useMemo(
         () => ({
             treeSelectItemMap: new Map(),
+            treeSelectItemValueMap: new Map(),
         }),
         []
     );
-    const [_, update] = useState();
+    // const [_, update] = useState();
 
     return (
         <TreeSelectContext.Provider value={context}>
