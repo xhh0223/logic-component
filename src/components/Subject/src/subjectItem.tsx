@@ -9,9 +9,7 @@ export interface SubjectItemProps {
     subject?: {
         [key: string]: SubjectItemOnMessageHandler;
     };
-    children?:
-        | React.ReactNode
-        | ((message: any, fromSubjectId: string) => React.ReactNode);
+    children?: (message: any, fromSubjectId: string) => React.ReactNode;
 }
 
 export const SubjectItem: React.FC<SubjectItemProps> = (props) => {
@@ -56,5 +54,5 @@ export const SubjectItem: React.FC<SubjectItemProps> = (props) => {
     if (typeof children === "function") {
         return children(state.message, state.fromSubjectId);
     }
-    return children;
+    return null;
 };

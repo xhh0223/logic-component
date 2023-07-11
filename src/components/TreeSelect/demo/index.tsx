@@ -6,14 +6,19 @@ const index = () => {
     return (
         <TreeSelect
             instance={instance}
+            selectedValue={0}
+            onChange={(v) => {
+                console.log(v);
+            }}
             options={Array.from({ length: 3 }).map((item, index) => ({
-                node: (
+                node: ({ isChecked }) => (
                     <div
                         onClick={() => {
-                            console.log(index);
+                            instance.triggerSelect(index);
                         }}
                     >
                         {index}
+                        {JSON.stringify(isChecked)}
                     </div>
                 ),
                 value: index,
@@ -21,7 +26,7 @@ const index = () => {
                     node: (
                         <div
                             onClick={() => {
-                                console.log(`${index}---${j}`);
+                                instance.triggerSelect(`${index}---${j}`);
                             }}
                         >{`${index}---${j}`}</div>
                     ),
@@ -31,7 +36,9 @@ const index = () => {
                             node: (
                                 <div
                                     onClick={() => {
-                                        console.log(`${index}---${j}--${k}`);
+                                        instance.triggerSelect(
+                                            `${index}---${j}--${k}`
+                                        );
                                     }}
                                 >{`${index}---${j}--${k}`}</div>
                             ),

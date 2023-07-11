@@ -43,7 +43,17 @@ export const Select: React.FC<SelectProps> = (props) => {
         const selectItemValueMap = new Map();
         const triggerMap = {
             single(selectedValue) {
-                const selectedId = selectItemValueMap.get(selectedValue);
+                let selectedId;
+                if (typeof selectedValue === "object") {
+                    for (let [value, id] of selectItemValueMap) {
+                        if (equals(value, selectedValue)) {
+                            selectedId = id;
+                            break;
+                        }
+                    }
+                } else {
+                    selectedId = selectItemValueMap.get(selectedValue);
+                }
                 for (let [key, item] of selectItemMap) {
                     if (key === selectedId) {
                         if (repeatTriggerUnselected) {
@@ -64,20 +74,25 @@ export const Select: React.FC<SelectProps> = (props) => {
                         item.isChecked = false;
                     }
                 }
-
                 update({});
             },
             multiple(selectedValue) {
                 selectedValue?.forEach((value: any) => {
-                    for (let [key, i] of selectItemMap) {
-                        const selectedId = selectItemMap.get(value);
-                        if (selectedId === key) {
-                            if (i.isChecked) {
-                                i.isChecked = false;
+                    for (let [v, id] of selectItemValueMap) {
+                        let selectedItem;
+                        if (typeof value === "object" && equals(v, value)) {
+                            selectedItem = selectItemMap.get(id);
+                        } else if (value === v) {
+                            selectedItem = selectItemMap.get(id);
+                        }
+                        if (selectedItem) {
+                            if (selectedItem.isChecked) {
+                                selectedItem.isChecked = false;
                             } else {
-                                i.isChecked = true;
+                                selectedItem.isChecked = true;
                             }
-                            subjectInstance.send(key, undefined);
+                            subjectInstance.send(id, undefined);
+                            break;
                         }
                     }
                 });

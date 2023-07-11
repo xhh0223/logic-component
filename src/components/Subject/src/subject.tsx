@@ -6,7 +6,7 @@ export interface SubjectInstance {
 }
 
 export interface SubjectProps {
-    instance?: SubjectInstance;
+    instance: SubjectInstance;
     children?: React.ReactNode;
 }
 

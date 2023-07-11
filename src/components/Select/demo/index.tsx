@@ -11,7 +11,9 @@ const index = () => {
                 instance={multipleInstance}
                 selectedValue={[1, 2, 3, 4]}
                 repeatTriggerUnselected={false}
-                onChange={(_) => {}}
+                onChange={(_) => {
+                    console.log(_);
+                }}
                 options={Array.from({ length: 10 }).map((_, index) => {
                     return {
                         node({ isChecked }) {
