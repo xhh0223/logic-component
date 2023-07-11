@@ -10,14 +10,14 @@ export interface TreeSelectItemProps {
 export const TreeSelectGroup: React.FC<TreeSelectItemProps> = (props) => {
     const { children, value } = props;
     const id = useId();
-    const { treeSelectGroupMap } = useContext(TreeSelectContext);
+    const { treeSelectGroupItemMap } = useContext(TreeSelectContext);
     useEffect(() => {
-        treeSelectGroupMap.set(id, {
+      treeSelectGroupItemMap.set(id, {
             value,
             isChecked: false,
         });
         return () => {
-            treeSelectGroupMap.delete(id);
+          treeSelectGroupItemMap.delete(id);
         };
     });
 

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useId } from "react";
-import { TreeSelectContext, TreeSelectGroupContext } from "./context";
+import { TreeSelectGroupContext } from "./context";
+import { SubjectItem } from "@/components/Subject/src";
 
 export interface TreeSelectItemProps {
     value?: any;
@@ -16,10 +17,10 @@ export const TreeSelectItem: React.FC<TreeSelectItemProps> = (props) => {
             value,
             isChecked: false,
         });
-        treeSelectItemValueMap.set(value, id);
+        treeSelectItemMap.set(value, id);
         return () => {
             treeSelectItemMap.delete(id);
-            treeSelectItemValueMap.delete(value);
+            treeSelectItemMap.delete(value);
         };
     });
     return (

@@ -25,11 +25,10 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
     const { options /* instance */ } = props;
     const context = useMemo(
         () => ({
-            treeSelectItemMap: new Map(),
+            treeSelectGroupItemMap: new Map(),
         }),
         []
     );
-    console.log(context.treeSelectGroupMap);
     const GenTreeSelect = useCallback(
         (props: { options: TreeSelectOption[] }) => {
             const { options } = props;
