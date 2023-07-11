@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import { TreeSelectContext } from "./context";
 import { TreeSelectItem, TreeSelectItemProps } from "./treeSelectItem";
 import { TreeSelectGroup } from "./treeSelectGroup";
+import { Subject } from "@/components/Subject/src";
 
 export interface TreeSelectInstance {
     /** 触发选中 */
@@ -12,7 +13,7 @@ export interface TreeSelectOption {
     key?: React.Key;
     node: TreeSelectItemProps["children"];
     value: any;
-    childrenOption?: TreeSelectOption[];
+    childrenOptions?: TreeSelectOption[];
     // | (() => TreeSelectOption[]);
 }
 
@@ -37,9 +38,9 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
                     <TreeSelectItem value={item.value}>
                         {item.node}
                     </TreeSelectItem>
-                    {Array.isArray(item.childrenOption) &&
-                        !!item.childrenOption.length && (
-                            <GenTreeSelect options={item.childrenOption} />
+                    {Array.isArray(item.childrenOptions) &&
+                        !!item.childrenOptions.length && (
+                            <GenTreeSelect options={item.childrenOptions} />
                         )}
                 </TreeSelectGroup>
             ));
@@ -47,8 +48,10 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
         [options]
     );
     return (
-        <TreeSelectContext.Provider value={context}>
-            <GenTreeSelect options={options} />
-        </TreeSelectContext.Provider>
+        <Subject>
+            <TreeSelectContext.Provider value={context}>
+                <GenTreeSelect options={options} />
+            </TreeSelectContext.Provider>
+        </Subject>
     );
 };

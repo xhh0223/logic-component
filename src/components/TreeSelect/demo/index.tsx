@@ -4,14 +4,34 @@ const index = () => {
     return (
         <TreeSelect
             options={Array.from({ length: 3 }).map((item, index) => ({
-                node: <div>{index}</div>,
+                node: (
+                    <div
+                        onClick={() => {
+                            console.log(index);
+                        }}
+                    >
+                        {index}
+                    </div>
+                ),
                 value: index,
-                childrenOption: Array.from({ length: 2 }).map((item, j) => ({
-                    node: <div>{`${index}---${j}`}</div>,
+                childrenOptions: Array.from({ length: 2 }).map((item, j) => ({
+                    node: (
+                        <div
+                            onClick={() => {
+                                console.log(`${index}---${j}`);
+                            }}
+                        >{`${index}---${j}`}</div>
+                    ),
                     value: `${index}---${j}`,
-                    childrenOption: Array.from({ length: 2 }).map(
+                    childrenOptions: Array.from({ length: 2 }).map(
                         (item, k) => ({
-                            node: <div>{`${index}---${j}--${k}`}</div>,
+                            node: (
+                                <div
+                                    onClick={() => {
+                                        console.log(`${index}---${j}--${k}`);
+                                    }}
+                                >{`${index}---${j}--${k}`}</div>
+                            ),
                             value: `${index}---${j}--${k}`,
                         })
                     ),
