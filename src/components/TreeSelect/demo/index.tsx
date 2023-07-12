@@ -5,6 +5,8 @@ const index = () => {
     const instance = useTreeSelectInstance();
     return (
         <TreeSelect
+            mode="cascader-single"
+            repeatTriggerUnselected={false}
             instance={instance}
             selectedValue={0}
             onChange={(v) => {

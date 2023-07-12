@@ -18,11 +18,13 @@ export interface TreeSelectOption {
 }
 
 export interface TreeSelectProps {
-    mode?: "single";
+    mode?: "single" | "cascader-single";
     instance: TreeSelectInstance;
     options: TreeSelectOption[];
     /** 重复触发,取消选中状态，针对单选有效 */
     repeatTriggerUnselected?: boolean;
+    /** 触发选中时展开子选项 */
+    triggerExpandChildren?: boolean;
     selectedValue?: any;
     onChange?(v: any): void;
 }
@@ -35,6 +37,7 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
         selectedValue,
         onChange,
         repeatTriggerUnselected = true,
+        triggerExpandChildren = false,
     } = props;
     const [_, setUpdate] = useState({});
     const subjectInstance = useSubjectInstance();
@@ -72,6 +75,9 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
                             setUpdate({});
                         }
                     },
+                    ["cascader-single"](v) {
+                        console.log(v);
+                    },
                 };
                 treeSelectModeMap[mode](value);
             },
@@ -84,12 +90,38 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
     const GenTreeSelect = useCallback(
         (props: { options: TreeSelectOption[] }) => {
             const { options } = props;
+            const [_, setUpdate] = useState({});
+            const state = useMemo(() => {
+                return new Proxy(
+                    {
+                        displayCascaderChildrenOptions: false,
+                    },
+                    {
+                        set(target, p) {
+                            setUpdate({});
+                            return target[p];
+                        },
+                    }
+                );
+            }, []);
             return options.map((item, index) => (
                 <React.Fragment key={item.key ?? index}>
-                    <TreeSelectItem value={item.value}>
+                    <TreeSelectItem
+                        value={item.value}
+                        childrenOptions={item.childrenOptions}
+                    >
                         {item.node}
                     </TreeSelectItem>
-                    {Array.isArray(item.childrenOptions) &&
+                    {mode === "single" &&
+                        Array.isArray(item.childrenOptions) &&
+                        triggerExpandChildren === false &&
+                        !!item.childrenOptions.length && (
+                            <GenTreeSelect options={item.childrenOptions} />
+                        )}
+                    {mode === "cascader-single" &&
+                        triggerExpandChildren === false &&
+                        state.displayCascaderChildrenOptions &&
+                        Array.isArray(item.childrenOptions) &&
                         !!item.childrenOptions.length && (
                             <GenTreeSelect options={item.childrenOptions} />
                         )}
