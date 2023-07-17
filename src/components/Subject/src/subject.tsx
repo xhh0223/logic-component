@@ -20,21 +20,25 @@ export const Subject: React.FC<SubjectProps> = ({ children, instance }) => {
             deleteSubjectItem(subjectItemId) {
                 this.subjectItemMap.delete(subjectItemId);
             },
+            send(subjectId: string, message: any) {
+                [...subjectContext.subjectItemMap.keys()].forEach((id) => {
+                    const { subject, refreshHandler } =
+                        subjectContext.subjectItemMap.get(id) ?? {};
+                    if (subject && subject[subjectId]) {
+                        subject[subjectId](message, {
+                            fromSubjectId: subjectId,
+                            send: instance.send,
+                        });
+                        refreshHandler && refreshHandler();
+                    }
+                });
+            },
         };
     }, []);
     useMemo(() => {
         if (instance) {
             Object.assign(instance, {
-                send(subjectId: string, message: any) {
-                    [...subjectContext.subjectItemMap.keys()].forEach((id) => {
-                        const { subject, refreshHandler } =
-                            subjectContext.subjectItemMap.get(id) ?? {};
-                        if (subject && subject[subjectId]) {
-                            subject[subjectId](message);
-                            refreshHandler && refreshHandler();
-                        }
-                    });
-                },
+                send: subjectContext.send,
             });
         }
     }, []);
