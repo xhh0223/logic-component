@@ -9,6 +9,7 @@ export interface SubjectContextInterface {
   subjectItemMap: Record<string, SubjectItemInstance>
   addSubjectItem(id: string, subjectItemInstance: SubjectItemInstance): void
   deleteSubjectItem(id: string): void
+  send(subjectId: string, message: any): void
 }
 
 export const SubjectContext = createContext<SubjectContextInterface>(undefined!) 
