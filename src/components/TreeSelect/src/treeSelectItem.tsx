@@ -1,44 +1,29 @@
-import React, { useContext, useEffect, useId } from "react";
+import React, { useContext, useEffect, useId, useState } from "react";
 import { TreeSelectContext } from "./context";
-import { SubjectItem } from "@/components/Subject/src";
-
-export interface TreeSelectItemProps {
-    value?: any;
-    children?:
-        | React.ReactNode
-        | ((nodeInfo: { isChecked: boolean }) => React.ReactNode);
-}
+import { TreeSelectItemProps } from "./interface";
 
 export const TreeSelectItem: React.FC<TreeSelectItemProps> = (props) => {
     const { children, value } = props;
+    const [_, refresh] = useState({});
     const id = useId();
-    const { treeSelectItemMap, treeSelectItemValueMap } =
+    const { addSelectItem, delSelectItem, getSelectItem } =
         useContext(TreeSelectContext);
     useEffect(() => {
-        treeSelectItemMap.set(id, {
+        addSelectItem(id, {
+            id,
             value,
             isChecked: false,
+            refresh: () => {
+                refresh({});
+            },
         });
-        treeSelectItemValueMap.set(value, id);
         return () => {
-            treeSelectItemMap.delete(id);
-            treeSelectItemValueMap.delete(value);
+            delSelectItem(id);
         };
     });
-    return (
-        <SubjectItem
-            subject={{
-                [id]() {},
-            }}
-        >
-            {() => {
-                if (typeof children === "function") {
-                    return children({
-                        isChecked: !!treeSelectItemMap.get(id)?.isChecked,
-                    });
-                }
-                return children;
-            }}
-        </SubjectItem>
-    );
+    return typeof children === "function"
+        ? children({
+              isChecked: !!getSelectItem(id)?.isChecked,
+          })
+        : children;
 };

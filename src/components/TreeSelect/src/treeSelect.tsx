@@ -1,31 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { TreeSelectContext } from "./context";
-import { TreeSelectItem, TreeSelectItemProps } from "./treeSelectItem";
-import { Subject, useSubjectInstance } from "@/components/Subject/src";
+import { Context, TreeSelectContext } from "./context";
+import { TreeSelectItem } from "./treeSelectItem";
 import { clone, equals } from "ramda";
-
-export interface TreeSelectInstance {
-    /** 触发选中 */
-    triggerSelect(value: any): void;
-}
-
-export interface TreeSelectOption {
-    key?: React.Key;
-    node: TreeSelectItemProps["children"];
-    value: any;
-    childrenOptions?: TreeSelectOption[];
-    // | (() => TreeSelectOption[]);
-}
-
-export interface TreeSelectProps {
-    mode?: "single";
-    instance: TreeSelectInstance;
-    options: TreeSelectOption[];
-    /** 重复触发,取消选中状态，针对单选有效 */
-    repeatTriggerUnselected?: boolean;
-    selectedValue?: any;
-    onChange?(v: any): void;
-}
+import { TreeSelectOption, TreeSelectProps } from "./interface";
 
 export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
     const {
@@ -37,21 +14,15 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
         repeatTriggerUnselected = true,
     } = props;
     const [_, setUpdate] = useState({});
-    const subjectInstance = useSubjectInstance();
     const context = useMemo(() => {
-        const treeSelectItemMap = new Map();
-        const treeSelectItemValueMap = new Map();
+        const tempContext = new Context();
+        const { getAllSelectItems, getSelectItem } = tempContext;
         Object.assign(instance, {
             triggerSelect(value) {
                 const treeSelectModeMap = {
-                    single(v) {
-                        let selectValueId;
-                        if (typeof v === "object") {
-                        } else {
-                            selectValueId = treeSelectItemValueMap.get(v);
-                        }
-                        for (let [id, item] of treeSelectItemMap) {
-                            if (id === selectValueId) {
+                    single() {
+                        for (let item of getAllSelectItems()) {
+                            if (equals(value, item.value)) {
                                 if (repeatTriggerUnselected) {
                                     item.isChecked = !item.isChecked;
                                 } else {
@@ -64,22 +35,36 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
                                             : undefined
                                     );
                                 }
+                                setUpdate({});
                             } else {
                                 item.isChecked = false;
                             }
                         }
-                        if (selectValueId) {
-                            setUpdate({});
+                    },
+                    multiple() {
+                        let selectedValue = [];
+                        let allSelectItems = getAllSelectItems();
+                        value?.forEach((v) => {
+                            for (let item of allSelectItems) {
+                                if (equals(item.value, v)) {
+                                    item.isChecked = !item.isChecked;
+                                    item.refresh();
+                                    if (item.isChecked) {
+                                        selectedValue.push(item.value);
+                                    }
+                                    break;
+                                }
+                            }
+                        });
+                        if (onChange) {
+                            onChange(clone(selectedValue));
                         }
                     },
                 };
-                treeSelectModeMap[mode](value);
+                treeSelectModeMap[mode]();
             },
         });
-        return {
-            treeSelectItemMap,
-            treeSelectItemValueMap,
-        };
+        return tempContext;
     }, []);
     const GenTreeSelect = useCallback(
         (props: { options: TreeSelectOption[] }) => {
@@ -98,30 +83,40 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
         },
         [options]
     );
+
     useEffect(() => {
-        if (typeof selectedValue === "object") {
-            for (let [id, item] of context.treeSelectItemMap) {
-                if (equals(item.value, selectedValue)) {
-                    item.isChecked = true;
-                    subjectInstance.send(id, undefined);
-                    break;
+        const treeSelectModeMap = {
+            single() {
+                for (let item of context.getAllSelectItems()) {
+                    if (equals(item.value, selectedValue)) {
+                        item.isChecked = true;
+                        setUpdate({});
+                    } else {
+                        item.isChecked = false;
+                    }
                 }
-            }
-        } else {
-            const selectedId =
-                context.treeSelectItemValueMap.get(selectedValue);
-            const selectedItem = context.treeSelectItemMap.get(selectedId);
-            if (selectedItem) {
-                selectedItem.isChecked = true;
-                subjectInstance.send(selectedId, undefined);
-            }
-        }
-    }, []);
+            },
+            multiple() {
+                let allSelectItems = context.getAllSelectItems();
+                selectedValue?.foreach((v) => {
+                    for (let item of allSelectItems) {
+                        if (equals(item.value, v)) {
+                            item.isChecked = !item.isChecked;
+                            if (item.isChecked) {
+                                selectedValue.push(item.value);
+                            }
+                            item.refresh();
+                        }
+                        break;
+                    }
+                });
+            },
+        };
+        treeSelectModeMap[mode]();
+    }, [selectedValue]);
     return (
-        <Subject instance={subjectInstance}>
-            <TreeSelectContext.Provider value={context}>
-                <GenTreeSelect options={options} />
-            </TreeSelectContext.Provider>
-        </Subject>
+        <TreeSelectContext.Provider value={context}>
+            <GenTreeSelect options={options} />
+        </TreeSelectContext.Provider>
     );
 };
