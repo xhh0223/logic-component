@@ -1,4 +1,3 @@
-import { Subject, useSubjectInstance } from "@/components/Subject/src";
 import React, { useEffect, useMemo, useState } from "react";
 import { SelectContext, SelectContextInterface } from "./context";
 import { clone, equals } from "ramda";
@@ -37,24 +36,18 @@ export const Select: React.FC<SelectProps> = (props) => {
         instance,
     } = props;
     const [_, update] = useState({});
-    const subjectInstance = useSubjectInstance();
     const context = useMemo<SelectContextInterface>(() => {
-        const selectItemMap = new Map();
-        const selectItemValueMap = new Map();
+        const selectItemMap: SelectContextInterface["selectItemMap"] = {};
         const triggerMap = {
             single(selectedValue) {
                 let selectedId;
-                if (typeof selectedValue === "object") {
-                    for (let [value, id] of selectItemValueMap) {
-                        if (equals(value, selectedValue)) {
-                            selectedId = id;
-                            break;
-                        }
+                for (let i of Object.values(selectItemMap)) {
+                    if (equals(i.value, selectedValue)) {
+                        selectedId = i.id;
+                        break;
                     }
-                } else {
-                    selectedId = selectItemValueMap.get(selectedValue);
                 }
-                for (let [key, item] of selectItemMap) {
+                for (let [key, item] of Object.entries(selectItemMap)) {
                     if (key === selectedId) {
                         if (repeatTriggerUnselected) {
                             if (item.isChecked) {
@@ -77,28 +70,22 @@ export const Select: React.FC<SelectProps> = (props) => {
                 update({});
             },
             multiple(selectedValue) {
+                const values = Object.values(selectItemMap);
                 selectedValue?.forEach((value: any) => {
-                    for (let [v, id] of selectItemValueMap) {
-                        let selectedItem;
-                        if (typeof value === "object" && equals(v, value)) {
-                            selectedItem = selectItemMap.get(id);
-                        } else if (value === v) {
-                            selectedItem = selectItemMap.get(id);
-                        }
-                        if (selectedItem) {
-                            if (selectedItem.isChecked) {
-                                selectedItem.isChecked = false;
+                    for (let i of values) {
+                        if (equals(i.value, value)) {
+                            if (i.isChecked) {
+                                i.isChecked = false;
                             } else {
-                                selectedItem.isChecked = true;
+                                i.isChecked = true;
                             }
-                            subjectInstance.send(id, undefined);
                             break;
                         }
                     }
                 });
                 if (onChange) {
                     const selectValues: any = [];
-                    selectItemMap.forEach((item) => {
+                    values.forEach((item) => {
                         if (item.isChecked) {
                             selectValues.push(item.value);
                         }
@@ -116,7 +103,15 @@ export const Select: React.FC<SelectProps> = (props) => {
         }
         return {
             selectItemMap,
-            selectItemValueMap,
+            addSelectItem(id, item) {
+                Reflect.set(this.selectItemMap, id, item);
+            },
+            deleteSelectItem(id) {
+                Reflect.deleteProperty(this.selectItemMap, id);
+            },
+            getSelectItem(id) {
+                return Reflect.get(this.selectItemMap, id);
+            },
         };
     }, []);
 
@@ -124,21 +119,20 @@ export const Select: React.FC<SelectProps> = (props) => {
         const { selectItemMap } = context;
         const initSelectedValueMap = {
             single() {
-                selectItemMap.forEach((item, key) => {
+                Object.values(selectItemMap).forEach((item) => {
                     if (equals(item.value, selectedValue)) {
                         item.isChecked = true;
-                        subjectInstance.send(key, undefined);
                     } else {
                         item.isChecked = false;
                     }
                 });
             },
             multiple() {
+                const values = Object.values(selectItemMap);
                 selectedValue?.forEach((item: any) => {
-                    for (let [key, i] of selectItemMap) {
+                    for (let i of values) {
                         if (equals(i.value, item)) {
                             i.isChecked = true;
-                            subjectInstance.send(key, undefined);
                             break;
                         }
                     }
@@ -149,13 +143,11 @@ export const Select: React.FC<SelectProps> = (props) => {
     }, [selectedValue]);
     return (
         <SelectContext.Provider value={context}>
-            <Subject instance={subjectInstance}>
-                {options.map((item, index) => (
-                    <SelectItem value={item.value} key={item.key ?? index}>
-                        {item.node}
-                    </SelectItem>
-                ))}
-            </Subject>
+            {options.map((item, index) => (
+                <SelectItem value={item.value} key={item.key ?? index}>
+                    {item.node}
+                </SelectItem>
+            ))}
         </SelectContext.Provider>
     );
 };

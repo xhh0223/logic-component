@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useId, useMemo, useState } from "react";
 import { SubjectContext } from "./context";
 
 export interface SubjectItemOnMessageHandler {
-    (message: any): void;
+    (message: any, fromSubjectId: string): void;
 }
 
 export interface SubjectItemProps {
-    subject?: {
-        [key: string]: SubjectItemOnMessageHandler;
-    };
-    children?: (message: any, fromSubjectId: string) => React.ReactNode;
+    subject?: Record<string, SubjectItemOnMessageHandler>;
+    children?: (
+        ...rest: Parameters<SubjectItemOnMessageHandler>
+    ) => React.ReactNode;
 }
 
 export const SubjectItem: React.FC<SubjectItemProps> = (props) => {

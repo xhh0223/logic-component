@@ -1,4 +1,3 @@
-import { SubjectItem } from "@/components/Subject/src";
 import React, { useContext, useEffect, useId } from "react";
 import { SelectContext } from "./context";
 
@@ -11,34 +10,23 @@ export interface SelectItemProps {
 
 export const SelectItem: React.FC<SelectItemProps> = (props) => {
     const { value, children } = props;
-    const { selectItemMap, selectItemValueMap } =
+    const { addSelectItem, deleteSelectItem, getSelectItem } =
         useContext(SelectContext) ?? {};
     const currentId = useId();
     useEffect(() => {
-        selectItemMap.set(currentId, {
+        addSelectItem(currentId, {
+            id: currentId,
             value,
             isChecked: false,
         });
-        selectItemValueMap.set(value, currentId);
         return () => {
-            selectItemMap.delete(currentId);
-            selectItemValueMap.delete(value);
+            deleteSelectItem(currentId);
         };
     }, [value]);
 
-    return (
-        <SubjectItem
-            subject={{
-                [currentId]() {},
-            }}
-        >
-            {() => {
-                return typeof children === "function"
-                    ? children({
-                          isChecked: !!selectItemMap.get(currentId)?.isChecked,
-                      })
-                    : children;
-            }}
-        </SubjectItem>
-    );
+    return typeof children === "function"
+        ? children({
+              isChecked: !!getSelectItem(currentId)?.isChecked,
+          })
+        : children;
 };

@@ -13,12 +13,12 @@ export interface SubjectProps {
 export const Subject: React.FC<SubjectProps> = ({ children, instance }) => {
     const subjectContext = useMemo<SubjectContextInterface>(() => {
         return {
-            subjectItemMap: new Map(),
+            subjectItemMap: {},
             addSubjectItem(subjectItemId, item) {
-                this.subjectItemMap.set(subjectItemId, item);
+                Reflect.set(this.subjectItemMap, subjectItemId, item);
             },
             deleteSubjectItem(subjectItemId) {
-                this.subjectItemMap.delete(subjectItemId);
+                Reflect.deleteProperty(this.subjectItemMap, subjectItemId);
             },
         };
     }, []);
@@ -26,12 +26,13 @@ export const Subject: React.FC<SubjectProps> = ({ children, instance }) => {
         if (instance) {
             Object.assign(instance, {
                 send(subjectId: string, message: any) {
-                    [...subjectContext.subjectItemMap.keys()].forEach((id) => {
+                    Object.keys(subjectContext.subjectItemMap).forEach((id) => {
                         const { subject, refreshHandler } =
-                            subjectContext.subjectItemMap.get(id) ?? {};
+                            Reflect.get(subjectContext.subjectItemMap, id) ??
+                            {};
                         if (subject && subject[subjectId]) {
-                            subject[subjectId](message);
-                            refreshHandler && refreshHandler();
+                            subject[subjectId](message, subjectId);
+                            refreshHandler();
                         }
                     });
                 },
