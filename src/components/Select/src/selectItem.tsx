@@ -1,15 +1,10 @@
-import React, { useContext, useEffect, useId } from "react";
+import React, { useContext, useEffect, useId, useState } from "react";
 import { SelectContext } from "./context";
-
-export interface SelectItemProps {
-    value: any;
-    children?:
-        | React.ReactNode
-        | ((params: { isChecked: boolean }) => React.ReactNode);
-}
+import { SelectItemProps } from "./interface";
 
 export const SelectItem: React.FC<SelectItemProps> = (props) => {
     const { value, children } = props;
+    const [_, refresh] = useState({});
     const { addSelectItem, deleteSelectItem, getSelectItem } =
         useContext(SelectContext) ?? {};
     const currentId = useId();
@@ -18,6 +13,9 @@ export const SelectItem: React.FC<SelectItemProps> = (props) => {
             id: currentId,
             value,
             isChecked: false,
+            refreshHandler: () => {
+                refresh({});
+            },
         });
         return () => {
             deleteSelectItem(currentId);
