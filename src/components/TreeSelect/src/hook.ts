@@ -1,12 +1,12 @@
 import { useMemo } from "react";
-import { TreeSelectInstance } from "./treeSelect";
+import { TreeSelectInstance } from "./interface";
 
-export const useTreeSelectInstance = ()=>{
-  return useMemo<TreeSelectInstance>(()=>{
+export const useTreeSelectInstance = () => {
+  return useMemo<TreeSelectInstance>(() => {
     return {
-      triggerSelect(){
+      triggerSelect() {
         console.log("请在组件挂载后使用")
       }
     }
-  },[])
+  }, [])
 }

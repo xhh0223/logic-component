@@ -4,52 +4,106 @@ import { useTreeSelectInstance } from "../src/hook";
 const index = () => {
     const instance = useTreeSelectInstance();
     return (
-        <TreeSelect
-            mode="cascader-single"
-            repeatTriggerUnselected={false}
-            instance={instance}
-            selectedValue={0}
-            onChange={(v) => {
-                console.log(v);
-            }}
-            options={Array.from({ length: 3 }).map((item, index) => ({
-                node: ({ isChecked }) => (
-                    <div
-                        onClick={() => {
-                            instance.triggerSelect(index);
-                        }}
-                    >
-                        {index}
-                        {JSON.stringify(isChecked)}
-                    </div>
-                ),
-                value: index,
-                childrenOptions: Array.from({ length: 2 }).map((item, j) => ({
-                    node: (
+        <>
+            <TreeSelect
+                instance={instance}
+                mode="single"
+                onChange={(v) => {
+                    console.log(v);
+                }}
+                options={Array.from({ length: 3 }).map((item, index) => ({
+                    node: ({ isChecked }) => (
                         <div
                             onClick={() => {
-                                instance.triggerSelect(`${index}---${j}`);
+                                instance.triggerSelect(index);
                             }}
-                        >{`${index}---${j}`}</div>
+                        >
+                            {index}
+                            {JSON.stringify(isChecked)}
+                        </div>
                     ),
-                    value: `${index}---${j}`,
+                    value: index,
                     childrenOptions: Array.from({ length: 2 }).map(
-                        (item, k) => ({
+                        (item, j) => ({
                             node: (
                                 <div
                                     onClick={() => {
                                         instance.triggerSelect(
-                                            `${index}---${j}--${k}`
+                                            `${index}---${j}`
                                         );
                                     }}
-                                >{`${index}---${j}--${k}`}</div>
+                                >{`${index}---${j}`}</div>
                             ),
-                            value: `${index}---${j}--${k}`,
+                            value: `${index}---${j}`,
+                            childrenOptions: Array.from({ length: 2 }).map(
+                                (item, k) => ({
+                                    node: (
+                                        <div
+                                            onClick={() => {
+                                                instance.triggerSelect(
+                                                    `${index}---${j}--${k}`
+                                                );
+                                            }}
+                                        >{`${index}---${j}--${k}`}</div>
+                                    ),
+                                    value: `${index}---${j}--${k}`,
+                                })
+                            ),
                         })
                     ),
-                })),
-            }))}
-        />
+                }))}
+            />
+            <hr />
+            多选
+            <TreeSelect
+                instance={instance}
+                mode="multiple"
+                onChange={(v) => {
+                    console.log(v);
+                }}
+                options={Array.from({ length: 3 }).map((item, index) => ({
+                    node: ({ isChecked }) => (
+                        <div
+                            onClick={() => {
+                                instance.triggerSelect([index]);
+                            }}
+                        >
+                            {index}
+                            {JSON.stringify(isChecked)}
+                        </div>
+                    ),
+                    value: index,
+                    childrenOptions: Array.from({ length: 2 }).map(
+                        (item, j) => ({
+                            node: (
+                                <div
+                                    onClick={() => {
+                                        instance.triggerSelect([
+                                            `${index}---${j}`,
+                                        ]);
+                                    }}
+                                >{`${index}---${j}`}</div>
+                            ),
+                            value: `${index}---${j}`,
+                            childrenOptions: Array.from({ length: 2 }).map(
+                                (item, k) => ({
+                                    node: (
+                                        <div
+                                            onClick={() => {
+                                                instance.triggerSelect([
+                                                    `${index}---${j}--${k}`,
+                                                ]);
+                                            }}
+                                        >{`${index}---${j}--${k}`}</div>
+                                    ),
+                                    value: `${index}---${j}--${k}`,
+                                })
+                            ),
+                        })
+                    ),
+                }))}
+            />
+        </>
     );
 };
 
