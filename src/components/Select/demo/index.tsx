@@ -9,13 +9,14 @@ const index = () => {
             <Select
                 mode="multiple"
                 instance={multipleInstance}
-                selectedValue={[1, 2, 3, 4]}
+                selectedId={[1, 2, 3, 4]}
                 repeatTriggerUnselected={false}
                 onChange={(_) => {
                     console.log(_);
                 }}
                 options={Array.from({ length: 10 }).map((_, index) => {
                     return {
+                        id: index,
                         node({ isChecked }) {
                             return (
                                 <div
@@ -37,11 +38,14 @@ const index = () => {
             <Select
                 mode="single"
                 instance={singeInstance}
-                selectedValue={1}
+                selectedId={1}
                 repeatTriggerUnselected={false}
-                onChange={(_) => {}}
+                onChange={(..._) => {
+                  console.log(_)
+                }}
                 options={Array.from({ length: 10 }).map((_, index) => {
                     return {
+                        id: index,
                         node({ isChecked }) {
                             return (
                                 <div

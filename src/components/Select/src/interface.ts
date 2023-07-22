@@ -1,9 +1,13 @@
+export type Id = string | number
+
 export interface SelectInstance {
-  /** 触发选中 */
-  triggerSelect(selectedValue: any): void;
+  /** 触发选中,单选传一个ID,多选传多个ID */
+  triggerSelect(selectedId: Id | Id[]): void;
 }
 
+
 export interface SelectItemProps {
+  id: Id
   value: any;
   children?:
   | React.ReactNode
@@ -12,8 +16,8 @@ export interface SelectItemProps {
 
 
 export interface SelectOption {
-  /** reactKey diff算法用的 */
-  key?: React.Key;
+  /** 快速找到value */
+  id: Id;
   node: SelectItemProps["children"];
   value: any;
 }
@@ -23,8 +27,8 @@ export interface SelectProps {
   /** 重复触发,取消选中状态，针对单选有效 */
   repeatTriggerUnselected?: boolean;
   /** 用来动态初始化选中值 */
-  selectedValue?: any;
-  onChange?(selectedValue: any): void;
+  selectedId?: Id | (Id[]);
+  onChange?(selectedValue: any, selectedId: Id | (Id[])): void;
   instance: SelectInstance;
   options: SelectOption[];
 }

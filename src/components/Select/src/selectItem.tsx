@@ -3,14 +3,13 @@ import { SelectContext } from "./context";
 import { SelectItemProps } from "./interface";
 
 export const SelectItem: React.FC<SelectItemProps> = (props) => {
-    const { value, children } = props;
+    const { value, children, id } = props;
     const [_, refresh] = useState({});
     const { addSelectItem, deleteSelectItem, getSelectItem } =
         useContext(SelectContext) ?? {};
-    const currentId = useId();
     useEffect(() => {
-        addSelectItem(currentId, {
-            id: currentId,
+        addSelectItem(id, {
+            id,
             value,
             isChecked: false,
             refreshHandler: () => {
@@ -18,13 +17,13 @@ export const SelectItem: React.FC<SelectItemProps> = (props) => {
             },
         });
         return () => {
-            deleteSelectItem(currentId);
+            deleteSelectItem(id);
         };
     }, [value]);
 
     return typeof children === "function"
         ? children({
-              isChecked: !!getSelectItem(currentId)?.isChecked,
+              isChecked: !!getSelectItem(id)?.isChecked,
           })
         : children;
 };

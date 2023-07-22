@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Context, SelectContext, SelectContextInterface } from "./context";
 import { clone, equals } from "ramda";
 import { SelectItem } from "./selectItem";
@@ -7,59 +7,63 @@ import { SelectProps } from "./interface";
 export const Select: React.FC<SelectProps> = (props) => {
     const {
         options,
-        selectedValue,
+        selectedId,
         onChange,
         repeatTriggerUnselected = true,
         mode = "single",
         instance,
     } = props;
-    const [_, update] = useState({});
     const context = useMemo<SelectContextInterface>(() => {
         const tempContext = new Context();
         const { getAllSelectItem } = tempContext;
         const triggerMap = {
-            single(selectedValue) {
-                update({});
+            single(selectedId) {
                 for (let item of getAllSelectItem()) {
-                    if (equals(item.value, selectedValue)) {
+                    if (item.isChecked && !equals(item.id, selectedId)) {
+                        item.isChecked = false;
+                        item.refreshHandler();
+                    }
+                    if (equals(item.id, selectedId)) {
                         if (repeatTriggerUnselected) {
                             item.isChecked = !item.isChecked;
                         } else {
                             item.isChecked = true;
                         }
+                        item.refreshHandler();
                         if (onChange) {
                             onChange(
-                                item?.isChecked ? clone(item.value) : undefined
+                                item?.isChecked ? clone(item.value) : undefined,
+                                item?.isChecked ? item.id : undefined
                             );
                         }
-                    } else {
-                        item.isChecked = false;
                     }
                 }
             },
-            multiple(selectedValue) {
+            multiple(selectedIds) {
                 const values = getAllSelectItem();
-                selectedValue?.forEach((value: any) => {
+                selectedIds?.forEach((id: any) => {
                     for (let i of values) {
-                        if (equals(i.value, value)) {
+                        if (equals(i.id, id)) {
                             if (i.isChecked) {
                                 i.isChecked = false;
                             } else {
                                 i.isChecked = true;
                             }
+                            i.refreshHandler();
                             break;
                         }
-                        i.refreshHandler();
                     }
                 });
                 if (onChange) {
                     const selectValues: any = [];
+                    const selectedIds = [];
                     values.forEach((item) => {
                         if (item.isChecked) {
                             selectValues.push(item.value);
+                            selectedIds.push(item.id);
                         }
                     });
-                    onChange(clone(selectValues));
+                    onChange(clone(selectValues), selectedIds);
                 }
             },
         };
@@ -77,7 +81,7 @@ export const Select: React.FC<SelectProps> = (props) => {
         const initSelectedValueMap = {
             single() {
                 context.getAllSelectItem().forEach((item) => {
-                    if (equals(item.value, selectedValue)) {
+                    if (equals(item.id, selectedId)) {
                         item.isChecked = true;
                         item.refreshHandler();
                     }
@@ -85,23 +89,29 @@ export const Select: React.FC<SelectProps> = (props) => {
             },
             multiple() {
                 const values = context.getAllSelectItem();
-                selectedValue?.forEach((item: any) => {
-                    for (let i of values) {
-                        if (equals(i.value, item)) {
-                            i.isChecked = true;
-                            i.refreshHandler();
-                            break;
+                if (Array.isArray(selectedId)) {
+                    selectedId?.forEach((id: any) => {
+                        for (let i of values) {
+                            if (equals(i.id, id)) {
+                                i.isChecked = true;
+                                i.refreshHandler();
+                                break;
+                            }
                         }
-                    }
-                });
+                    });
+                }
             },
         };
         initSelectedValueMap[mode]();
-    }, [selectedValue]);
+    }, [selectedId]);
     return (
         <SelectContext.Provider value={context}>
             {options.map((item, index) => (
-                <SelectItem value={item.value} key={item.key ?? index}>
+                <SelectItem
+                    value={item.value}
+                    key={item.id ?? index}
+                    id={item.id ?? `${index}`}
+                >
                     {item.node}
                 </SelectItem>
             ))}

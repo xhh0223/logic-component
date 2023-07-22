@@ -1,23 +1,24 @@
 import React from "react"
+import { Id } from "./interface"
 
-type SelectItemInstance = { value: any, isChecked: boolean, id: string, refreshHandler: () => void }
+type SelectItemInstance = { value: any, isChecked: boolean, id: Id, refreshHandler: () => void }
 
 export interface SelectContextInterface {
-  addSelectItem(selectItemId: string, selectItemInstance: SelectItemInstance): void
-  deleteSelectItem(selectItemId: string): void
-  getSelectItem(selectItemId: string): SelectItemInstance
+  addSelectItem(selectItemId: Id, selectItemInstance: SelectItemInstance): void
+  deleteSelectItem(selectItemId: Id): void
+  getSelectItem(selectItemId: Id): SelectItemInstance
   getAllSelectItem(): SelectItemInstance[]
 }
 
 export class Context implements SelectContextInterface {
   private selectItemMap = {} as Record<string, SelectItemInstance>
-  addSelectItem = (selectItemId: string, selectItemInstance: SelectItemInstance): void => {
+  addSelectItem = (selectItemId: Id, selectItemInstance: SelectItemInstance): void => {
     Reflect.set(this.selectItemMap, selectItemId, selectItemInstance)
   }
-  deleteSelectItem = (selectItemId: string): void => {
+  deleteSelectItem = (selectItemId: Id): void => {
     Reflect.deleteProperty(this.selectItemMap, selectItemId)
   }
-  getSelectItem = (selectItemId: string): SelectItemInstance => {
+  getSelectItem = (selectItemId: Id): SelectItemInstance => {
     return Reflect.get(this.selectItemMap, selectItemId)
   }
   getAllSelectItem = () => {

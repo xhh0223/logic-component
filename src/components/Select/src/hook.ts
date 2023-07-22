@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { SelectInstance } from "./select"
+import { SelectInstance } from "./interface"
 
 export const useSelectInstance = () => {
   return useMemo<SelectInstance>(() => {
