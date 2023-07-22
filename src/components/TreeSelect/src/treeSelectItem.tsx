@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useId, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { TreeSelectContext } from "./context";
 import { TreeSelectItemProps } from "./interface";
 
 export const TreeSelectItem: React.FC<TreeSelectItemProps> = (props) => {
-    const { children, value } = props;
+    const { children, value, id } = props;
     const [_, refresh] = useState({});
-    const id = useId();
     const { addSelectItem, delSelectItem, getSelectItem } =
         useContext(TreeSelectContext);
     useEffect(() => {
@@ -13,7 +12,7 @@ export const TreeSelectItem: React.FC<TreeSelectItemProps> = (props) => {
             id,
             value,
             isChecked: false,
-            refresh: () => {
+            refreshHandler: () => {
                 refresh({});
             },
         });

@@ -12,6 +12,7 @@ const index = () => {
                     console.log(v);
                 }}
                 options={Array.from({ length: 3 }).map((item, index) => ({
+                    id: index,
                     node: ({ isChecked }) => (
                         <div
                             onClick={() => {
@@ -25,6 +26,7 @@ const index = () => {
                     value: index,
                     childrenOptions: Array.from({ length: 2 }).map(
                         (item, j) => ({
+                            id: `${index}---${j}`,
                             node: (
                                 <div
                                     onClick={() => {
@@ -37,6 +39,7 @@ const index = () => {
                             value: `${index}---${j}`,
                             childrenOptions: Array.from({ length: 2 }).map(
                                 (item, k) => ({
+                                    id: `${index}---${j}--${k}`,
                                     node: (
                                         <div
                                             onClick={() => {
@@ -62,6 +65,7 @@ const index = () => {
                     console.log(v);
                 }}
                 options={Array.from({ length: 3 }).map((item, index) => ({
+                    id: index,
                     node: ({ isChecked }) => (
                         <div
                             onClick={() => {
@@ -75,6 +79,7 @@ const index = () => {
                     value: index,
                     childrenOptions: Array.from({ length: 2 }).map(
                         (item, j) => ({
+                            id: `${index}---${j}`,
                             node: (
                                 <div
                                     onClick={() => {
@@ -87,6 +92,7 @@ const index = () => {
                             value: `${index}---${j}`,
                             childrenOptions: Array.from({ length: 2 }).map(
                                 (item, k) => ({
+                                    id: `${index}---${j}--${k}`,
                                     node: (
                                         <div
                                             onClick={() => {

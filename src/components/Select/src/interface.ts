@@ -26,7 +26,7 @@ export interface SelectProps {
   mode?: "single" | "multiple";
   /** 重复触发,取消选中状态，针对单选有效 */
   repeatTriggerUnselected?: boolean;
-  /** 用来动态初始化选中值 */
+  /** 用动态初始化选中值 */
   selectedId?: Id | (Id[]);
   onChange?(selectedValue: any, selectedId: Id | (Id[])): void;
   instance: SelectInstance;

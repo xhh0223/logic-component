@@ -15,43 +15,41 @@ export const Select: React.FC<SelectProps> = (props) => {
     } = props;
     const context = useMemo<SelectContextInterface>(() => {
         const tempContext = new Context();
-        const { getAllSelectItem } = tempContext;
+        const { getAllSelectItem, getSelectItem } = tempContext;
         const triggerMap = {
             single(selectedId) {
                 for (let item of getAllSelectItem()) {
                     if (item.isChecked && !equals(item.id, selectedId)) {
                         item.isChecked = false;
                         item.refreshHandler();
+                        break;
                     }
-                    if (equals(item.id, selectedId)) {
-                        if (repeatTriggerUnselected) {
-                            item.isChecked = !item.isChecked;
-                        } else {
-                            item.isChecked = true;
-                        }
-                        item.refreshHandler();
-                        if (onChange) {
-                            onChange(
-                                item?.isChecked ? clone(item.value) : undefined,
-                                item?.isChecked ? item.id : undefined
-                            );
-                        }
+                }
+                const selectItem = getSelectItem(selectedId);
+                if (selectItem) {
+                    if (repeatTriggerUnselected) {
+                        selectItem.isChecked = !selectItem.isChecked;
+                    } else {
+                        selectItem.isChecked = true;
                     }
+                    selectItem.refreshHandler();
+                }
+                if (onChange) {
+                    onChange(
+                        selectItem?.isChecked
+                            ? clone(selectItem.value)
+                            : undefined,
+                        selectItem?.isChecked ? selectItem.id : undefined
+                    );
                 }
             },
             multiple(selectedIds) {
                 const values = getAllSelectItem();
                 selectedIds?.forEach((id: any) => {
-                    for (let i of values) {
-                        if (equals(i.id, id)) {
-                            if (i.isChecked) {
-                                i.isChecked = false;
-                            } else {
-                                i.isChecked = true;
-                            }
-                            i.refreshHandler();
-                            break;
-                        }
+                    const selectItem = getSelectItem(id);
+                    if (selectItem) {
+                        selectItem.isChecked = !selectItem.isChecked;
+                        selectItem.refreshHandler();
                     }
                 });
                 if (onChange) {
@@ -80,23 +78,31 @@ export const Select: React.FC<SelectProps> = (props) => {
     useEffect(() => {
         const initSelectedValueMap = {
             single() {
-                context.getAllSelectItem().forEach((item) => {
-                    if (equals(item.id, selectedId)) {
-                        item.isChecked = true;
-                        item.refreshHandler();
-                    }
-                });
-            },
-            multiple() {
-                const values = context.getAllSelectItem();
-                if (Array.isArray(selectedId)) {
-                    selectedId?.forEach((id: any) => {
-                        for (let i of values) {
-                            if (equals(i.id, id)) {
-                                i.isChecked = true;
-                                i.refreshHandler();
+                if (!Array.isArray(selectedId)) {
+                    const selectItem = context.getSelectItem(selectedId);
+                    if (selectItem) {
+                        for (let item of context.getAllSelectItem()) {
+                            if (
+                                item.isChecked &&
+                                !equals(item.id, selectedId)
+                            ) {
+                                item.isChecked = false;
+                                item.refreshHandler();
                                 break;
                             }
+                        }
+                        selectItem.isChecked = true;
+                        selectItem.refreshHandler();
+                    }
+                }
+            },
+            multiple() {
+                if (Array.isArray(selectedId)) {
+                    selectedId?.forEach((id) => {
+                        const selectItem = context.getSelectItem(id);
+                        if (selectItem) {
+                            selectItem.isChecked = true;
+                            selectItem.refreshHandler();
                         }
                     });
                 }

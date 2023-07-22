@@ -9,56 +9,64 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
         mode = "single",
         options,
         instance,
-        selectedValue,
+        selectedId,
         onChange,
         repeatTriggerUnselected = true,
-        triggerExpandChildren = false,
+        // triggerExpandChildren = false,
     } = props;
-    const [_, setUpdate] = useState({});
     const context = useMemo(() => {
         const tempContext = new Context();
         const { getAllSelectItems, getSelectItem } = tempContext;
         Object.assign(instance, {
-            triggerSelect(value) {
+            triggerSelect(selectedId) {
                 const treeSelectModeMap = {
                     single() {
                         for (let item of getAllSelectItems()) {
-                            if (equals(value, item.value)) {
-                                if (repeatTriggerUnselected) {
-                                    item.isChecked = !item.isChecked;
-                                } else {
-                                    item.isChecked = true;
-                                }
-                                if (onChange) {
-                                    onChange(
-                                        item.isChecked
-                                            ? clone(item.value)
-                                            : undefined
-                                    );
-                                }
-                                setUpdate({});
-                            } else {
+                            if (
+                                item.isChecked &&
+                                !equals(item.id, selectedId)
+                            ) {
                                 item.isChecked = false;
+                                item.refreshHandler();
+                                break;
                             }
+                        }
+                        const selectedItem = getSelectItem(selectedId);
+                        if (selectedItem) {
+                            if (repeatTriggerUnselected) {
+                                selectedItem.isChecked =
+                                    !selectedItem.isChecked;
+                            }
+                            selectedItem.isChecked = true;
+                        }
+                        if (onChange) {
+                            onChange(
+                                selectedItem.isChecked
+                                    ? clone(selectedItem.value)
+                                    : undefined,
+                                selectedItem.isChecked
+                                    ? selectedItem.id
+                                    : undefined
+                            );
                         }
                     },
                     multiple() {
-                        let selectedValue = [];
-                        let allSelectItems = getAllSelectItems();
-                        value?.forEach((v) => {
-                            for (let item of allSelectItems) {
-                                if (equals(item.value, v)) {
-                                    item.isChecked = !item.isChecked;
-                                    item.refresh();
-                                    if (item.isChecked) {
-                                        selectedValue.push(item.value);
-                                    }
-                                    break;
+                        const selectedValue = [];
+                        const selectedIds = [];
+                        selectedId?.forEach((id) => {
+                            const selectedItem = getSelectItem(id);
+                            if (selectedItem) {
+                                selectedItem.isChecked =
+                                    !selectedItem.isChecked;
+                                selectedItem.refreshHandler();
+                                if (selectedItem.isChecked) {
+                                    selectedValue.push(selectedItem.value);
+                                    selectedIds.push(selectedItem.id);
                                 }
                             }
                         });
                         if (onChange) {
-                            onChange(clone(selectedValue));
+                            onChange(clone(selectedValue), selectedIds);
                         }
                     },
                     ["cascader-single"](v) {
@@ -88,26 +96,27 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
                 );
             }, []);
             return options.map((item, index) => (
-                <React.Fragment key={item.key ?? index}>
+                <React.Fragment key={item.id ?? index}>
                     <TreeSelectItem
+                        id={item.id}
                         value={item.value}
-                        childrenOptions={item.childrenOptions}
+                        // childrenOptions={item.childrenOptions}
                     >
                         {item.node}
                     </TreeSelectItem>
+                    {/* triggerExpandChildren === false */}
                     {mode === "single" &&
                         Array.isArray(item.childrenOptions) &&
-                        triggerExpandChildren === false &&
                         !!item.childrenOptions.length && (
                             <GenTreeSelect options={item.childrenOptions} />
                         )}
-                    {mode === "cascader-single" &&
+                    {/* {mode === "cascader-single" &&
                         triggerExpandChildren === false &&
                         state.displayCascaderChildrenOptions &&
                         Array.isArray(item.childrenOptions) &&
                         !!item.childrenOptions.length && (
                             <GenTreeSelect options={item.childrenOptions} />
-                        )}
+                        )} */}
                 </React.Fragment>
             ));
         },
@@ -118,32 +127,32 @@ export const TreeSelect: React.FC<TreeSelectProps> = (props) => {
         const treeSelectModeMap = {
             single() {
                 for (let item of context.getAllSelectItems()) {
-                    if (equals(item.value, selectedValue)) {
-                        item.isChecked = true;
-                        setUpdate({});
-                    } else {
+                    if (item.isChecked && !equals(item.id, selectedId)) {
                         item.isChecked = false;
+                        item.refreshHandler();
+                        break;
                     }
+                }
+                const selectedItem = context.getSelectItem(selectedId);
+                if (selectedItem) {
+                    selectedItem.isChecked = true;
+                    selectedItem.refreshHandler();
                 }
             },
             multiple() {
-                let allSelectItems = context.getAllSelectItems();
-                selectedValue?.foreach((v) => {
-                    for (let item of allSelectItems) {
-                        if (equals(item.value, v)) {
-                            item.isChecked = !item.isChecked;
-                            if (item.isChecked) {
-                                selectedValue.push(item.value);
-                            }
-                            item.refresh();
+                if (Array.isArray(selectedId)) {
+                    selectedId?.forEach((id) => {
+                        const selectedItem = context.getSelectItem(id);
+                        if (selectedItem) {
+                            selectedItem.isChecked = true;
+                            selectedItem.refreshHandler();
                         }
-                        break;
-                    }
-                });
+                    });
+                }
             },
         };
         treeSelectModeMap[mode]();
-    }, [selectedValue]);
+    }, [selectedId]);
     return (
         <TreeSelectContext.Provider value={context}>
             <GenTreeSelect options={options} />

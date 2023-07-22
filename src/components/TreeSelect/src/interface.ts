@@ -1,10 +1,13 @@
+type Id = string | number
+
 export interface TreeSelectItemInfo {
-  id: string
+  id: Id
   isChecked: boolean
   value: any
-  refresh: () => void
+  refreshHandler: () => void
 }
 export interface TreeSelectItemProps {
+  id: Id
   value?: any;
   children?:
   | React.ReactNode
@@ -12,19 +15,19 @@ export interface TreeSelectItemProps {
 }
 
 export interface TreeSelectContextInterface {
-  addSelectItem(id: string, item: TreeSelectItemInfo): void
-  delSelectItem(id: string): void
-  getSelectItem(id: string): TreeSelectItemInfo
+  addSelectItem(id: Id, item: TreeSelectItemInfo): void
+  delSelectItem(id: Id): void
+  getSelectItem(id: Id): TreeSelectItemInfo
   getAllSelectItems(): TreeSelectItemInfo[]
 }
 
 export interface TreeSelectInstance {
   /** 触发选中 */
-  triggerSelect(value: any): void;
+  triggerSelect(selectedId: Id | (Id[])): void;
 }
 
 export interface TreeSelectOption {
-  key?: React.Key;
+  id: Id
   node: TreeSelectItemProps["children"];
   value: any;
   childrenOptions?: TreeSelectOption[];
@@ -37,6 +40,6 @@ export interface TreeSelectProps {
   options: TreeSelectOption[];
   /** 重复触发,取消选中状态，针对单选有效 */
   repeatTriggerUnselected?: boolean;
-  selectedValue?: any;
-  onChange?(v: any): void;
+  selectedId?: any;
+  onChange?(value: any, id: Id | (Id[])): void;
 }
