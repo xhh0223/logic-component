@@ -1,39 +1,16 @@
 {
   "compilerOptions": {
-    "useDefineForClassFields": false,
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
-    "target": "ESNext",
-    "downlevelIteration": true,
-    "allowJs": true,
+    "strict": true,
+    "declaration": true,
     "skipLibCheck": true,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noEmit": true,
-    "jsx": "preserve",
-    "baseUrl": ".",
+    "esModuleInterop": true,
+    "jsx": "react",
+    "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
-    "types": []
+      "@@/*": [".dumi/tmp/*"],
+      "logic-component": ["src"],
+      "logic-component/*": ["src/*", "*"]
+    }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-  ],
-  "references": []
+  "include": [".dumi/**/*", ".dumirc.ts", "src/**/*"]
 }
