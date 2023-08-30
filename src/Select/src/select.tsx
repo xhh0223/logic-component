@@ -1,126 +1,91 @@
-import React, { useEffect, useMemo } from "react";
-import { Context, SelectContext, SelectContextInterface } from "./context";
+import React, { Ref, forwardRef, useImperativeHandle, useMemo } from "react";
+import { Context, SelectContext } from "./context";
 import { clone, equals } from "ramda";
-import { SelectItem } from "./selectItem";
-import { SelectProps } from "./interface";
+import { Id } from "./typing";
+export interface SelectProps<Value> {
+  /** 重复触发,取消选中状态，针对单选有效 */
+  repeatTriggerUnselected?: boolean;
+  onChange(selectedValue: Value | undefined, selectedId: Id | undefined): void;
+  onChange(selectedValues: Value[], selectedIds: Id[]): void;
+  children: React.ReactNode
+}
 
-export const Select: React.FC<SelectProps> = (props) => {
-    const {
-        options,
-        selectedId,
-        onChange,
-        repeatTriggerUnselected = true,
-        mode = "single",
-        instance,
-    } = props;
-    const context = useMemo<SelectContextInterface>(() => {
-        const tempContext = new Context();
-        const { getAllSelectItem, getSelectItem } = tempContext;
-        const triggerMap = {
-            single(selectedId) {
-                for (let item of getAllSelectItem()) {
-                    if (item.isChecked && !equals(item.id, selectedId)) {
-                        item.isChecked = false;
-                        item.refreshHandler();
-                        break;
-                    }
-                }
-                const selectItem = getSelectItem(selectedId);
-                if (selectItem) {
-                    if (repeatTriggerUnselected) {
-                        selectItem.isChecked = !selectItem.isChecked;
-                    } else {
-                        selectItem.isChecked = true;
-                    }
-                    selectItem.refreshHandler();
-                }
-                if (onChange) {
-                    onChange(
-                        selectItem?.isChecked
-                            ? clone(selectItem.value)
-                            : undefined,
-                        selectItem?.isChecked ? selectItem.id : undefined
-                    );
-                }
-            },
-            multiple(selectedIds) {
-                const values = getAllSelectItem();
-                selectedIds?.forEach((id: any) => {
-                    const selectItem = getSelectItem(id);
-                    if (selectItem) {
-                        selectItem.isChecked = !selectItem.isChecked;
-                        selectItem.refreshHandler();
-                    }
-                });
-                if (onChange) {
-                    const selectValues: any = [];
-                    const selectedIds = [];
-                    values.forEach((item) => {
-                        if (item.isChecked) {
-                            selectValues.push(item.value);
-                            selectedIds.push(item.id);
-                        }
-                    });
-                    onChange(clone(selectValues), selectedIds);
-                }
-            },
-        };
-        if (typeof instance === "object" && instance) {
-            Object.assign(instance, {
-                triggerSelect(selectedValue: any) {
-                    triggerMap[mode]?.(selectedValue);
-                },
-            });
+export interface SelectRef {
+  trigger(selectedId: Id): void
+  trigger(selectedIds: Id[]): void
+}
+
+const InnerSelect = <Value,>(props: SelectProps<Value>, ref: Ref<SelectRef>) => {
+  const {
+    repeatTriggerUnselected = true,
+    onChange,
+    children
+  } = props;
+
+  const selectContext = useMemo(() => new Context<Value>(), []);
+
+  useImperativeHandle(ref, () => ({
+    trigger(id) {
+      const { getAllSelectItem, getSelectItem } = selectContext
+      if (Array.isArray(id)) {
+        const ids = id
+        const allSelectItem = getAllSelectItem();
+        ids?.forEach((id) => {
+          const selectItem = getSelectItem(id);
+          if (selectItem) {
+            selectItem.isChecked = !selectItem.isChecked;
+            selectItem.refreshHandler();
+          }
+        });
+        if (onChange) {
+          const selectValues: Value[] = [];
+          const selectedIds: Id[] = [];
+          allSelectItem.forEach((item) => {
+            if (item.isChecked) {
+              selectValues.push(item.value);
+              selectedIds.push(item.id);
+            }
+          });
+          onChange(clone(selectValues), selectedIds);
         }
-        return tempContext;
-    }, []);
+      } else {
+        /** 单选 */
+        if (![typeof id === 'number', typeof id === 'string'].includes(true)) {
+          return
+        }
+        let selectedItem
+        for (let item of getAllSelectItem()) {
+          if (item.isChecked) {
+            if (equals(item.id, id) && repeatTriggerUnselected) {
+              item.isChecked = false
+              item.refreshHandler()
+            } else {
+              item.isChecked = false
+              item.refreshHandler()
+              selectedItem = getSelectItem(id)
+              selectedItem.isChecked = true
+              selectedItem.refreshHandler()
+            }
+            break;
+          }
+        }
+        if (onChange) {
+          onChange(
+            selectedItem
+              ? clone(selectedItem?.value)
+              : undefined,
+            selectedItem ? selectedItem.id : undefined
+          );
+        }
+      }
+    }
+  }), [])
 
-    useEffect(() => {
-        const initSelectedValueMap = {
-            single() {
-                if (!Array.isArray(selectedId)) {
-                    const selectItem = context.getSelectItem(selectedId);
-                    if (selectItem) {
-                        for (let item of context.getAllSelectItem()) {
-                            if (
-                                item.isChecked &&
-                                !equals(item.id, selectedId)
-                            ) {
-                                item.isChecked = false;
-                                item.refreshHandler();
-                                break;
-                            }
-                        }
-                        selectItem.isChecked = true;
-                        selectItem.refreshHandler();
-                    }
-                }
-            },
-            multiple() {
-                if (Array.isArray(selectedId)) {
-                    selectedId?.forEach((id) => {
-                        const selectItem = context.getSelectItem(id);
-                        if (selectItem) {
-                            selectItem.isChecked = true;
-                            selectItem.refreshHandler();
-                        }
-                    });
-                }
-            },
-        };
-        initSelectedValueMap[mode]();
-    }, [selectedId]);
-    return (
-        <SelectContext.Provider value={context}>
-            {options.map((item, index) => (
-                <SelectItem
-                    value={item.value}
-                    key={item.id ?? index}
-                    id={item.id ?? `${index}`}
-                >
-                    {item.node}
-                </SelectItem>
-            ))}
-        </SelectContext.Provider>
-    );
+  return (
+    <SelectContext.Provider value={selectContext}>
+      {children}
+    </SelectContext.Provider>
+  );
 };
+
+export const Select = forwardRef(InnerSelect)
