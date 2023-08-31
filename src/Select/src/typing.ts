@@ -1,4 +1,4 @@
-export type Id = string | number
+export type Id = string
 
 export interface SelectRef {
   /** 触发选中,单选传一个ID,多选传多个ID */

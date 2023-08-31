@@ -49,11 +49,12 @@ const InnerSelect = <Value,>(props: SelectProps<Value>, ref: Ref<SelectRef>) => 
           onChange(clone(selectValues), selectedIds);
         }
       } else {
+        let selectedItem = getSelectItem(id)
         /** 单选 */
-        if (![typeof id === 'number', typeof id === 'string'].includes(true)) {
+        if (![typeof id === 'number', typeof id === 'string', !selectedItem].includes(true)) {
           return
         }
-        let selectedItem = getSelectItem(id)
+
         for (let item of getAllSelectItem()) {
           if (item.isChecked && item.id !== id) {
             item.isChecked = false
@@ -61,14 +62,18 @@ const InnerSelect = <Value,>(props: SelectProps<Value>, ref: Ref<SelectRef>) => 
             break;
           }
         }
+
         if (repeatTriggerUnselected) {
           selectedItem.isChecked = !selectedItem.isChecked
+        } else {
+          selectedItem.isChecked = true
         }
-        selectedItem?.refreshHandler()
+        selectedItem.refreshHandler()
+
         if (onChange) {
           onChange(
             selectedItem.isChecked
-              ? clone(selectedItem?.value)
+              ? clone(selectedItem.value)
               : undefined,
             selectedItem.isChecked ?
               selectedItem.id :
