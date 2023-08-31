@@ -1,12 +1,13 @@
 import React, { Ref, forwardRef, useImperativeHandle, useMemo } from "react";
+
 import { Context, SelectContext } from "./context";
-import { clone, equals } from "ramda";
+import { clone } from "ramda";
 import { Id } from "./typing";
 export interface SelectProps<Value> {
   /** 重复触发,取消选中状态，针对单选有效 */
   repeatTriggerUnselected?: boolean;
-  onChange(selectedValue: Value | undefined, selectedId: Id | undefined): void;
-  onChange(selectedValues: Value[], selectedIds: Id[]): void;
+  onChange(selectedValue: Value | undefined, selectedId?: Id | undefined): void;
+  onChange(selectedValues: Value[], selectedIds?: Id[]): void;
   children: React.ReactNode
 }
 
@@ -28,6 +29,7 @@ const InnerSelect = <Value,>(props: SelectProps<Value>, ref: Ref<SelectRef>) => 
     trigger(id) {
       const { getAllSelectItem, getSelectItem } = selectContext
       if (Array.isArray(id)) {
+        /** 多选 */
         const ids = id
         const allSelectItem = getAllSelectItem();
         ids?.forEach((id) => {
@@ -91,4 +93,14 @@ const InnerSelect = <Value,>(props: SelectProps<Value>, ref: Ref<SelectRef>) => 
   );
 };
 
-export const Select = forwardRef(InnerSelect)
+type ForwardRefReturnType<Value> = ReturnType<typeof forwardRef<SelectRef, SelectProps<Value>>>
+
+interface InnerSelectType {
+  <Value,>(
+    ...params: Parameters<ForwardRefReturnType<Value>>
+  ): ReturnType<ForwardRefReturnType<Value>>
+}
+
+/** !notice 保留原本组件的泛型 */
+export const Select = forwardRef(InnerSelect) as InnerSelectType
+

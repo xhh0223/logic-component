@@ -17,10 +17,11 @@ const singleSelect = () => {
   const selectRef2 = useRef<SelectRef>(null)
   return (
     <div>
-      <Select
+      <Select<boolean>
         ref={selectRef2}
         onChange={(v) => {
           setState(preState => ({ ...preState, repeatTriggerUnselected: !!v }))
+          return
         }}>
         <div style={{ display: 'flex', gap: 20 }}>
           <SelectItem id={"repeatTriggerUnselected"} value={true}>
