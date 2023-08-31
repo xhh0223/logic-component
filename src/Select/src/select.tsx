@@ -53,28 +53,26 @@ const InnerSelect = <Value,>(props: SelectProps<Value>, ref: Ref<SelectRef>) => 
         if (![typeof id === 'number', typeof id === 'string'].includes(true)) {
           return
         }
-        let selectedItem
+        let selectedItem = getSelectItem(id)
         for (let item of getAllSelectItem()) {
-          if (item.isChecked) {
-            if (equals(item.id, id) && repeatTriggerUnselected) {
-              item.isChecked = false
-              item.refreshHandler()
-            } else {
-              item.isChecked = false
-              item.refreshHandler()
-              selectedItem = getSelectItem(id)
-              selectedItem.isChecked = true
-              selectedItem.refreshHandler()
-            }
+          if (item.isChecked && item.id !== id) {
+            item.isChecked = false
+            item.refreshHandler()
             break;
           }
         }
+        if (repeatTriggerUnselected) {
+          selectedItem.isChecked = !selectedItem.isChecked
+        }
+        selectedItem?.refreshHandler()
         if (onChange) {
           onChange(
-            selectedItem
+            selectedItem.isChecked
               ? clone(selectedItem?.value)
               : undefined,
-            selectedItem ? selectedItem.id : undefined
+            selectedItem.isChecked ?
+              selectedItem.id :
+              undefined
           );
         }
       }
