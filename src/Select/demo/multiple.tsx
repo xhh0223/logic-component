@@ -8,9 +8,9 @@ const multiple = () => {
       <Select ref={ref => Object.assign(selectRef, { ...ref })} onChange={v => {
         console.log(v)
       }}>
-        {Array.from({ length: 10 }).map((item, index) => {
-          return <SelectItem key={index} id={index} value={index}>
-            <div onClick={() => selectRef.trigger([index])}>{index}</div>
+        {Array.from({ length: 10 }).map((_item, index) => {
+          return <SelectItem key={index} id={`${index}`} value={index}>
+            <div onClick={() => selectRef.trigger([`${index}`])}>{index}</div>
           </SelectItem>
         })}
       </Select>
