@@ -7,6 +7,7 @@ export interface SelectMultipleProps {
 }
 
 export interface SelectMultipleRef<ValueType> {
+  reset(ids?: Id[]): Promise<void>
   trigger(selectedIds: Id[]): Promise<SelectedValue<ValueType>[]>
 }
 
@@ -16,11 +17,32 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
   const selectContext = useMemo(() => new Context<ValueType>(), []);
 
   useImperativeHandle(ref, () => ({
-    async trigger(id) {
+    async reset(ids) {
       const { getAllSelectItem, getSelectItem } = selectContext
-      if (Array.isArray(id)) {
+      const allSelectItem = getAllSelectItem();
+      if (Array.isArray(ids)) {
         /** 多选 */
-        const ids = id
+        ids?.forEach((id) => {
+          const selectItem = getSelectItem(id);
+          if ([!(typeof id === 'string'), !selectItem].includes(true)) {
+            return
+          }
+          if (selectItem) {
+            selectItem.isChecked = false;
+            selectItem.refreshHandler();
+          }
+        });
+      } else {
+        allSelectItem.forEach(item => {
+          item.isChecked = false;
+          item.refreshHandler();
+        })
+      }
+    },
+    async trigger(ids) {
+      const { getAllSelectItem, getSelectItem } = selectContext
+      if (Array.isArray(ids)) {
+        /** 多选 */
         const allSelectItem = getAllSelectItem();
         ids?.forEach((id) => {
           const selectItem = getSelectItem(id);

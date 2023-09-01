@@ -10,14 +10,25 @@ export interface SelectSingleProps {
 }
 
 export interface SelectSingleRef<ValueType> {
+  reset(): Promise<void>
   trigger(selectedId: Id): Promise<SelectedValue<ValueType> | undefined>
 }
 
 const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<SelectSingleRef<ValueType>>) => {
-  const { repeatTriggerUnselected=true, children } = props
+  const { repeatTriggerUnselected = true, children } = props
   const selectContext = useMemo(() => new Context<ValueType>(), []);
 
   useImperativeHandle(ref, () => ({
+    async reset() {
+      const { getAllSelectItem, getSelectItem } = selectContext
+      for (let item of getAllSelectItem()) {
+        if (item.isChecked) {
+          item.isChecked = false
+          item.refreshHandler()
+          break;
+        }
+      }
+    },
     async trigger(id) {
       const { getAllSelectItem, getSelectItem } = selectContext
       let selectedItem = getSelectItem(id)
