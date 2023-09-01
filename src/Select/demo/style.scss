@@ -1,0 +1,10 @@
+.single-demo-1{
+  &-option{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    &-checked{
+      border: 1px solid red;
+    }
+  }
+}

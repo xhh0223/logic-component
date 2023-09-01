@@ -1,48 +1,74 @@
-import React, { SyntheticEvent, useCallback, useMemo, useRef, useState } from 'react'
-import { Select, SelectItem, SelectRef } from '../src'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { SelectSingle, SelectItem, SelectSingleRef } from '../src'
+import classnames from 'classnames'
+import './style.scss'
 
-const singleSelect = () => {
-  const selectRef = useMemo(() => ({}) as SelectRef, [])
+const singleDemo1 = () => {
+  const classNamePrefix = "single-demo-1"
+  const selectRef = useMemo(() => ({}) as SelectSingleRef<string>, [])
+
   const [state, setState] = useState({
     curSelectValue: "",
     repeatTriggerUnselected: true,
   })
+
   const handleClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((e) => {
     const { index } = e.currentTarget.dataset
     if (index) {
-      selectRef.trigger(index)
+      selectRef.trigger(index).then(res => {
+        setState(preState => ({ ...preState, curSelectValue: res?.value! }))
+      })
     }
   }, [])
 
-  const selectRef2 = useRef<SelectRef>(null)
+  const selectRef2 = useRef<SelectSingleRef<boolean>>(null)
+
   return (
-    <div>
-      <Select<boolean>
+    <div className={classNamePrefix}>
+      <SelectSingle
         ref={selectRef2}
-        onChange={(v) => {
-          setState(preState => ({ ...preState, repeatTriggerUnselected: !!v }))
-          return
-        }}>
-        <div style={{ display: 'flex', gap: 20 }}>
+      >
+        <div className={`${classNamePrefix}-option`}>
+
           <SelectItem id={"repeatTriggerUnselected"} value={true}>
-            <button onClick={() => {
-              selectRef2.current?.trigger("repeatTriggerUnselected")
-            }}>重复trigger取消选中</button>
+            {
+              ({ isChecked }) => {
+                return <button
+                  className={classnames(isChecked && `${classNamePrefix}-option-checked`)}
+                  onClick={() => {
+                    selectRef2.current?.trigger("repeatTriggerUnselected")?.then(res => {
+                      setState(preState => ({ ...preState, repeatTriggerUnselected: res?.value! }))
+                    })
+                  }}>重复trigger取消选中</button>
+              }
+            }
           </SelectItem>
+
           <SelectItem id={"allowRepeatTrigger"} value={false}>
-            <button onClick={() => {
-              selectRef2.current?.trigger("allowRepeatTrigger")
-            }}>允许重复trigger</button>
+            {
+              ({ isChecked }) => {
+                return <button
+                  className={classnames(isChecked && `${classNamePrefix}-option-checked`)}
+                  onClick={() => {
+                    selectRef2.current?.trigger("allowRepeatTrigger")?.then(res => {
+                      setState(preState => ({ ...preState, repeatTriggerUnselected: res?.value! }))
+                    })
+                  }}>允许重复trigger
+                </button>
+              }
+            }
           </SelectItem>
+
         </div>
-      </Select>
+      </SelectSingle>
       <hr />
-      <div>当前选中值{state.curSelectValue}</div>
+      <div>当前选中值：{state.curSelectValue ?? "暂无"}</div>
       <hr />
-      <Select repeatTriggerUnselected={state.repeatTriggerUnselected} ref={ref => Object.assign(selectRef, { ...ref })} onChange={v => {
-        setState(preState => ({ ...preState, curSelectValue: v as any }))
-      }}>
-        {Array.from({ length: 10 }).map((item, index) => {
+      <SelectSingle
+        repeatTriggerUnselected={state.repeatTriggerUnselected}
+        ref={ref => Object.assign(selectRef, { ...ref })}
+      >
+        {Array.from({ length: 10 }).map((_item, index) => {
           return <SelectItem key={index} id={`${index}`} value={index}>
             {
               ({ isChecked }) =>
@@ -57,9 +83,9 @@ const singleSelect = () => {
             }
           </SelectItem>
         })}
-      </Select>
-    </div>
+      </SelectSingle>
+    </div >
   )
 }
 
-export default singleSelect
+export default singleDemo1
