@@ -2,18 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import { IContext, Id } from "./typing";
 import { SelectContext } from "./context";
 
-export interface SelectItemProps<Value> {
+export interface SelectItemProps<ValueType> {
   id: Id
-  value: Value;
+  value: ValueType;
   children?:
   | React.ReactNode
   | ((params: { isChecked: boolean }) => React.ReactNode);
 }
 
-export const SelectItem = <Value,>(props: SelectItemProps<Value>) => {
+export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
   const { value, children, id } = props;
   const [_, refresh] = useState({});
-  const { addSelectItem, deleteSelectItem, getSelectItem } = useContext(SelectContext) as IContext<Value>;
+  const { addSelectItem, deleteSelectItem, getSelectItem } = useContext(SelectContext) as IContext<ValueType>;
   useEffect(() => {
     addSelectItem(id, {
       id,
