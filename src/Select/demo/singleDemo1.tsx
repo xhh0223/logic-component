@@ -1,14 +1,14 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { SelectSingle, SelectItem, SelectSingleRef } from '../src'
 import classnames from 'classnames'
-import './style.scss'
+import './singleDemo1.scss'
 
 const singleDemo1 = () => {
   const classNamePrefix = "single-demo-1"
   const selectRef = useMemo(() => ({}) as SelectSingleRef<string>, [])
 
   const [state, setState] = useState({
-    curSelectValue: "",
+    curSelectValue: undefined as string | undefined,
     repeatTriggerUnselected: true,
   })
 
@@ -54,6 +54,24 @@ const singleDemo1 = () => {
                       setState(preState => ({ ...preState, repeatTriggerUnselected: res?.value! }))
                     })
                   }}>允许重复trigger
+                </button>
+              }
+            }
+          </SelectItem>
+
+          <SelectItem id={"rest"} value={false}>
+            {
+              ({ isChecked }) => {
+                return <button
+                  className={classnames(isChecked && `${classNamePrefix}-option-checked`)}
+                  onClick={() => {
+                    selectRef2.current?.trigger("rest")?.then(res => {
+                      selectRef.reset().then(res => {
+                        setState(preState => ({ ...preState, curSelectValue: undefined }))
+                      })
+                    })
+                  }}>
+                  重置
                 </button>
               }
             }
