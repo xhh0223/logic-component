@@ -1,20 +1,21 @@
-import React, { Ref, forwardRef, useImperativeHandle, useMemo } from 'react'
-import { Id, SelectedValue } from './typing';
-import { clone } from 'ramda';
-import { Context, SelectContext } from './context';
+import React, { Ref, forwardRef, useImperativeHandle, useMemo } from "react";
+import { Context, SelectContext } from "./context";
+import { clone } from "ramda";
+import { Id, SelectedValue } from "./typing";
 
-export interface SelectSingleProps {
+
+export interface TreeSelectSingleProps {
   /** 重复触发取消选中 */
   repeatTriggerUnselected?: boolean;
   children: React.ReactNode
 }
 
-export interface SelectSingleRef<ValueType> {
+export interface TreeSelectSingleRef<ValueType> {
   reset(): Promise<void>
   trigger(selectedId: Id): Promise<SelectedValue<ValueType> | undefined>
 }
 
-const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<SelectSingleRef<ValueType>>) => {
+const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Ref<TreeSelectSingleRef<ValueType>>) => {
   const { repeatTriggerUnselected = true, children } = props
   const selectContext = useMemo(() => new Context<ValueType>(), []);
 
@@ -50,25 +51,41 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
         selectedItem.isChecked = true
       }
       selectedItem.refreshHandler()
-      return selectedItem.isChecked ? {
+
+      function computedPath(id: Id, path = [] as Id[]) {
+        path.unshift(id)
+        const selectedItem = getSelectItem(id)
+        if(!selectedItem){
+          return path
+        }
+        computedPath(selectedItem.parentId, path)
+        return path
+      }
+
+      let result: SelectedValue<ValueType> = {
         id: selectedItem.id,
-        value: clone(selectedItem.value)
-      } : undefined
+        value: selectedItem.value,
+        parentId: selectedItem.parentId,
+        path: computedPath(selectedItem.id, []),
+      }
+      return selectedItem.isChecked ? result : undefined
     }
   }), [])
 
-  return <SelectContext.Provider value={selectContext}>
-    {children}
-  </SelectContext.Provider>
-}
+  return (
+    <SelectContext.Provider value={selectContext}>
+      {children}
+    </SelectContext.Provider>
+  );
+};
 
-type ForwardRefReturnType<Value> = ReturnType<typeof forwardRef<SelectSingleRef<Value>, SelectSingleProps>>
+type ForwardRefReturnType<Value> = ReturnType<typeof forwardRef<TreeSelectSingleRef<Value>, TreeSelectSingleProps>>
 
 /** 保留单选泛型 */
-interface InnerSelectSingleType {
+interface InnerTreeSelectSingleType {
   <Value,>(
     ...params: Parameters<ForwardRefReturnType<Value>>
   ): ReturnType<ForwardRefReturnType<Value>>
 }
 
-export const SelectSingle = forwardRef(InnerSelectSingle) as InnerSelectSingleType
+export const TreeSelectSingle = forwardRef(InnerTreeSelectSingle) as InnerTreeSelectSingleType

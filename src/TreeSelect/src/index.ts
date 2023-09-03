@@ -1,2 +1,2 @@
-export * from './treeSelect'
-export * from './interface'
+export * from './tree-select-single'
+export * from './typing'

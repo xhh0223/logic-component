@@ -1,22 +1,20 @@
-import { createContext } from "react";
-import { TreeSelectContextInterface, TreeSelectItemInfo } from "./interface";
+import React from "react"
+import { IContext, Id, SelectItem } from "./typing"
 
-
-export class Context implements TreeSelectContextInterface {
-  private treeSelectItemMap: Record<string, TreeSelectItemInfo> = {}
-  addSelectItem = (id: string, item: TreeSelectItemInfo) => {
-    Reflect.set(this.treeSelectItemMap, id, item)
+export class Context<Value> implements IContext<Value> {
+  private selectItemMap = {} as Record<Id, SelectItem<Value>>
+  addSelectItem = (selectItemId: Id, selectItemInstance: SelectItem<Value>): void => {
+    Reflect.set(this.selectItemMap, selectItemId, selectItemInstance)
   }
-  delSelectItem = (id: string) => {
-    Reflect.deleteProperty(this.treeSelectItemMap, id)
+  deleteSelectItem = (selectItemId: Id): void => {
+    Reflect.deleteProperty(this.selectItemMap, selectItemId)
   }
-  getSelectItem = (id: string) => {
-    return Reflect.get(this.treeSelectItemMap, id)
+  getSelectItem = (selectItemId: Id): SelectItem<Value> => {
+    return Reflect.get(this.selectItemMap, selectItemId)
   }
-  getAllSelectItems = () => {
-    return Object.values(this.treeSelectItemMap)
+  getAllSelectItem = () => {
+    return Object.values(this.selectItemMap)
   }
-
 }
 
-export const TreeSelectContext = createContext<TreeSelectContextInterface>(undefined!)
+export const SelectContext = React.createContext<Context<any>>(undefined!)

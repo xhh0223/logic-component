@@ -8,8 +8,7 @@
     "baseUrl": "./",
     "paths": {
       "@@/*": [".dumi/tmp/*"],
-      "logic-component": ["src"],
-      "logic-component/*": ["src/*", "*"]
+      "@/*":["src/*"],
     }
   },
   "include": [".dumi/**/*", ".dumirc.ts", "src/**/*"]

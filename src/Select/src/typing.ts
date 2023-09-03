@@ -6,6 +6,7 @@ export interface SelectItem<ValueType> {
   refreshHandler: () => void,
 }
 
+
 export interface IContext<ValueType> {
   addSelectItem(selectItemId: Id, selectItem: SelectItem<ValueType>): void
   deleteSelectItem(selectItemId: Id): void
