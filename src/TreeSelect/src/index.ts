@@ -1,2 +1,2 @@
 export * from './tree-select-single'
-export * from './typing'
+export * from './tree-select-item'

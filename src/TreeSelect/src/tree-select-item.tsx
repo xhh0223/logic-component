@@ -12,7 +12,7 @@ export interface TreeSelectItemProps<ValueType> {
   | ((params: { isChecked: boolean }) => React.ReactNode);
 }
 
-const TreeSelectItem = <ValueType,>(props: TreeSelectItemProps<ValueType>) => {
+export const TreeSelectItem = <ValueType,>(props: TreeSelectItemProps<ValueType>) => {
   const { value, children, id, parentId } = props;
   const [_, refresh] = useState({});
   const { addSelectItem, deleteSelectItem, getSelectItem } = useContext(SelectContext) as IContext<ValueType>;
@@ -37,5 +37,3 @@ const TreeSelectItem = <ValueType,>(props: TreeSelectItemProps<ValueType>) => {
     })
     : children;
 }
-
-export default TreeSelectItem

@@ -21,7 +21,7 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
 
   useImperativeHandle(ref, () => ({
     async reset() {
-      const { getAllSelectItem, getSelectItem } = selectContext
+      const { getAllSelectItem } = selectContext
       for (let item of getAllSelectItem()) {
         if (item.isChecked) {
           item.isChecked = false
@@ -32,12 +32,14 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
     },
     async trigger(id) {
       const { getAllSelectItem, getSelectItem } = selectContext
+      const allSelectItem = getAllSelectItem()
+
       let selectedItem = getSelectItem(id)
       if ([!(typeof id === 'string'), !selectedItem].includes(true)) {
         return undefined
       }
 
-      for (let item of getAllSelectItem()) {
+      for (let item of allSelectItem) {
         if (item.isChecked && item.id !== id) {
           item.isChecked = false
           item.refreshHandler()
@@ -55,18 +57,30 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
       function computedPath(id: Id, path = [] as Id[]) {
         path.unshift(id)
         const selectedItem = getSelectItem(id)
-        if(!selectedItem){
+        if (!selectedItem) {
           return path
         }
         computedPath(selectedItem.parentId, path)
         return path
       }
 
+      function getChildrenIds(id: Id) {
+        let result = []
+        for (let i of allSelectItem) {
+          if (i.parentId === id) {
+            result.push(i.id)
+          }
+        }
+        return result
+      }
+
       let result: SelectedValue<ValueType> = {
         id: selectedItem.id,
-        value: selectedItem.value,
+        value: clone(selectedItem.value),
+        isChecked: selectedItem.isChecked,
         parentId: selectedItem.parentId,
         path: computedPath(selectedItem.id, []),
+        childrenIds: getChildrenIds(selectedItem.id)
       }
       return selectedItem.isChecked ? result : undefined
     }

@@ -20,7 +20,7 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
 
   useImperativeHandle(ref, () => ({
     async reset() {
-      const { getAllSelectItem, getSelectItem } = selectContext
+      const { getAllSelectItem } = selectContext
       for (let item of getAllSelectItem()) {
         if (item.isChecked) {
           item.isChecked = false

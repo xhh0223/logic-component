@@ -6,5 +6,8 @@ demo:
 ---
 <!-- 通过 code 标签配置 -->
 
-## treeSelectSingle
+## 单选
 <code src="./demo/treeSingleDemo1.tsx"></code>
+
+## 级联
+<code src="./demo/treeSingleDemo2.tsx"></code>
