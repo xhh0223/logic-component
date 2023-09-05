@@ -1,6 +1,6 @@
 ---
 nav: component
-title: select
+title: Select
 demo:
   cols: 2
 ---

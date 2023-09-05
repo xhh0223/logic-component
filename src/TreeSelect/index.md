@@ -1,6 +1,6 @@
 ---
 nav: component
-title: tree-select
+title: TreeSelect
 demo:
   cols: 2
 ---
