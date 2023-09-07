@@ -11,7 +11,7 @@ export interface SelectSingleProps {
 
 export interface SelectSingleRef<ValueType> {
   reset(): Promise<void>
-  trigger(selectedId: Id): Promise<SelectedValue<ValueType> | undefined>
+  trigger(selectedId: Id): Promise<SelectedValue<ValueType>>
 }
 
 const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<SelectSingleRef<ValueType>>) => {
@@ -33,7 +33,7 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
       const { getAllSelectItem, getSelectItem } = selectContext
       let selectedItem = getSelectItem(id)
       if ([!(typeof id === 'string'), !selectedItem].includes(true)) {
-        return undefined
+        return Promise.reject("id不存在")
       }
 
       for (let item of getAllSelectItem()) {
@@ -50,10 +50,12 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
         selectedItem.isChecked = true
       }
       selectedItem.refreshHandler()
-      return selectedItem.isChecked ? {
+
+      let result: SelectedValue<ValueType> = {
         id: selectedItem.id,
-        value: clone(selectedItem.value)
-      } : undefined
+        value: selectedItem.isChecked ? clone(selectedItem.value) : undefined
+      }
+      return result
     }
   }), [])
 

@@ -1,6 +1,7 @@
 import React, { Ref, forwardRef, useImperativeHandle, useMemo } from 'react'
 import { Id, SelectedValue } from './typing'
 import { Context, SelectContext } from './context'
+import { clone } from 'ramda'
 
 export interface SelectMultipleProps {
   children: React.ReactNode
@@ -64,7 +65,7 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
             })
           }
         });
-        return selectedItems
+        return clone(selectedItems)
       }
       return []
     }

@@ -16,5 +16,5 @@ export interface IContext<ValueType> {
 
 export interface SelectedValue<ValueType> {
   id: Id,
-  value: ValueType
+  value: ValueType|undefined
 }

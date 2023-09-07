@@ -14,8 +14,9 @@ export interface IContext<ValueType> {
 }
 
 export type SelectedValue<ValueType> = Value<ValueType> & {
-  isChecked:boolean
+  isChecked: boolean
   path: Id[],
+  level: number,
   parentId: Id,
-  childrenIds:Id[]
+  childrenIds: Id[]
 }
