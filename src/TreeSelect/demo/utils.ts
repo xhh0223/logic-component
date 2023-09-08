@@ -8,7 +8,7 @@ export function genTreeData(...args: number[]) {
   let tempArgs = args.slice(1, args.length)
   let result: string[] = []
   Array.from({ length: args[0] }).forEach((_, index) => {
-    result.push(`${index}`)
+    result.push(`${index+1}`)
   })
 
   let lastResult = [...result]
@@ -17,8 +17,8 @@ export function genTreeData(...args: number[]) {
     const tempLastResult: string[] = []
     for (let item of lastResult) {
       Array.from({ length: temp! }).forEach((_, index) => {
-        result.push(`${item}-${index}`)
-        tempLastResult.push(`${item}-${index}`)
+        result.push(`${item}-${index+1}`)
+        tempLastResult.push(`${item}-${index+1}`)
       })
     }
     lastResult = tempLastResult
