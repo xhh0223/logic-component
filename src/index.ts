@@ -1,2 +1,3 @@
 export * from './Select/src/index'
-export * from './Subject/src/index'
+export * from './Select/src/index'
+export * from './Props/src/index'
