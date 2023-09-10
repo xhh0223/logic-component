@@ -14,8 +14,8 @@ export interface IContext<ValueType> {
 }
 
 export type SelectedValue<ValueType> = Value<ValueType> & {
-  isChecked: boolean
   path: Id[],
+  /** 当前选中值的层级 */
   level: number,
   parentId: Id,
   childrenIds: Id[]

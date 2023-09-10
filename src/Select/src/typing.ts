@@ -15,6 +15,7 @@ export interface IContext<ValueType> {
 }
 
 export interface SelectedValue<ValueType> {
+  isChecked: boolean,
   id: Id,
-  value: ValueType|undefined
+  value: ValueType
 }

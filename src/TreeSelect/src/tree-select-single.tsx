@@ -2,6 +2,7 @@ import React, { Ref, forwardRef, useImperativeHandle, useMemo } from "react";
 import { Context, SelectContext } from "./context";
 import { clone } from "ramda";
 import { Id, SelectedValue } from "./typing";
+import { computedPath, getChildrenIds } from "./utils";
 
 
 export interface TreeSelectSingleProps {
@@ -54,35 +55,16 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
       }
       selectedItem.refreshHandler()
 
-      function computedPath(id: Id, path = [] as Id[]) {
-        path.unshift(id)
-        const selectedItem = getSelectItem(id)
-        if (!selectedItem) {
-          return path
-        }
-        computedPath(selectedItem.parentId, path)
-        return path
-      }
 
-      function getChildrenIds(id: Id) {
-        let result = []
-        for (let i of allSelectItem) {
-          if (i.parentId === id) {
-            result.push(i.id)
-          }
-        }
-        return result
-      }
-
-      const path = computedPath(selectedItem.id, [])
+      const path = computedPath(selectedItem.id, [], selectContext)
       let result: SelectedValue<ValueType> = {
         id: selectedItem.id,
-        value: selectedItem.isChecked ? clone(selectedItem.value) : undefined,
+        value: clone(selectedItem.value),
         isChecked: selectedItem.isChecked,
         parentId: selectedItem.parentId,
         path,
         level: path.length,
-        childrenIds: getChildrenIds(selectedItem.id)
+        childrenIds: getChildrenIds(selectedItem.id, selectContext)
       }
       return result
     }

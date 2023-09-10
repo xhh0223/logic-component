@@ -1,18 +1,18 @@
-import React, { Ref, forwardRef, useImperativeHandle, useMemo } from 'react'
+import React, { useMemo, Ref, useImperativeHandle, forwardRef } from 'react'
 import { Id, SelectedValue } from './typing'
 import { Context, SelectContext } from './context'
+import { computedPath, getChildrenIds } from './utils'
 import { clone } from 'ramda'
 
-export interface SelectMultipleProps {
+export interface TreeSelectMultipleProps {
   children: React.ReactNode
 }
 
-export interface SelectMultipleRef<ValueType> {
+export interface TreeSelectMultipleRef<ValueType> {
   reset(ids?: Id[]): Promise<void>
   trigger(selectedIds: Id[]): Promise<SelectedValue<ValueType>[]>
 }
-
-const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<SelectMultipleRef<ValueType>>) => {
+const InnerTreeSelectMultiple = <ValueType,>(props: TreeSelectMultipleProps, ref: Ref<TreeSelectMultipleRef<ValueType>>) => {
   const { children } = props
 
   const selectContext = useMemo(() => new Context<ValueType>(), []);
@@ -59,14 +59,18 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
         const selectedItems: SelectedValue<ValueType>[] = []
         allSelectItem.forEach((item) => {
           if (item.isChecked) {
+            const path = computedPath(item.id, [], selectContext)
             selectedItems.push({
               id: item.id,
-              value: item.value,
-              isChecked: item.isChecked
+              value: clone(item.value),
+              isChecked: item.isChecked,
+              path,
+              level: path.length,
+              parentId: item.parentId,
+              childrenIds: getChildrenIds(item.id, selectContext)
             })
           }
         });
-        return clone(selectedItems)
       }
       return []
     }
@@ -76,14 +80,14 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
   </SelectContext.Provider>
 }
 
-type ForwardRefReturnType<Value> = ReturnType<typeof forwardRef<SelectMultipleRef<Value>, SelectMultipleProps>>
 
-/** 保留多选泛型 */
-interface InnerSelectMultipleType {
+type ForwardRefReturnType<Value> = ReturnType<typeof forwardRef<TreeSelectMultipleRef<Value>, TreeSelectMultipleProps>>
+
+/** 保留单选泛型 */
+interface InnerTreeSelectMultipleType {
   <Value,>(
     ...params: Parameters<ForwardRefReturnType<Value>>
   ): ReturnType<ForwardRefReturnType<Value>>
 }
 
-
-export const SelectMultiple = forwardRef(InnerSelectMultiple) as InnerSelectMultipleType
+export const TreeSelectMultiple = forwardRef(InnerTreeSelectMultiple) as InnerTreeSelectMultipleType

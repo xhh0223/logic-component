@@ -52,8 +52,9 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
       selectedItem.refreshHandler()
 
       let result: SelectedValue<ValueType> = {
+        isChecked: selectedItem.isChecked,
         id: selectedItem.id,
-        value: selectedItem.isChecked ? clone(selectedItem.value) : undefined
+        value: clone(selectedItem.value)
       }
       return result
     }
