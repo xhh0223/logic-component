@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { SelectItem, SelectSingle, SelectSingleRef } from '../src'
+import { SelectItem, SelectSingle, SelectSingleRef } from '../src/index'
 import './singleDemo2.scss'
 
 const singleDemo2 = () => {

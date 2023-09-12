@@ -28,9 +28,11 @@ export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
     };
   }, [value]);
 
-  return typeof children === "function"
-    ? children({
-      isChecked: !!getSelectItem(id)?.isChecked,
-    })
-    : children;
+  return <>
+    {typeof children === "function"
+      ? children({
+        isChecked: !!getSelectItem(id)?.isChecked,
+      })
+      : children}
+  </>
 };

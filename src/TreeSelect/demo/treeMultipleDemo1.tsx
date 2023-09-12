@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react'
-import { TreeSelectItem, TreeSelectMultiple, TreeSelectMultipleRef } from '../src'
+import { TreeSelectItem, TreeSelectMultiple, TreeSelectMultipleRef } from '../src/index'
 import { TreeNode, genTreeData } from './utils'
 
 import './treeSingleDemo1.scss'

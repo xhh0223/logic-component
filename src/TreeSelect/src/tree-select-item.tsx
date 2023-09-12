@@ -31,9 +31,10 @@ export const TreeSelectItem = <ValueType,>(props: TreeSelectItemProps<ValueType>
     };
   }, [value]);
 
-  return typeof children === "function"
+  return <>{typeof children === "function"
     ? children({
       isChecked: !!getSelectItem(id)?.isChecked,
     })
-    : children;
+    : children}
+  </>
 }

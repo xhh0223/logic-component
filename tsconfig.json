@@ -1,15 +1,24 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "target": "ESNext",
+    "lib": [
+      "ESNext"
+    ],
+    "noEmit": true,
     "strict": true,
-    "declaration": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "baseUrl": "./",
     "paths": {
-      "@@/*": [".dumi/tmp/*"],
-      "@/*":["src/*"],
+      "@/*": [
+        "src/*"
+      ],
     }
   },
-  "include": [".dumi/**/*", ".dumirc.ts", "src/**/*"]
+  "include": [
+    "src/**/*"
+  ]
 }

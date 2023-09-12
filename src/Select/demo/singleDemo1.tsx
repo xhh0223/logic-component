@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
-import { SelectSingle, SelectItem, SelectSingleRef } from '../src'
+import { SelectSingle, SelectItem, SelectSingleRef } from '../src/index'
 import classnames from 'classnames'
 import './singleDemo1.scss'
 
@@ -12,7 +12,7 @@ const singleDemo1 = () => {
     repeatTriggerUnselected: true,
   })
 
-  const handleClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((e) => {
+  const handleClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((e:any) => {
     const { index } = e.currentTarget.dataset
     if (index) {
       selectRef.trigger(index).then(res => {

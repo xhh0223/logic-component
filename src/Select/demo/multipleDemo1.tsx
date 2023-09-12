@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { SelectItem, SelectMultiple, SelectMultipleRef } from '../src'
+import { SelectItem, SelectMultiple, SelectMultipleRef } from '../src/index'
 import './singleDemo1.scss'
 
 const multipleDemo1 = () => {
@@ -9,7 +9,7 @@ const multipleDemo1 = () => {
     curSelectValue: undefined as unknown as string[],
   })
 
-  const handleClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((e) => {
+  const handleClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((e:any) => {
     const { index } = e.currentTarget.dataset
     if (index) {
       selectRef.trigger([index]).then(res => {
