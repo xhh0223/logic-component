@@ -11,4 +11,5 @@ demo:
 
 ## 多选
 <code src="./demo/multipleDemo1.tsx"></code>
+<code src="./demo/multipleDemo2.tsx"></code>
 

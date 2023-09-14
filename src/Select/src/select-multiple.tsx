@@ -28,7 +28,7 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
           if ([!(typeof id === 'string'), !selectItem].includes(true)) {
             return
           }
-          if (selectItem) {
+          if (selectItem && selectItem.isChecked) {
             selectItem.isChecked = false;
             selectItem.refreshHandler();
           }
@@ -50,10 +50,8 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
           if ([!(typeof id === 'string'), !selectItem].includes(true)) {
             return
           }
-          if (selectItem) {
-            selectItem.isChecked = !selectItem.isChecked;
-            selectItem.refreshHandler();
-          }
+          selectItem.isChecked = !selectItem.isChecked;
+          selectItem.refreshHandler();
         });
 
         const selectedItems: SelectedValue<ValueType>[] = []
@@ -62,7 +60,6 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
             selectedItems.push({
               id: item.id,
               value: item.value,
-              isChecked: item.isChecked
             })
           }
         });

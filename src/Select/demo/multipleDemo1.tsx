@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { SelectItem, SelectMultiple, SelectMultipleRef } from '../src/index'
-import './singleDemo1.scss'
 
 const multipleDemo1 = () => {
   const classNamePrefix = "multiple-demo-1"

@@ -11,7 +11,7 @@ export interface SelectSingleProps {
 
 export interface SelectSingleRef<ValueType> {
   reset(): Promise<void>
-  trigger(selectedId: Id): Promise<SelectedValue<ValueType>>
+  trigger(selectedId: Id): Promise<SelectedValue<ValueType> & { isChecked: boolean }>
 }
 
 const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<SelectSingleRef<ValueType>>) => {
@@ -50,13 +50,11 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
         selectedItem.isChecked = true
       }
       selectedItem.refreshHandler()
-
-      let result: SelectedValue<ValueType> = {
+      return {
         isChecked: selectedItem.isChecked,
         id: selectedItem.id,
         value: clone(selectedItem.value)
       }
-      return result
     }
   }), [])
 

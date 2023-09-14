@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { IContext, Id } from "./typing";
 import { SelectContext } from "./context";
 
@@ -26,7 +26,22 @@ export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
     return () => {
       deleteSelectItem(id);
     };
-  }, [value]);
+  }, []);
+
+  useEffect(() => {
+    const item = getSelectItem(id)
+    if (item) {
+      item.value = value
+    }
+  }, [value])
+
+  useEffect(() => {
+    const item = getSelectItem(id)
+    if (item.id) {
+      deleteSelectItem(id);
+      addSelectItem(id, item);
+    }
+  }, [id])
 
   return <>
     {typeof children === "function"
