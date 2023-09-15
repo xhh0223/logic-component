@@ -29,7 +29,23 @@ export const TreeSelectItem = <ValueType,>(props: TreeSelectItemProps<ValueType>
     return () => {
       deleteSelectItem(id);
     };
-  }, [value]);
+  }, []);
+
+  useEffect(() => {
+    const item = getSelectItem(id)
+    if (item) {
+      item.value = value
+      item.parentId = parentId
+    }
+  }, [value, parentId])
+
+  useEffect(() => {
+    const item = getSelectItem(id)
+    if (item) {
+      deleteSelectItem(id);
+      addSelectItem(id, item);
+    }
+  }, [id])
 
   return <>{typeof children === "function"
     ? children({

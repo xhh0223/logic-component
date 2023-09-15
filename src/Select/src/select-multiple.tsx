@@ -25,9 +25,6 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
         /** 多选 */
         ids?.forEach((id) => {
           const selectItem = getSelectItem(id);
-          if ([!(typeof id === 'string'), !selectItem].includes(true)) {
-            return
-          }
           if (selectItem && selectItem.isChecked) {
             selectItem.isChecked = false;
             selectItem.refreshHandler();
@@ -47,11 +44,10 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
         const allSelectItem = getAllSelectItem();
         ids?.forEach((id) => {
           const selectItem = getSelectItem(id);
-          if ([!(typeof id === 'string'), !selectItem].includes(true)) {
-            return
+          if (selectItem) {
+            selectItem.isChecked = !selectItem.isChecked;
+            selectItem.refreshHandler();
           }
-          selectItem.isChecked = !selectItem.isChecked;
-          selectItem.refreshHandler();
         });
 
         const selectedItems: SelectedValue<ValueType>[] = []

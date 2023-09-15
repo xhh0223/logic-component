@@ -32,7 +32,7 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
     async trigger(id) {
       const { getAllSelectItem, getSelectItem } = selectContext
       let selectedItem = getSelectItem(id)
-      if ([!(typeof id === 'string'), !selectedItem].includes(true)) {
+      if (!selectedItem) {
         return Promise.reject("id不存在")
       }
 

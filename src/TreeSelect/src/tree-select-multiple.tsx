@@ -47,9 +47,6 @@ const InnerTreeSelectMultiple = <ValueType,>(props: TreeSelectMultipleProps, ref
         const allSelectItem = getAllSelectItem();
         ids?.forEach((id) => {
           const selectItem = getSelectItem(id);
-          if ([!(typeof id === 'string'), !selectItem].includes(true)) {
-            return
-          }
           if (selectItem) {
             selectItem.isChecked = !selectItem.isChecked;
             selectItem.refreshHandler();
@@ -63,7 +60,6 @@ const InnerTreeSelectMultiple = <ValueType,>(props: TreeSelectMultipleProps, ref
             selectedItems.push({
               id: item.id,
               value: clone(item.value),
-              isChecked: item.isChecked,
               path,
               level: path.length,
               parentId: item.parentId,

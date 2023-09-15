@@ -13,7 +13,7 @@ export interface TreeSelectSingleProps {
 
 export interface TreeSelectSingleRef<ValueType> {
   reset(): Promise<void>
-  trigger(selectedId: Id): Promise<SelectedValue<ValueType>>
+  trigger(selectedId: Id): Promise<SelectedValue<ValueType> & { isChecked: boolean }>
 }
 
 const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Ref<TreeSelectSingleRef<ValueType>>) => {
@@ -36,7 +36,7 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
       const allSelectItem = getAllSelectItem()
 
       let selectedItem = getSelectItem(id)
-      if ([!(typeof id === 'string'), !selectedItem].includes(true)) {
+      if (!selectedItem) {
         return Promise.reject("id不存在")
       }
 
@@ -57,7 +57,7 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
 
 
       const path = computedPath(selectedItem.id, [], selectContext)
-      let result: SelectedValue<ValueType> = {
+      return {
         id: selectedItem.id,
         value: clone(selectedItem.value),
         isChecked: selectedItem.isChecked,
@@ -66,7 +66,6 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
         level: path.length,
         childrenIds: getChildrenIds(selectedItem.id, selectContext)
       }
-      return result
     }
   }), [])
 
