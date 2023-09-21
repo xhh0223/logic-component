@@ -1,5 +1,5 @@
 import { equals, mergeDeepRight } from 'ramda'
-import React, { Ref, forwardRef, isValidElement, useImperativeHandle, useRef, useState } from 'react'
+import React, { Ref, forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
 export interface PropsRef<PropsType extends object> {
   getProps(): PropsType | undefined
@@ -18,6 +18,12 @@ const InnerProps = <PropsType extends object,>({ children }: PropsProps, ref: Re
     children
   })
   const [_, refresh] = useState({})
+  useEffect(() => {
+    if (isValidElement(children)) {
+      cacheRef.current.children = children
+      cacheRef.current.currentProps = children?.props as PropsType
+    }
+  }, [children])
 
   useImperativeHandle(ref, () => {
     return {
