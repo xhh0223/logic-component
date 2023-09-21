@@ -12,7 +12,7 @@ const singleDemo1 = () => {
     repeatTriggerUnselected: true,
   })
 
-  const handleClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((e:any) => {
+  const handleClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((e: any) => {
     const { index } = e.currentTarget.dataset
     if (index) {
       selectRef.trigger(index).then(res => {
@@ -83,11 +83,10 @@ const singleDemo1 = () => {
       <div>当前选中值：{state.curSelectValue ?? "暂无"}</div>
       <hr />
       <SelectSingle
-        repeatTriggerUnselected={state.repeatTriggerUnselected}
         ref={ref => Object.assign(selectRef, { ...ref })}
       >
         {Array.from({ length: 10 }).map((_item, index) => {
-          return <SelectItem key={index} id={`${index}`} value={index}>
+          return <SelectItem key={index} id={`${index}`} value={index} repeatTriggerUnselected={state.repeatTriggerUnselected}>
             {
               ({ isChecked }) =>
                 <div

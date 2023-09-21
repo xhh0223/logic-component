@@ -4,8 +4,6 @@ import { clone } from 'ramda';
 import { Context, SelectContext } from './context';
 
 export interface SelectSingleProps {
-  /** 重复触发取消选中 */
-  repeatTriggerUnselected?: boolean;
   children: React.ReactNode
 }
 
@@ -15,7 +13,7 @@ export interface SelectSingleRef<ValueType> {
 }
 
 const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<SelectSingleRef<ValueType>>) => {
-  const { repeatTriggerUnselected = true, children } = props
+  const { children } = props
   const selectContext = useMemo(() => new Context<ValueType>(), []);
 
   useImperativeHandle(ref, () => ({
@@ -44,7 +42,7 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
         }
       }
 
-      if (repeatTriggerUnselected) {
+      if (selectedItem.repeatTriggerUnselected) {
         selectedItem.isChecked = !selectedItem.isChecked
       } else {
         selectedItem.isChecked = true

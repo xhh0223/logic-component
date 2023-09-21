@@ -4,6 +4,8 @@ export interface SelectItem<ValueType> {
   value: ValueType,
   isChecked: boolean,
   refreshHandler: () => void,
+  /** 重复触发取消选中 */
+  repeatTriggerUnselected?: boolean;
 }
 
 

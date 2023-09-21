@@ -44,9 +44,12 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
         const allSelectItem = getAllSelectItem();
         ids?.forEach((id) => {
           const selectItem = getSelectItem(id);
-          if (selectItem) {
-            selectItem.isChecked = !selectItem.isChecked;
-            selectItem.refreshHandler();
+          if (!selectItem) return
+
+          if (selectItem.repeatTriggerUnselected) {
+            selectItem.isChecked = !selectItem.isChecked
+          } else {
+            selectItem.isChecked = true
           }
         });
 

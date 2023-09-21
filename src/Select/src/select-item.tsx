@@ -5,13 +5,15 @@ import { SelectContext } from "./context";
 export interface SelectItemProps<ValueType> {
   id: Id
   value: ValueType;
+  /** 重复触发取消选中 */
+  repeatTriggerUnselected?: boolean;
   children?:
   | React.ReactNode
   | ((params: { isChecked: boolean }) => React.ReactNode);
 }
 
 export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
-  const { value, children, id } = props;
+  const { value, children, id, repeatTriggerUnselected = true } = props;
   const [_, refresh] = useState({});
   const { addSelectItem, deleteSelectItem, getSelectItem } = useContext(SelectContext) as IContext<ValueType>;
   useEffect(() => {
@@ -19,6 +21,7 @@ export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
       id,
       value,
       isChecked: false,
+      repeatTriggerUnselected,
       refreshHandler: () => {
         refresh({});
       },
@@ -32,8 +35,9 @@ export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
     const item = getSelectItem(id)
     if (item) {
       item.value = value
+      item.repeatTriggerUnselected = repeatTriggerUnselected
     }
-  }, [value])
+  }, [value, repeatTriggerUnselected])
 
   useEffect(() => {
     const item = getSelectItem(id)
