@@ -1,47 +1,47 @@
-import React, { Ref, forwardRef, useImperativeHandle, useMemo } from "react";
-import { Context, SelectContext } from "./context";
-import { Id, SelectedValue } from "./typing";
-import { computedPath, getChildrenIds } from "./utils";
-
+import React, { type Ref, forwardRef, useImperativeHandle, useMemo } from 'react'
+import { Context, SelectContext } from './context'
+import { type Id, type SelectedValue } from './typing'
+import { computedPath, getChildrenIds } from './utils'
 
 export interface TreeSelectSingleProps {
   children: React.ReactNode
 }
 
 export interface TreeSelectSingleRef<ValueType> {
-  reset(): Promise<void>
-  trigger(selectedId: Id): Promise<SelectedValue<ValueType>>
+  reset: () => Promise<void>
+  trigger: (selectedId: Id) => Promise<SelectedValue<ValueType> | undefined>
 }
 
 const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Ref<TreeSelectSingleRef<ValueType>>) => {
   const { children } = props
-  const selectContext = useMemo(() => new Context<ValueType>(), []);
+  const selectContext = useMemo(() => new Context<ValueType>(), [])
 
   useImperativeHandle(ref, () => ({
-    async reset() {
+    async reset () {
       const { getAllSelectItem } = selectContext
-      for (let item of getAllSelectItem()) {
+      for (const item of getAllSelectItem()) {
         if (item.isChecked) {
           item.isChecked = false
           item.refreshHandler()
-          break;
+          break
         }
       }
     },
-    async trigger(id) {
+    async trigger (id) {
       const { getAllSelectItem, getSelectItem } = selectContext
       const allSelectItem = getAllSelectItem()
 
-      let selectedItem = getSelectItem(id)
+      const selectedItem = getSelectItem(id)
       if (!selectedItem) {
-        return Promise.reject("id不存在")
+        console.error('treeSelectItem的id不存在')
+        return
       }
 
-      for (let item of allSelectItem) {
+      for (const item of allSelectItem) {
         if (item.isChecked && item.id !== id) {
           item.isChecked = false
           item.refreshHandler()
-          break;
+          break
         }
       }
 
@@ -69,16 +69,14 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
     <SelectContext.Provider value={selectContext}>
       {children}
     </SelectContext.Provider>
-  );
-};
+  )
+}
 
 type ForwardRefReturnType<Value> = ReturnType<typeof forwardRef<TreeSelectSingleRef<Value>, TreeSelectSingleProps>>
 
 /** 保留单选泛型 */
-interface InnerTreeSelectSingleType {
-  <Value,>(
+type InnerTreeSelectSingleType = <Value,>(
     ...params: Parameters<ForwardRefReturnType<Value>>
-  ): ReturnType<ForwardRefReturnType<Value>>
-}
+  ) => ReturnType<ForwardRefReturnType<Value>>
 
 export const TreeSelectSingle = forwardRef(InnerTreeSelectSingle) as InnerTreeSelectSingleType

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef,useCallback } from 'react'
 import { Props, PropsRef } from '../src'
 
 interface ModalProps { visible: boolean, children: React.ReactNode }
@@ -7,6 +7,8 @@ const Modal = (props: ModalProps) => {
   const { visible, children } = props
   return visible && children
 }
+
+
 
 const propsDemo1 = () => {
   const propsRef = useRef<PropsRef<ModalProps>>(null)

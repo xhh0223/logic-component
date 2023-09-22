@@ -1,21 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
-import { IContext, Id } from "./typing";
-import { SelectContext } from "./context";
+import React, { useContext, useEffect, useState } from 'react'
+import { type IContext, type Id } from './typing'
+import { SelectContext } from './context'
 
 export interface SelectItemProps<ValueType> {
   id: Id
-  value: ValueType;
+  value: ValueType
   /** 重复触发取消选中 */
-  repeatTriggerUnselected?: boolean;
+  repeatTriggerUnselected?: boolean
   children?:
   | React.ReactNode
-  | ((params: { isChecked: boolean }) => React.ReactNode);
+  | ((params: { isChecked: boolean }) => React.ReactNode)
 }
 
-export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
-  const { value, children, id, repeatTriggerUnselected = true } = props;
-  const [_, refresh] = useState({});
-  const { setSelectItem, deleteSelectItem, getSelectItem } = useContext(SelectContext) as IContext<ValueType>;
+export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>): React.ReactElement => {
+  const { value, children, id, repeatTriggerUnselected = true } = props
+  const [, refresh] = useState({})
+  const { setSelectItem, deleteSelectItem, getSelectItem } = useContext(SelectContext) as IContext<ValueType>
   useEffect(() => {
     setSelectItem(id, {
       id,
@@ -23,16 +23,17 @@ export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
       isChecked: false,
       repeatTriggerUnselected,
       refreshHandler: () => {
-        refresh({});
-      },
-    });
+        refresh({})
+      }
+    })
     return () => {
-      deleteSelectItem(id);
-    };
-  }, [id]);
+      deleteSelectItem(id)
+    }
+  }, [id])
 
   useEffect(() => {
     const item = getSelectItem(id)
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (item) {
       item.value = value
       item.repeatTriggerUnselected = repeatTriggerUnselected
@@ -40,10 +41,10 @@ export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
   }, [value, repeatTriggerUnselected])
 
   return <>
-    {typeof children === "function"
+    {typeof children === 'function'
       ? children({
-        isChecked: !!getSelectItem(id)?.isChecked,
+        isChecked: !!((getSelectItem(id)?.isChecked) ?? false)
       })
       : children}
   </>
-};
+}

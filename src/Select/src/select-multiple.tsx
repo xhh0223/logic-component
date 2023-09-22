@@ -1,5 +1,5 @@
-import React, { Ref, forwardRef, useImperativeHandle, useMemo } from 'react'
-import { Id, SelectedValue } from './typing'
+import React, { type Ref, forwardRef, useImperativeHandle, useMemo } from 'react'
+import { type Id, type SelectedValue } from './typing'
 import { Context, SelectContext } from './context'
 
 export interface SelectMultipleProps {
@@ -7,44 +7,44 @@ export interface SelectMultipleProps {
 }
 
 export interface SelectMultipleRef<ValueType> {
-  reset(ids?: Id[]): Promise<void>
-  trigger(selectedIds: Id[]): Promise<SelectedValue<ValueType>[]>
+  reset: (ids?: Id[]) => Promise<void>
+  trigger: (selectedIds: Id[]) => Promise<Array<SelectedValue<ValueType>>>
 }
 
 const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<SelectMultipleRef<ValueType>>) => {
   const { children } = props
 
-  const selectContext = useMemo(() => new Context<ValueType>(), []);
+  const selectContext = useMemo(() => new Context<ValueType>(), [])
 
   useImperativeHandle(ref, () => ({
-    async reset(ids) {
+    async reset (ids) {
       const { getAllSelectItem, getSelectItem } = selectContext
-      const allSelectItem = getAllSelectItem();
+      const allSelectItem = getAllSelectItem()
       if (Array.isArray(ids)) {
         /** 多选 */
         ids?.forEach((id) => {
-          const selectItem = getSelectItem(id);
+          const selectItem = getSelectItem(id)
           if (selectItem && selectItem.isChecked) {
-            selectItem.isChecked = false;
-            selectItem.refreshHandler();
+            selectItem.isChecked = false
+            selectItem.refreshHandler()
           }
-        });
+        })
       } else {
         allSelectItem.forEach(item => {
           if (item.isChecked) {
-            item.isChecked = false;
-            item.refreshHandler();
+            item.isChecked = false
+            item.refreshHandler()
           }
         })
       }
     },
-    async trigger(ids) {
+    async trigger (ids) {
       const { getSelectItem } = selectContext
       if (Array.isArray(ids)) {
         /** 多选 */
-        const selectedItems: SelectedValue<ValueType>[] = []
+        const selectedItems: Array<SelectedValue<ValueType>> = []
         ids?.forEach((id) => {
-          const selectItem = getSelectItem(id);
+          const selectItem = getSelectItem(id)
           if (!selectItem) return
 
           if (selectItem.repeatTriggerUnselected) {
@@ -57,7 +57,7 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
             value: selectItem.value,
             isChecked: selectItem.isChecked
           })
-        });
+        })
         return selectedItems
       }
       return []
@@ -71,11 +71,8 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
 type ForwardRefReturnType<Value> = ReturnType<typeof forwardRef<SelectMultipleRef<Value>, SelectMultipleProps>>
 
 /** 保留多选泛型 */
-interface InnerSelectMultipleType {
-  <Value,>(
+type InnerSelectMultipleType = <Value,>(
     ...params: Parameters<ForwardRefReturnType<Value>>
-  ): ReturnType<ForwardRefReturnType<Value>>
-}
-
+  ) => ReturnType<ForwardRefReturnType<Value>>
 
 export const SelectMultiple = forwardRef(InnerSelectMultiple) as InnerSelectMultipleType

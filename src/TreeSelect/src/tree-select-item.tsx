@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Id } from './typing';
-import { SelectContext } from './context';
+import { type Id } from './typing'
+import { SelectContext } from './context'
 
 export interface TreeSelectItemProps<ValueType> {
   id: Id
   parentId: Id
-  value: ValueType;
+  value: ValueType
   /** 重复触发取消选中 */
-  repeatTriggerUnselected?: boolean;
+  repeatTriggerUnselected?: boolean
   children?:
   | React.ReactNode
-  | ((params: { isChecked: boolean }) => React.ReactNode);
+  | ((params: { isChecked: boolean }) => React.ReactNode)
 }
 
 export const TreeSelectItem = <ValueType,>(props: TreeSelectItemProps<ValueType>) => {
-  const { value, children, id, parentId, repeatTriggerUnselected } = props;
-  const [_, refresh] = useState({});
+  const { value, children, id, parentId, repeatTriggerUnselected } = props
+  const [, refresh] = useState({})
   const { setSelectItem, deleteSelectItem, getSelectItem } = useContext(SelectContext)
 
   useEffect(() => {
@@ -27,16 +27,16 @@ export const TreeSelectItem = <ValueType,>(props: TreeSelectItemProps<ValueType>
         parentId,
         isChecked: false,
         refreshHandler: () => {
-          refresh({});
-        },
-      });
+          refresh({})
+        }
+      })
     }
     return () => {
       if (selectItem) {
-        deleteSelectItem(id);
+        deleteSelectItem(id)
       }
-    };
-  }, [id]);
+    }
+  }, [id])
 
   useEffect(() => {
     const item = getSelectItem(id)
@@ -47,9 +47,9 @@ export const TreeSelectItem = <ValueType,>(props: TreeSelectItemProps<ValueType>
     }
   }, [value, parentId, repeatTriggerUnselected])
 
-  return <>{typeof children === "function"
+  return <>{typeof children === 'function'
     ? children({
-      isChecked: !!getSelectItem(id)?.isChecked,
+      isChecked: !!getSelectItem(id)?.isChecked
     })
     : children}
   </>

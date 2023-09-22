@@ -1,44 +1,44 @@
-import React, { Ref, forwardRef, useImperativeHandle, useMemo } from 'react'
-import { Id, SelectedValue } from './typing';
-import { clone } from 'ramda';
-import { Context, SelectContext } from './context';
+import React, { type Ref, forwardRef, useImperativeHandle, useMemo } from 'react'
+import { type Id, type SelectedValue } from './typing'
+import { Context, SelectContext } from './context'
 
 export interface SelectSingleProps {
   children: React.ReactNode
 }
 
 export interface SelectSingleRef<ValueType> {
-  reset(): Promise<void>
-  trigger(selectedId: Id): Promise<SelectedValue<ValueType>>
+  reset: () => Promise<void>
+  trigger: (selectedId: Id) => Promise<SelectedValue<ValueType> | undefined>
 }
 
 const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<SelectSingleRef<ValueType>>) => {
   const { children } = props
-  const selectContext = useMemo(() => new Context<ValueType>(), []);
+  const selectContext = useMemo(() => new Context<ValueType>(), [])
 
   useImperativeHandle(ref, () => ({
-    async reset() {
+    async reset () {
       const { getAllSelectItem } = selectContext
-      for (let item of getAllSelectItem()) {
+      for (const item of getAllSelectItem()) {
         if (item.isChecked) {
           item.isChecked = false
           item.refreshHandler()
-          break;
+          break
         }
       }
     },
-    async trigger(id) {
+    async trigger (id) {
       const { getAllSelectItem, getSelectItem } = selectContext
-      let selectedItem = getSelectItem(id)
+      const selectedItem = getSelectItem(id)
       if (!selectedItem) {
-        return Promise.reject("id不存在")
+        console.error('selectItem的id不存在')
+        return
       }
 
-      for (let item of getAllSelectItem()) {
+      for (const item of getAllSelectItem()) {
         if (item.isChecked && item.id !== id) {
           item.isChecked = false
           item.refreshHandler()
-          break;
+          break
         }
       }
 
@@ -64,10 +64,8 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
 type ForwardRefReturnType<Value> = ReturnType<typeof forwardRef<SelectSingleRef<Value>, SelectSingleProps>>
 
 /** 保留单选泛型 */
-interface InnerSelectSingleType {
-  <Value,>(
-    ...params: Parameters<ForwardRefReturnType<Value>>
-  ): ReturnType<ForwardRefReturnType<Value>>
-}
+type InnerSelectSingleType = <Value, >(
+  ...params: Parameters<ForwardRefReturnType<Value>>
+) => ReturnType<ForwardRefReturnType<Value>>
 
 export const SelectSingle = forwardRef(InnerSelectSingle) as InnerSelectSingleType

@@ -1,8 +1,8 @@
-import React from "react"
-import { IContext, Id, SelectItem } from "./typing"
+import React from 'react'
+import { type IContext, type Id, type SelectItem } from './typing'
 
 export class Context<Value> implements IContext<Value> {
-  private selectItemMap = new Map<Id, SelectItem<Value>>()
+  private readonly selectItemMap = new Map<Id, SelectItem<Value>>()
   setSelectItem = (selectItemId: Id, selectItemInstance: SelectItem<Value>): void => {
     this.selectItemMap.set(selectItemId, selectItemInstance)
   }
@@ -20,4 +20,5 @@ export class Context<Value> implements IContext<Value> {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 export const SelectContext = React.createContext<Context<any>>(undefined!)
