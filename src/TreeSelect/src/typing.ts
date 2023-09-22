@@ -7,7 +7,7 @@ export type SelectItem<ValueType> = Item<ValueType> & {
 }
 
 export interface IContext<ValueType> {
-  addSelectItem(selectItemId: Id, selectItem: SelectItem<ValueType>): void
+  setSelectItem(selectItemId: Id, selectItem: SelectItem<ValueType>): void
   deleteSelectItem(selectItemId: Id): void
   getSelectItem(selectItemId: Id): SelectItem<ValueType> | undefined
   getAllSelectItem(): SelectItem<ValueType>[]

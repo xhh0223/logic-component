@@ -2,7 +2,6 @@ import React, { useMemo, Ref, useImperativeHandle, forwardRef } from 'react'
 import { Id, SelectedValue } from './typing'
 import { Context, SelectContext } from './context'
 import { computedPath, getChildrenIds } from './utils'
-import { clone } from 'ramda'
 
 export interface TreeSelectMultipleProps {
   children: React.ReactNode
@@ -25,48 +24,48 @@ const InnerTreeSelectMultiple = <ValueType,>(props: TreeSelectMultipleProps, ref
         /** 多选 */
         ids?.forEach((id) => {
           const selectItem = getSelectItem(id);
-          if ([!(typeof id === 'string'), !selectItem].includes(true)) {
-            return
-          }
-          if (selectItem) {
+          if (selectItem && selectItem.isChecked) {
             selectItem.isChecked = false;
             selectItem.refreshHandler();
           }
         });
       } else {
         allSelectItem.forEach(item => {
-          item.isChecked = false;
-          item.refreshHandler();
+          if (item.isChecked) {
+            item.isChecked = false;
+            item.refreshHandler();
+          }
         })
       }
     },
     async trigger(ids) {
-      const { getAllSelectItem, getSelectItem } = selectContext
+      const { getSelectItem } = selectContext
       if (Array.isArray(ids)) {
         /** 多选 */
-        const allSelectItem = getAllSelectItem();
+        const selectedItems: SelectedValue<ValueType>[] = []
         ids?.forEach((id) => {
           const selectItem = getSelectItem(id);
-          if (selectItem) {
-            selectItem.isChecked = !selectItem.isChecked;
-            selectItem.refreshHandler();
+          if (!selectItem) {
+            return
           }
-        });
 
-        const selectedItems: SelectedValue<ValueType>[] = []
-        allSelectItem.forEach((item) => {
-          if (item.isChecked) {
-            const path = computedPath(item.id, [], selectContext)
-            selectedItems.push({
-              id: item.id,
-              value: clone(item.value),
-              path,
-              level: path.length,
-              parentId: item.parentId,
-              childrenIds: getChildrenIds(item.id, selectContext)
-            })
+          if (selectItem.repeatTriggerUnselected) {
+            selectItem.isChecked = !selectItem.isChecked
+          } else {
+            selectItem.isChecked = true
           }
+          const path = computedPath(selectItem.id, [], selectContext)
+          selectedItems.push({
+            id: selectItem.id,
+            isChecked: true,
+            value: selectItem.value,
+            path,
+            level: path.length,
+            parentId: selectItem.parentId,
+            childrenIds: getChildrenIds(selectItem.id, selectContext)
+          })
         });
+        return selectedItems
       }
       return []
     }

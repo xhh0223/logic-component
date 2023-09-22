@@ -1,23 +1,20 @@
 import React, { Ref, forwardRef, useImperativeHandle, useMemo } from "react";
 import { Context, SelectContext } from "./context";
-import { clone } from "ramda";
 import { Id, SelectedValue } from "./typing";
 import { computedPath, getChildrenIds } from "./utils";
 
 
 export interface TreeSelectSingleProps {
-  /** 重复触发取消选中 */
-  repeatTriggerUnselected?: boolean;
   children: React.ReactNode
 }
 
 export interface TreeSelectSingleRef<ValueType> {
   reset(): Promise<void>
-  trigger(selectedId: Id): Promise<SelectedValue<ValueType> & { isChecked: boolean }>
+  trigger(selectedId: Id): Promise<SelectedValue<ValueType>>
 }
 
 const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Ref<TreeSelectSingleRef<ValueType>>) => {
-  const { repeatTriggerUnselected = true, children } = props
+  const { children } = props
   const selectContext = useMemo(() => new Context<ValueType>(), []);
 
   useImperativeHandle(ref, () => ({
@@ -48,18 +45,17 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
         }
       }
 
-      if (repeatTriggerUnselected) {
+      if (selectedItem.repeatTriggerUnselected) {
         selectedItem.isChecked = !selectedItem.isChecked
       } else {
         selectedItem.isChecked = true
       }
       selectedItem.refreshHandler()
 
-
       const path = computedPath(selectedItem.id, [], selectContext)
       return {
         id: selectedItem.id,
-        value: clone(selectedItem.value),
+        value: selectedItem.value,
         isChecked: selectedItem.isChecked,
         parentId: selectedItem.parentId,
         path,
