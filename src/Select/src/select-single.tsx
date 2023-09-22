@@ -9,7 +9,7 @@ export interface SelectSingleProps {
 
 export interface SelectSingleRef<ValueType> {
   reset(): Promise<void>
-  trigger(selectedId: Id): Promise<SelectedValue<ValueType> & { isChecked: boolean }>
+  trigger(selectedId: Id): Promise<SelectedValue<ValueType>>
 }
 
 const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<SelectSingleRef<ValueType>>) => {
@@ -51,7 +51,7 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
       return {
         isChecked: selectedItem.isChecked,
         id: selectedItem.id,
-        value: clone(selectedItem.value)
+        value: selectedItem.value
       }
     }
   }), [])

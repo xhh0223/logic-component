@@ -15,9 +15,9 @@ export interface SelectItemProps<ValueType> {
 export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
   const { value, children, id, repeatTriggerUnselected = true } = props;
   const [_, refresh] = useState({});
-  const { addSelectItem, deleteSelectItem, getSelectItem } = useContext(SelectContext) as IContext<ValueType>;
+  const { setSelectItem, deleteSelectItem, getSelectItem } = useContext(SelectContext) as IContext<ValueType>;
   useEffect(() => {
-    addSelectItem(id, {
+    setSelectItem(id, {
       id,
       value,
       isChecked: false,
@@ -29,7 +29,7 @@ export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
     return () => {
       deleteSelectItem(id);
     };
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     const item = getSelectItem(id)
@@ -38,14 +38,6 @@ export const SelectItem = <ValueType,>(props: SelectItemProps<ValueType>) => {
       item.repeatTriggerUnselected = repeatTriggerUnselected
     }
   }, [value, repeatTriggerUnselected])
-
-  useEffect(() => {
-    const item = getSelectItem(id)
-    if (item) {
-      deleteSelectItem(id);
-      addSelectItem(id, item);
-    }
-  }, [id])
 
   return <>
     {typeof children === "function"

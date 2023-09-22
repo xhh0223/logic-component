@@ -38,10 +38,10 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
       }
     },
     async trigger(ids) {
-      const { getAllSelectItem, getSelectItem } = selectContext
+      const { getSelectItem } = selectContext
       if (Array.isArray(ids)) {
         /** 多选 */
-        const allSelectItem = getAllSelectItem();
+        const selectedItems: SelectedValue<ValueType>[] = []
         ids?.forEach((id) => {
           const selectItem = getSelectItem(id);
           if (!selectItem) return
@@ -51,18 +51,13 @@ const InnerSelectMultiple = <ValueType,>(props: SelectMultipleProps, ref: Ref<Se
           } else {
             selectItem.isChecked = true
           }
+          selectedItems.push({
+            id: selectItem.id,
+            value: selectItem.value,
+            isChecked: selectItem.isChecked
+          })
         });
-
-        const selectedItems: SelectedValue<ValueType>[] = []
-        allSelectItem.forEach((item) => {
-          if (item.isChecked) {
-            selectedItems.push({
-              id: item.id,
-              value: item.value,
-            })
-          }
-        });
-        return clone(selectedItems)
+        return selectedItems
       }
       return []
     }

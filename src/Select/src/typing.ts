@@ -10,7 +10,7 @@ export interface SelectItem<ValueType> {
 
 
 export interface IContext<ValueType> {
-  addSelectItem(selectItemId: Id, selectItem: SelectItem<ValueType>): void
+  setSelectItem(selectItemId: Id, selectItem: SelectItem<ValueType>): void
   deleteSelectItem(selectItemId: Id): void
   getSelectItem(selectItemId: Id): SelectItem<ValueType> | undefined
   getAllSelectItem(): SelectItem<ValueType>[]
@@ -19,4 +19,5 @@ export interface IContext<ValueType> {
 export interface SelectedValue<ValueType> {
   id: Id,
   value: ValueType
+  isChecked: boolean
 }
