@@ -1,7 +1,6 @@
 {
   "name": "logic-component",
   "version": "1.0.1-alpha.1",
-  "type": "module",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -38,6 +37,7 @@
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
     "classnames": "^2.3.2",
+    "commitlint": "^17.7.1",
     "dumi": "^2.2.0",
     "eslint": "^8.23.0",
     "eslint-config-prettier": "^9.0.0",
@@ -50,6 +50,21 @@
     "prettier": "^3.0.3",
     "stylelint": "^15.10.3",
     "stylelint-config-standard-scss": "^11.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.ts?(x)": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "src/**/*.scss": [
+      "stylelint --fix",
+      "prettier --write"
+    ]
   },
   "license": "MIT"
 }
