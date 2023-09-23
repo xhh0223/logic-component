@@ -82,7 +82,7 @@ const InnerSelectMultiple = <ValueType,>(
         return []
       }
     }),
-    []
+    [selectContext]
   )
   return (
     <SelectContext.Provider value={selectContext}>

@@ -9,7 +9,8 @@ module.exports = {
   "extends": [
     "standard-with-typescript",
     "plugin:react/recommended",
-    "prettier"
+    "prettier",
+    ""
   ],
   "overrides": [
     {
@@ -29,11 +30,13 @@ module.exports = {
     "sourceType": "module",
   },
   "plugins": [
-    "react"
+    "react",
+    "react-hooks"
   ],
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
-    "@typescript-eslint/no-floating-promises": "off"
+    "@typescript-eslint/no-floating-promises": "off",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

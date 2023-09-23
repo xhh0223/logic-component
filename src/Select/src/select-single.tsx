@@ -54,7 +54,7 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps, ref: Ref<Select
         value: selectedItem.value
       }
     }
-  }), [])
+  }), [selectContext])
 
   return <SelectContext.Provider value={selectContext}>
     {children}
