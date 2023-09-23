@@ -17,7 +17,7 @@ export const TreeSelectItem = <ValueType,>(props: TreeSelectItemProps<ValueType>
   const { value, children, id, parentId, repeatTriggerUnselected } = props
   const [, refresh] = useState({})
   const { setSelectItem, deleteSelectItem, getSelectItem } = useContext(SelectContext)
-
+  
   useEffect(() => {
     const selectItem = getSelectItem(id)
     if (!selectItem) {
@@ -28,7 +28,14 @@ export const TreeSelectItem = <ValueType,>(props: TreeSelectItemProps<ValueType>
         isChecked: false,
         refreshHandler: () => {
           refresh({})
-        }
+        },
+        // !notice 下面几个属性的初始化操作放到了父节点
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        path: undefined!,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        level: undefined!,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        childrenIds: undefined!
       })
     }
     return () => {

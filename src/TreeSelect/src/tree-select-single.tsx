@@ -1,7 +1,8 @@
-import React, { type Ref, forwardRef, useImperativeHandle, useMemo } from 'react'
+import React, { type Ref, forwardRef, useImperativeHandle, useMemo, useEffect } from 'react'
 import { Context, SelectContext } from './context'
 import { type Id, type SelectedValue } from './typing'
 import { computedPath, getChildrenIds } from './utils'
+import { omit } from 'ramda'
 
 export interface TreeSelectSingleProps {
   children: React.ReactNode
@@ -17,7 +18,7 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
   const selectContext = useMemo(() => new Context<ValueType>(), [])
 
   useImperativeHandle(ref, () => ({
-    async reset () {
+    async reset() {
       const { getAllSelectItem } = selectContext
       for (const item of getAllSelectItem()) {
         if (item.isChecked) {
@@ -27,7 +28,7 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
         }
       }
     },
-    async trigger (id) {
+    async trigger(id) {
       const { getAllSelectItem, getSelectItem } = selectContext
       const allSelectItem = getAllSelectItem()
 
@@ -52,19 +53,28 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
       }
       selectedItem.refreshHandler()
 
-      const path = computedPath(selectedItem.id, [], selectContext)
-      return {
-        id: selectedItem.id,
-        value: selectedItem.value,
-        isChecked: selectedItem.isChecked,
-        parentId: selectedItem.parentId,
-        path,
-        level: path.length,
-        childrenIds: getChildrenIds(selectedItem.id, selectContext)
+      if (!selectedItem.path) {
+        selectedItem.path = computedPath(selectedItem.id, [], selectContext)
+        selectedItem.level = selectedItem.path?.length
       }
+      if (!selectedItem.childrenIds) {
+        selectedItem.childrenIds = getChildrenIds(selectedItem.id, selectContext)
+      }
+
+      return omit(['refreshHandler', 'repeatTriggerUnselected'], selectedItem)
     }
   }), [])
 
+  useEffect(() => {
+    /** 初始化每个节点的信息 */
+    selectContext.getAllSelectItem().forEach(item => {
+      const path = computedPath(item.id, [], selectContext)
+      item.path = path
+      item.level = path.length
+      item.childrenIds = getChildrenIds(item.id, selectContext)
+    })
+  }, [])
+  
   return (
     <SelectContext.Provider value={selectContext}>
       {children}
@@ -75,8 +85,8 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
 type ForwardRefReturnType<Value> = ReturnType<typeof forwardRef<TreeSelectSingleRef<Value>, TreeSelectSingleProps>>
 
 /** 保留单选泛型 */
-type InnerTreeSelectSingleType = <Value,>(
-    ...params: Parameters<ForwardRefReturnType<Value>>
-  ) => ReturnType<ForwardRefReturnType<Value>>
+type InnerTreeSelectSingleType = <Value, >(
+  ...params: Parameters<ForwardRefReturnType<Value>>
+) => ReturnType<ForwardRefReturnType<Value>>
 
 export const TreeSelectSingle = forwardRef(InnerTreeSelectSingle) as InnerTreeSelectSingleType
