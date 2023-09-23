@@ -1,6 +1,9 @@
+/**
+ * @type {import("@commitlint/types/lib/load").UserConfig}
+ */
 module.exports = {
   extends: [
-      '@commitlint/config-conventional'
+    '@commitlint/config-conventional'
   ],
   rules: {
     'type-enum': [2, 'always', [

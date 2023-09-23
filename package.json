@@ -58,12 +58,10 @@
   },
   "lint-staged": {
     "src/**/*.ts?(x)": [
-      "eslint --fix",
-      "prettier --write"
+      "eslint --fix"
     ],
     "src/**/*.scss": [
-      "stylelint --fix",
-      "prettier --write"
+      "stylelint --fix"
     ]
   },
   "license": "MIT"
