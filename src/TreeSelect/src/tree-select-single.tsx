@@ -1,4 +1,4 @@
-import React, { type Ref, forwardRef, useImperativeHandle, useMemo, useEffect } from 'react'
+import React, { type Ref, forwardRef, useImperativeHandle, useMemo } from 'react'
 import { Context, SelectContext } from './context'
 import { type Id, type SelectedValue } from './typing'
 import { computedPath, getChildrenIds } from './utils'
@@ -9,6 +9,11 @@ export interface TreeSelectSingleProps {
 }
 
 export interface TreeSelectSingleRef<ValueType> {
+  getPath: (id: Id) => Id[]
+  getChildrenIds: (id: Id) => (Id[]) | undefined
+  getLevel: (id: Id) => number
+  getById: (id: Id) => (SelectedValue<ValueType>) | undefined
+  deleteById: (id: Id) => void
   reset: () => Promise<void>
   trigger: (selectedId: Id) => Promise<SelectedValue<ValueType> | undefined>
 }
@@ -18,6 +23,24 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
   const selectContext = useMemo(() => new Context<ValueType>(), [])
 
   useImperativeHandle(ref, () => ({
+    getPath(id) {
+      return computedPath(id, [], selectContext)
+    },
+    getLevel(id) {
+      return computedPath(id, [], selectContext)?.length
+    },
+    getChildrenIds(id) {
+      return getChildrenIds(id, selectContext)
+    },
+    getById(id) {
+      const { getSelectItem } = selectContext
+      const item = omit(['refreshHandler', 'repeatTriggerUnselected'], getSelectItem(id))
+      return item as SelectedValue<ValueType>
+    },
+    deleteById(id) {
+      const { deleteSelectItem } = selectContext
+      deleteSelectItem(id)
+    },
     async reset() {
       const { getAllSelectItem } = selectContext
       for (const item of getAllSelectItem()) {
@@ -53,28 +76,10 @@ const InnerTreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps, ref: Re
       }
       selectedItem.refreshHandler()
 
-      if (!selectedItem.path) {
-        selectedItem.path = computedPath(selectedItem.id, [], selectContext)
-        selectedItem.level = selectedItem.path?.length
-      }
-      if (!selectedItem.childrenIds) {
-        selectedItem.childrenIds = getChildrenIds(selectedItem.id, selectContext)
-      }
-
       return omit(['refreshHandler', 'repeatTriggerUnselected'], selectedItem)
     }
-  }), [])
+  }), [selectContext])
 
-  useEffect(() => {
-    /** 初始化每个节点的信息 */
-    selectContext.getAllSelectItem().forEach(item => {
-      const path = computedPath(item.id, [], selectContext)
-      item.path = path
-      item.level = path.length
-      item.childrenIds = getChildrenIds(item.id, selectContext)
-    })
-  }, [])
-  
   return (
     <SelectContext.Provider value={selectContext}>
       {children}

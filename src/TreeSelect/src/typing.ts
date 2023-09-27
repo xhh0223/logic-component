@@ -4,10 +4,6 @@ export type Id = tempId
 
 export type SelectItem<ValueType> = Item<ValueType> & {
   parentId: Id
-  path: Id[]
-  /** 当前选中值的层级 */
-  level: number
-  childrenIds: Id[]
 }
 
 export interface IContext<ValueType> {
@@ -18,9 +14,5 @@ export interface IContext<ValueType> {
 }
 
 export type SelectedValue<ValueType> = Value<ValueType> & {
-  path: Id[]
-  /** 当前选中值的层级 */
-  level: number
   parentId: Id
-  childrenIds: Id[]
 }

@@ -1,0 +1,26 @@
+.tree-multiple-select-check-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &-value{
+      height: 4em;
+      overflow: auto;
+    }
+
+    &-operator {
+        width: 20em;
+        flex-wrap: wrap;
+        display: flex;
+        gap: 8px;
+    }
+
+    &-select {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &-group {
+        margin-left: 1em;
+    }
+}

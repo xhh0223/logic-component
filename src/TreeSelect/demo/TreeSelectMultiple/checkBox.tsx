@@ -1,16 +1,16 @@
-import { TreeSelectSingle, TreeSelectItem, type TreeSelectSingleRef } from '@/TreeSelect/src'
+import { TreeSelectMultiple, TreeSelectItem, type TreeSelectMultipleRef } from '@/TreeSelect/src'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import { genTreeData, type TreeNode } from '../utils'
 import './checkBox.scss'
 
 const checkBox = () => {
-  const classNamePrefix = 'tree-single-select-check-box'
+  const classNamePrefix = 'tree-multiple-select-check-box'
   const [value, setValue] = useState<string>('')
   const [repeatTriggerUnselected, setRepeatTriggerUnselected] = useState(true)
   const treeData = useMemo(() => genTreeData(3, 2, 2), [])
 
-  const ref = useRef<TreeSelectSingleRef<{ id: number, value: string }>>(null)
+  const ref = useRef<TreeSelectMultipleRef<{ id: number, value: string }>>(null)
 
   const renderTree = useCallback((tree: TreeNode[]) => {
     return tree?.map((item) => {
@@ -24,12 +24,8 @@ const checkBox = () => {
         {({ isChecked }) => {
           return <section>
             <div onClick={() => {
-              ref.current?.trigger(item.id).then(res => {
-                if (res?.isChecked) {
-                  setValue(JSON.stringify(res.value))
-                } else {
-                  setValue("")
-                }
+              ref.current?.trigger([item.id]).then(() => {
+                setValue(JSON.stringify(ref.current?.getAll().filter(i => i.isChecked).map(i => ({ id: i.id, value: i.value }))))
               })
             }}>
               <label htmlFor={`tree-single-${item.id}`}>{item.id}</label>
@@ -46,7 +42,7 @@ const checkBox = () => {
 
   return (
     <article className={classNamePrefix}>
-      <section>当前值：{value}</section>
+      <section className={`${classNamePrefix}-value`}>当前值：{value}</section>
       <section className={`${classNamePrefix}-operator`}>
         <button
           onClick={() => {
@@ -64,9 +60,9 @@ const checkBox = () => {
         </button>
       </section>
       <section className={`${classNamePrefix}-select`}>
-        <TreeSelectSingle ref={ref}>
+        <TreeSelectMultiple ref={ref}>
           {renderTree(treeData)}
-        </TreeSelectSingle>
+        </TreeSelectMultiple>
       </section>
     </article>
   )

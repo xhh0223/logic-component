@@ -6,6 +6,7 @@ import React, {
 } from 'react'
 import { type Id, type SelectedValue } from './typing'
 import { Context, SelectContext } from './context'
+import { omit } from 'ramda'
 
 export interface SelectMultipleProps {
   children: React.ReactNode
@@ -13,6 +14,8 @@ export interface SelectMultipleProps {
 
 export interface SelectMultipleRef<ValueType> {
   getAllValue: () => Array<SelectedValue<ValueType>>
+  getByIds: (id: Id[]) => Array<SelectedValue<ValueType>>
+  deleteByIds: (ids: Id[]) => void
   reset: (ids?: Id[]) => Promise<void>
   trigger: (selectedIds: Id[]) => Promise<Array<SelectedValue<ValueType>>>
 }
@@ -28,15 +31,22 @@ const InnerSelectMultiple = <ValueType,>(
   useImperativeHandle(
     ref,
     () => ({
-      getAllValue () {
+      getAllValue() {
         const { getAllSelectItem } = selectContext
-        return getAllSelectItem().map((item) => ({
-          id: item.id,
-          value: item.value,
-          isChecked: item.isChecked
-        }))
+        return getAllSelectItem().map((item) => (omit(['refreshHandler', 'repeatTriggerUnselected'], item)))
       },
-      async reset (ids) {
+      getByIds(ids) {
+        const { getSelectItem } = selectContext
+        const items = ids?.map(id => omit(['refreshHandler', 'repeatTriggerUnselected'], getSelectItem(id)))
+        return items as Array<SelectedValue<ValueType>>
+      },
+      deleteByIds(ids) {
+        const { deleteSelectItem } = selectContext
+        ids?.forEach((id) => {
+          deleteSelectItem(id)
+        })
+      },
+      async reset(ids) {
         const { getAllSelectItem, getSelectItem } = selectContext
         const allSelectItem = getAllSelectItem()
         if (Array.isArray(ids)) {
@@ -57,7 +67,7 @@ const InnerSelectMultiple = <ValueType,>(
           })
         }
       },
-      async trigger (ids) {
+      async trigger(ids) {
         const { getSelectItem } = selectContext
         if (Array.isArray(ids)) {
           /** 多选 */

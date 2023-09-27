@@ -5,8 +5,8 @@ export interface TreeNode {
   children?: TreeNode[]
 }
 export function genTreeData(...args: number[]) {
-  let tempArgs = args.slice(1, args.length)
-  let result: string[] = []
+  const tempArgs = args.slice(1, args.length)
+  const result: string[] = []
   Array.from({ length: args[0] }).forEach((_, index) => {
     result.push(`${index+1}`)
   })
@@ -15,7 +15,8 @@ export function genTreeData(...args: number[]) {
   while (tempArgs.length) {
     const temp = tempArgs.shift()
     const tempLastResult: string[] = []
-    for (let item of lastResult) {
+    for (const item of lastResult) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       Array.from({ length: temp! }).forEach((_, index) => {
         result.push(`${item}-${index+1}`)
         tempLastResult.push(`${item}-${index+1}`)
@@ -36,7 +37,7 @@ export function genTreeData(...args: number[]) {
   })
 
   const tree: TreeNode[] = []
-  for (let node of listTree) {
+  for (const node of listTree) {
     if (listTreeMap[node.parentId]) {
       if (listTreeMap[node.parentId].children) {
         listTreeMap[node.parentId].children?.push(listTreeMap[node.id])

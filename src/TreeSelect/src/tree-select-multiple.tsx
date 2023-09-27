@@ -1,4 +1,4 @@
-import React, { useMemo, type Ref, useImperativeHandle, forwardRef, useEffect } from 'react'
+import React, { useMemo, type Ref, useImperativeHandle, forwardRef } from 'react'
 import { type Id, type SelectedValue } from './typing'
 import { Context, SelectContext } from './context'
 import { computedPath, getChildrenIds } from './utils'
@@ -9,7 +9,12 @@ export interface TreeSelectMultipleProps {
 }
 
 export interface TreeSelectMultipleRef<ValueType> {
-  getAllValue: () => Array<SelectedValue<ValueType>>
+  getAll: () => Array<SelectedValue<ValueType>>
+  getByIds: (id: Id[]) => Array<SelectedValue<ValueType>>
+  getPath: (id: Id) => Id[]
+  getChildrenIds: (id: Id) => (Id[]) | undefined
+  getLevel: (id: Id) => number
+  deleteByIds: (ids: Id[]) => void
   reset: (ids?: Id[]) => Promise<void>
   trigger: (selectedIds: Id[]) => Promise<Array<SelectedValue<ValueType>>>
 }
@@ -17,11 +22,30 @@ const InnerTreeSelectMultiple = <ValueType,>(props: TreeSelectMultipleProps, ref
   const { children } = props
 
   const selectContext = useMemo(() => new Context<ValueType>(), [])
-
   useImperativeHandle(ref, () => ({
-    getAllValue() {
+    getAll() {
       const { getAllSelectItem } = selectContext
       return getAllSelectItem().map(item => omit(['refreshHandler', 'repeatTriggerUnselected'], item))
+    },
+    getPath(id) {
+      return computedPath(id, [], selectContext)
+    },
+    getLevel(id) {
+      return computedPath(id, [], selectContext)?.length - 2
+    },
+    getChildrenIds(id) {
+      return getChildrenIds(id, selectContext)
+    },
+    getByIds(ids) {
+      const { getSelectItem } = selectContext
+      const items = ids?.map(id => omit(['refreshHandler', 'repeatTriggerUnselected'], getSelectItem(id)))
+      return items as Array<SelectedValue<ValueType>>
+    },
+    deleteByIds(ids) {
+      const { deleteSelectItem } = selectContext
+      ids?.forEach((id) => {
+        deleteSelectItem(id)
+      })
     },
     async reset(ids) {
       const { getAllSelectItem, getSelectItem } = selectContext
@@ -60,31 +84,13 @@ const InnerTreeSelectMultiple = <ValueType,>(props: TreeSelectMultipleProps, ref
             selectItem.isChecked = true
           }
 
-          if (!selectItem.path) {
-            selectItem.path = computedPath(selectItem.id, [], selectContext)
-            selectItem.level = selectItem.path?.length
-          }
-          if (!selectItem.childrenIds) {
-            selectItem.childrenIds = getChildrenIds(selectItem.id, selectContext)
-          }
-
           selectedItems.push(omit(['refreshHandler', 'repeatTriggerUnselected'], selectItem))
         })
         return selectedItems
       }
       return []
     }
-  }), [])
-
-  useEffect(() => {
-    /** 初始化每个节点的信息 */
-    selectContext.getAllSelectItem().forEach(item => {
-      const path = computedPath(item.id, [], selectContext)
-      item.path = path
-      item.level = path.length
-      item.childrenIds = getChildrenIds(item.id, selectContext)
-    })
-  }, [])
+  }), [selectContext])
 
   return <SelectContext.Provider value={selectContext}>
     {children}
