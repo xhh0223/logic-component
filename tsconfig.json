@@ -4,7 +4,8 @@
     "rootDir": ".",
     "target": "ESNext",
     "lib": [
-      "ESNext"
+      "ESNext",
+      "DOM"
     ],
     "noEmit": true,
     "strict": true,
