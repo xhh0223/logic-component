@@ -1,12 +1,12 @@
 import { equals } from "ramda";
 import {
-  type SelectSingleSelectInterface,
+  type SelectSingleInterface,
   type Id,
   type SelectItem,
 } from "./typing";
 
 export class SelectSingle<ValueType>
-  implements SelectSingleSelectInterface<ValueType>
+  implements SelectSingleInterface<ValueType>
 {
   private readonly map = new Map<Id, SelectItem<ValueType>>();
   constructor(options?: Array<SelectItem<ValueType>>) {
@@ -15,8 +15,8 @@ export class SelectSingle<ValueType>
     });
   }
 
-  async reset() {
-    for (const item of this.getAllSelectItem()) {
+  reset() {
+    for (const item of this.getAll()) {
       if (item.isChecked) {
         item.isChecked = false;
         item.onCheckedChange(item);
@@ -25,7 +25,7 @@ export class SelectSingle<ValueType>
     }
   }
 
-  async trigger(selectItemId: Id) {
+  trigger=(selectItemId: Id) =>{
     const selectedItem = this.get(selectItemId);
     if (!selectedItem) {
       console.error("selectItem的id不存在");
@@ -45,11 +45,11 @@ export class SelectSingle<ValueType>
       selectedItem.isChecked = true;
     }
     selectedItem.onCheckedChange(selectedItem);
-    return selectedItem;
+    return selectedItem
   }
 
   getIdByValue(value: ValueType) {
-    for (const item of this.getAllSelectItem()) {
+    for (const item of this.getAll()) {
       if (equals(item.value, value)) {
         return item.id;
       }
@@ -68,7 +68,7 @@ export class SelectSingle<ValueType>
     return this.map.get(selectItemId);
   };
 
-  getAll = () => {
-    return [...this.map.values()];
+  getAll = ():Array<SelectItem<ValueType>> => {
+    return [...this.map.values()]
   };
 }

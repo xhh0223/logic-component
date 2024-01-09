@@ -26,7 +26,7 @@ export class TreeSelectSingle<ValueType>
   };
 
   async reset() {
-    for (const item of this.getAllSelectItem()) {
+    for (const item of this.getAll()) {
       if (item.isChecked) {
         item.isChecked = false;
         item.onCheckedChange(item);
@@ -36,13 +36,13 @@ export class TreeSelectSingle<ValueType>
   }
 
   trigger = (id: Id) => {
-    const selectedItem = this.getSelectItem(id);
+    const selectedItem = this.get(id);
     if (!selectedItem) {
       console.error("treeSelectItem的id不存在");
       return;
     }
 
-    for (const item of this.getAllSelectItem()) {
+    for (const item of this.getAll()) {
       if (item.isChecked && item.id !== id) {
         item.isChecked = false;
         item.onCheckedChange(item);

@@ -9,6 +9,7 @@ export interface SelectItem<ValueType> {
   repeatTriggerUnselected?: boolean;
 }
 
+
 export interface TreeSelectItem<ValueType> extends SelectItem<ValueType> {
   parentId: Id;
 }
@@ -21,17 +22,17 @@ export interface SelectInterface<ValueType> {
   getAll: () => Array<SelectItem<ValueType>>;
 }
 
-export interface SelectSingleSelectInterface<ValueType>
+export interface SelectSingleInterface<ValueType>
   extends SelectInterface<ValueType> {
-  trigger: (selectItemId: Id) => void;
+  trigger: (selectItemId: Id) => SelectItem<ValueType>|undefined;
   reset: () => void;
 }
 
-export interface SelectMultipleSelectInterface<ValueType>
+export interface SelectMultipleInterface<ValueType>
   extends SelectInterface<ValueType> {
   getIdsByValues: (values: ValueType[]) => Id[];
   triggerAll: () => void;
-  trigger: (selectItemIds: Id[]) => void;
+  trigger: (selectItemIds: Id[]) => Array<SelectItem<ValueType>>;
   reset: (selectItemIds?: Id[]) => void;
 }
 

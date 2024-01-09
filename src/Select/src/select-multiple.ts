@@ -1,12 +1,12 @@
 import { equals } from "ramda";
 import {
-  type SelectMultipleSelectInterface,
+  type SelectMultipleInterface,
   type Id,
   type SelectItem,
 } from "./typing";
 
 export class SelectMultiple<ValueType>
-  implements SelectMultipleSelectInterface<ValueType>
+  implements SelectMultipleInterface<ValueType>
 {
   private readonly map = new Map<Id, SelectItem<ValueType>>();
   constructor(options?: Array<SelectItem<ValueType>>) {
@@ -76,13 +76,13 @@ export class SelectMultiple<ValueType>
         selectItem.onCheckedChange(selectItem);
         selectedItems.push(selectItem);
       });
-      return selectedItems;
+      return selectedItems
     }
-    return [];
+    return []
   };
 
   getIdByValue = (value: ValueType) => {
-    for (const item of this.getAllSelectItem()) {
+    for (const item of this.getAll()) {
       if (equals(item.value, value)) {
         return item.id;
       }
@@ -101,7 +101,7 @@ export class SelectMultiple<ValueType>
     return this.map.get(selectItemId);
   };
 
-  getAll = () => {
+  getAll = ():Array<SelectItem<ValueType>> => {
     return [...this.map.values()];
   };
 }
