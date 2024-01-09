@@ -11,7 +11,7 @@ export class SelectSingle<ValueType>
   private readonly map = new Map<Id, SelectItem<ValueType>>();
   constructor(options?: Array<SelectItem<ValueType>>) {
     options?.forEach((option) => {
-      this.setSelectItem(option.id, option);
+      this.set(option.id, option);
     });
   }
 
@@ -26,12 +26,12 @@ export class SelectSingle<ValueType>
   }
 
   async trigger(selectItemId: Id) {
-    const selectedItem = this.getSelectItem(selectItemId);
+    const selectedItem = this.get(selectItemId);
     if (!selectedItem) {
       console.error("selectItem的id不存在");
       return;
     }
-    for (const item of this.getAllSelectItem()) {
+    for (const item of this.getAll()) {
       if (item.isChecked && item.id !== selectItemId) {
         item.isChecked = false;
         item.onCheckedChange(item);
@@ -56,19 +56,19 @@ export class SelectSingle<ValueType>
     }
   }
 
-  setSelectItem = (selectItemId: Id, selectItem: SelectItem<ValueType>) => {
+  set = (selectItemId: Id, selectItem: SelectItem<ValueType>) => {
     this.map.set(selectItemId, selectItem);
   };
 
-  deleteSelectItem = (selectItemId: Id) => {
+  delete = (selectItemId: Id) => {
     this.map.delete(selectItemId);
   };
 
-  getSelectItem = (selectItemId: Id) => {
+  get = (selectItemId: Id) => {
     return this.map.get(selectItemId);
   };
 
-  getAllSelectItem = () => {
+  getAll = () => {
     return [...this.map.values()];
   };
 }

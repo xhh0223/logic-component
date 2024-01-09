@@ -15,10 +15,10 @@ export interface TreeSelectItem<ValueType> extends SelectItem<ValueType> {
 
 export interface SelectInterface<ValueType> {
   getIdByValue: (value: ValueType) => Id | undefined;
-  setSelectItem: (selectItemId: Id, selectItem: SelectItem<ValueType>) => void;
-  deleteSelectItem: (selectItemId: Id) => void;
-  getSelectItem: (selectItemId: Id) => SelectItem<ValueType> | undefined;
-  getAllSelectItem: () => Array<SelectItem<ValueType>>;
+  set: (selectItemId: Id, selectItem: SelectItem<ValueType>) => void;
+  delete: (selectItemId: Id) => void;
+  get: (selectItemId: Id) => SelectItem<ValueType> | undefined;
+  getAll: () => Array<SelectItem<ValueType>>;
 }
 
 export interface SelectSingleSelectInterface<ValueType>
@@ -39,13 +39,13 @@ export interface TreeSelectInterface<ValueType> {
   getPath: (id: Id) => Id[];
   getChildrenIds: (id: Id) => Id[] | undefined;
   getLevel: (id: Id) => number;
-  setSelectItem: (
+  set: (
     selectItemId: Id,
     selectItem: TreeSelectItem<ValueType>
   ) => void;
-  deleteSelectItem: (selectItemId: Id) => void;
-  getSelectItem: (selectItemId: Id) => TreeSelectItem<ValueType> | undefined;
-  getAllSelectItem: () => Array<TreeSelectItem<ValueType>>;
+  delete: (selectItemId: Id) => void;
+  get: (selectItemId: Id) => TreeSelectItem<ValueType> | undefined;
+  getAll: () => Array<TreeSelectItem<ValueType>>;
 }
 
 export interface TreeSelectSingleInterface<ValueType>

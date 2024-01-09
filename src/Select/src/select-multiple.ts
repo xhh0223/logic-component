@@ -11,12 +11,12 @@ export class SelectMultiple<ValueType>
   private readonly map = new Map<Id, SelectItem<ValueType>>();
   constructor(options?: Array<SelectItem<ValueType>>) {
     options?.forEach((option) => {
-      this.setSelectItem(option.id, option);
+      this.set(option.id, option);
     });
   }
 
   getIdsByValues = (values: ValueType[]) => {
-    const allSelectItem = this.getAllSelectItem();
+    const allSelectItem = this.getAll();
     const ids: Id[] = [];
     if (Array.isArray(values)) {
       values?.forEach((value) => {
@@ -32,11 +32,11 @@ export class SelectMultiple<ValueType>
   };
 
   reset = (selectItemIds?: Id[]) => {
-    const allSelectItem = this.getAllSelectItem();
+    const allSelectItem = this.getAll();
     if (Array.isArray(selectItemIds)) {
       /** 多选 */
       selectItemIds?.forEach((id) => {
-        const selectItem = this.getSelectItem(id);
+        const selectItem = this.get(id);
         if (selectItem?.isChecked) {
           selectItem.isChecked = false;
           selectItem.onCheckedChange(selectItem);
@@ -53,7 +53,7 @@ export class SelectMultiple<ValueType>
   };
 
   triggerAll = () => {
-    this.getAllSelectItem()?.forEach((i) => {
+    this.getAll()?.forEach((i) => {
       if (!i.isChecked) {
         i.onCheckedChange(i);
       }
@@ -65,7 +65,7 @@ export class SelectMultiple<ValueType>
       /** 多选 */
       const selectedItems: Array<SelectItem<ValueType>> = [];
       selectItemIds?.forEach((id) => {
-        const selectItem = this.getSelectItem(id);
+        const selectItem = this.get(id);
         if (!selectItem) return;
 
         if (selectItem.repeatTriggerUnselected) {
@@ -89,19 +89,19 @@ export class SelectMultiple<ValueType>
     }
   };
 
-  setSelectItem = (selectItemId: Id, selectItem: SelectItem<ValueType>) => {
+  set = (selectItemId: Id, selectItem: SelectItem<ValueType>) => {
     this.map.set(selectItemId, selectItem);
   };
 
-  deleteSelectItem = (selectItemId: Id) => {
+  delete = (selectItemId: Id) => {
     this.map.delete(selectItemId);
   };
 
-  getSelectItem = (selectItemId: Id) => {
+  get = (selectItemId: Id) => {
     return this.map.get(selectItemId);
   };
 
-  getAllSelectItem = () => {
+  getAll = () => {
     return [...this.map.values()];
   };
 }

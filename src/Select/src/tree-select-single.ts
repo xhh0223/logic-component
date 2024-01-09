@@ -13,7 +13,7 @@ export class TreeSelectSingle<ValueType>
 
   constructor(options: Array<TreeSelectItem<ValueType>>) {
     options?.forEach((option) => {
-      this.setSelectItem(option.id, option);
+      this.set(option.id, option);
     });
   }
 
@@ -68,26 +68,26 @@ export class TreeSelectSingle<ValueType>
   };
 
   getIdByValue = (value: ValueType) => {
-    for (const item of this.getAllSelectItem()) {
+    for (const item of this.getAll()) {
       if (equals(item.value, value)) {
         return item.id;
       }
     }
   };
 
-  setSelectItem = (selectItemId: Id, selectItem: TreeSelectItem<ValueType>) => {
+  set = (selectItemId: Id, selectItem: TreeSelectItem<ValueType>) => {
     this.map.set(selectItemId, selectItem);
   };
 
-  deleteSelectItem = (selectItemId: Id) => {
+  delete = (selectItemId: Id) => {
     this.map.delete(selectItemId);
   };
 
-  getSelectItem = (selectItemId: Id) => {
+  get = (selectItemId: Id) => {
     return this.map.get(selectItemId);
   };
 
-  getAllSelectItem = () => {
+  getAll = () => {
     return [...this.map.values()];
   };
 }

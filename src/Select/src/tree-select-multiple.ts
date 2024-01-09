@@ -13,16 +13,16 @@ export class TreeSelectMultiple<ValueType>
 
   constructor(options: Array<TreeSelectItem<ValueType>>) {
     options?.forEach((option) => {
-      this.setSelectItem(option.id, option);
+      this.set(option.id, option);
     });
   }
 
   reset = (selectItemIds?: Id[]) => {
-    const allSelectItem = this.getAllSelectItem();
+    const allSelectItem = this.getAll();
     if (Array.isArray(selectItemIds)) {
       /** 多选 */
       selectItemIds?.forEach((id) => {
-        const selectItem = this.getSelectItem(id);
+        const selectItem = this.get(id);
         if (selectItem?.isChecked) {
           selectItem.isChecked = false;
           selectItem.onCheckedChange(selectItem);
@@ -39,7 +39,7 @@ export class TreeSelectMultiple<ValueType>
   };
 
   triggerAll = () => {
-    this.getAllSelectItem()?.forEach((i) => {
+    this.getAll()?.forEach((i) => {
       if (!i.isChecked) {
         i.onCheckedChange(i);
       }
@@ -51,7 +51,7 @@ export class TreeSelectMultiple<ValueType>
       /** 多选 */
       const selectedItems: Array<TreeSelectItem<ValueType>> = [];
       selectItemIds?.forEach((id) => {
-        const selectItem = this.getSelectItem(id);
+        const selectItem = this.get(id);
         if (!selectItem) {
           return;
         }
@@ -81,7 +81,7 @@ export class TreeSelectMultiple<ValueType>
   }
 
   getIdByValue = (value: ValueType) => {
-    for (const item of this.getAllSelectItem()) {
+    for (const item of this.getAll()) {
       if (equals(item.value, value)) {
         return item.id;
       }
@@ -89,7 +89,7 @@ export class TreeSelectMultiple<ValueType>
   };
 
   getIdsByValues = (values: ValueType[]) => {
-    const allSelectItem = this.getAllSelectItem();
+    const allSelectItem = this.getAll();
     const ids: Id[] = [];
     if (Array.isArray(values)) {
       values?.forEach((value) => {
@@ -104,19 +104,19 @@ export class TreeSelectMultiple<ValueType>
     return ids;
   };
 
-  setSelectItem = (selectItemId: Id, selectItem: TreeSelectItem<ValueType>) => {
+  set = (selectItemId: Id, selectItem: TreeSelectItem<ValueType>) => {
     this.map.set(selectItemId, selectItem);
   };
 
-  deleteSelectItem = (selectItemId: Id) => {
+  delete = (selectItemId: Id) => {
     this.map.delete(selectItemId);
   };
 
-  getSelectItem = (selectItemId: Id) => {
+  get = (selectItemId: Id) => {
     return this.map.get(selectItemId);
   };
 
-  getAllSelectItem = () => {
+  getAll = () => {
     return [...this.map.values()];
   };
 }
