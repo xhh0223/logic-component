@@ -1,2 +1,2 @@
 export type { SchemaProps, SchemaItemProps } from "./typing";
-export { Schema, SchemaItem} from "./schema";
+export { Schema, SchemaItem, useSchemaInstance } from "./schema";
