@@ -19,6 +19,7 @@ export function Schema<Schema = any, Context = any>(
       instance.getContext = collect.getContext;
       instance.setContext = collect.setContext;
       instance.getItem = collect.getItem;
+      instance.getAllItem = collect.getAllItem;
       instance.updateItemSchema = collect.updateItemSchema;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,5 +79,6 @@ export function useSchemaInstance<Schema, Context>() {
     getContext: defaultFn,
     updateItemSchema: defaultFn,
     getItem: defaultFn,
+    getAllItem: defaultFn,
   }).current as unknown as SchemaProps<Schema, Context>["instance"];
 }

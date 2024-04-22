@@ -41,7 +41,7 @@ export interface SchemaProps<Schema, Context> {
   children: ReactNode;
   instance: Pick<
     ISchemaCollect<Schema, Context>,
-    "setContext" | "getContext" | "updateItemSchema" | "getItem"
+    "setContext" | "getContext" | "updateItemSchema" | "getItem" | "getAllItem"
   >;
 }
 
