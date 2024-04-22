@@ -10,7 +10,6 @@ module.exports = {
     "standard-with-typescript",
     "plugin:react/recommended",
     "prettier",
-    ""
   ],
   "overrides": [
     {

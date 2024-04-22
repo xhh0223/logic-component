@@ -4,6 +4,7 @@ export interface TreeNode {
   value: any;
   children?: TreeNode[];
 }
+
 export function genTreeData(...args: number[]) {
   const tempArgs = args.slice(1, args.length);
   const result: string[] = [];
