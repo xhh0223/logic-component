@@ -1,1 +1,1 @@
-export type Id= string|Symbol|number
+export type Id= string|symbol|number
