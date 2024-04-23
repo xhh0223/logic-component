@@ -1,9 +1,16 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { SchemaCollect } from "./schema-collect";
 import { type SchemaItemProps, type SchemaProps } from "./typing";
 import { defaultFn } from "@/utils";
 
-const SchemaCollectContext = React.createContext<SchemaCollect<any, any>>(
+const SchemaCollectContext = createContext<SchemaCollect<any, any>>(
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   null!
 );
