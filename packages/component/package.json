@@ -1,0 +1,36 @@
+{
+  "name": "logic-component",
+  "version": "1.0.1-alpha.1",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.ts?(x)": [
+      "eslint --fix"
+    ],
+    "src/**/*.scss": [
+      "stylelint --fix"
+    ]
+  },
+  "license": "MIT"
+}

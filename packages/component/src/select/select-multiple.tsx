@@ -1,5 +1,4 @@
 import React, { useRef, useMemo } from "react";
-import { pick } from "lodash-es";
 import { type SelectMultipleProps } from "./typing";
 
 import { SelectCollect } from "./select-collect";
@@ -14,12 +13,14 @@ export const SelectMultiple = <ValueType,>(
   useMemo(() => {
     if (instance) {
       instance.getAllItem = () => {
-        return collect
-          .getAllItem()
-          ?.map(([key, value]) => [
-            key,
-            pick(value, ["id", "isChecked", "value"]),
-          ]);
+        return collect.getAllItem()?.map(([key, item]) => [
+          key,
+          {
+            id: item.id,
+            isChecked: item.isChecked,
+            value: item.value,
+          },
+        ]);
       };
       instance.selectAll = () => {
         collect.getAllItem().forEach(([key, item]) => {
@@ -49,7 +50,11 @@ export const SelectMultiple = <ValueType,>(
             });
             item.refresh();
           }
-          result.push(pick(item, ["id", "isChecked", "value"]));
+          result.push({
+            id: item.id,
+            isChecked: item.isChecked,
+            value: item.value,
+          });
         });
         return result;
       };
