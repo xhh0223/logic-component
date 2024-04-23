@@ -93,18 +93,19 @@ export class SchemaCollect<Schema, Context = any>
     [id, ...listenerSet.values()].forEach((i) => {
       /** 听众field */
       const { item: schemaItem } = this.schemaHashMap.get(i) ?? {};
+      console.log(
+        schemaItem?.dependency?.map((i) => [i, this.getItem(i)?.schema])
+      );
       schemaItem?.on({
         triggerOnField: {
           id,
           schema: item.schema,
         },
         /** 获取听众监听依赖的schema */
-        dependencySchema: (schemaItem?.dependency
-          ?.map((i) => [i, this.getItem(i)?.schema])
-          ?.filter((i) => i[1] && i[0] !== id) ?? []) as DependencySchema<
-          Schema,
-          Context
-        >,
+        dependencySchema: schemaItem?.dependency?.map((i) => [
+          i,
+          this.getItem(i)?.schema,
+        ]) as DependencySchema<Schema, Context>,
         context: this.getContext(),
       });
     });

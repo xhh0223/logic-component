@@ -51,6 +51,6 @@ export interface SchemaItemProps<Schema, Context> {
     schema: Schema | undefined,
     params: Parameters<ISchemaItem<Schema, Context>["on"]>["0"]
   ) => ReactNode;
-  dependency: Id[];
+  dependency?: Id[];
   initSchema?: Schema;
 }
