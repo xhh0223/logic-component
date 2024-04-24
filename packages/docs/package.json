@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-inject": "^5.0.5",
+    "modern-css-reset": "^1.4.0",
     "sass": "^1.75.0"
   }
 }

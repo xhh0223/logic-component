@@ -1,5 +1,5 @@
-jQuery("[nav-component]")
+jQuery("[data-select]")
   .first()
   .on("click", () => {
-    jQuery("[select-demo]").show();
+    jQuery("[data-select-demo]").show();
   });
