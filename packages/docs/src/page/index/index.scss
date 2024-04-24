@@ -1,0 +1,27 @@
+.page {
+  &-header {
+    &-container {
+      display: flex;
+      margin: 1em 2em 0 2em;
+    }
+  }
+  &-title {
+    &-container {
+      width: 20%;
+    }
+  }
+  &-nav {
+    li {
+      list-style: none;
+    }
+    &-container {
+      display: flex;
+      margin-left: auto;
+      flex-grow: 1;
+      justify-content: flex-end;
+    }
+    display: flex;
+    font-size: larger;
+    gap: 1em;
+  }
+}

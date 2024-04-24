@@ -10,6 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "logic-component": "workspace:*"
+    "@types/jquery": "^3.5.29",
+    "jquery": "^3.7.1",
+    "logic-component": "workspace:*",
+    "normalize.css": "^8.0.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-inject": "^5.0.5",
+    "sass": "^1.75.0"
   }
 }

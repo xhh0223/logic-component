@@ -21,10 +21,14 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
+        "baseUrl": ".",
         "paths": {
             "@component/*": [
                 "../component/src/*"
             ],
+            "@style/*": [
+                "src/style/*"
+            ]
         }
     },
     "include": [
