@@ -18,6 +18,7 @@ export const SelectSingle = <ValueType,>(
       };
       instance.trigger = (id) => {
         const item = collect.getItem(id);
+
         if (!item) {
           return;
         }
@@ -25,6 +26,7 @@ export const SelectSingle = <ValueType,>(
         if (item.allowRepeatChecked) {
           if (!item.isChecked) {
             collect.updateItemPartialColumn(id, { isChecked: true });
+            item.refresh();
             collect.getAllItem().forEach(([key, item]) => {
               if (key !== id && item.isChecked) {
                 collect.updateItemPartialColumn(key, {
@@ -38,6 +40,7 @@ export const SelectSingle = <ValueType,>(
           collect.updateItemPartialColumn(id, {
             isChecked: !item.isChecked,
           });
+          item.refresh();
           collect.getAllItem().forEach(([key, item]) => {
             if (key !== id && item.isChecked) {
               collect.updateItemPartialColumn(key, {

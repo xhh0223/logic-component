@@ -1,8 +1,10 @@
+@import "normalize.css";
+
 .page {
   &-header {
     &-container {
       display: flex;
-      margin: 1em 2em 0 2em;
+      margin: 1rem 2rem 0 2rem;
     }
   }
   &-title {
@@ -22,12 +24,26 @@
     }
     display: flex;
     font-size: larger;
-    gap: 1em;
+    gap: 1rem;
   }
 }
 
 .main {
-  li {
-    list-style: none;
+  margin: 0 2rem;
+  display: flex;
+  &-nav-container {
+    width: 20%;
+    ul {
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      list-style: none;
+    }
   }
+}
+
+.component-demo-container {
+  margin-left: auto;
+  flex-grow: 1;
 }

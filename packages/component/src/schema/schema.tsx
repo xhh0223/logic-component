@@ -51,25 +51,47 @@ export function SchemaItem<Schema, Context>(
     () => ({
       schema: initSchema,
       params: null as any,
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
-  useMemo(() => {
-    collect.addItem({
-      id,
       dependency,
+      id,
       on(extraInfo) {
         memoInfo.schema = extraInfo.triggerOnField.schema;
         memoInfo.params = extraInfo;
         update({});
       },
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  /** 新增 */
+  useMemo(() => {
+    collect.addItem({
+      id: memoInfo.id,
+      dependency: memoInfo.dependency,
+      on: memoInfo.on,
       schema: initSchema,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /** 修改 */
+  useMemo(() => {
+    if (id !== memoInfo.id) {
+      const beforeItem = collect.getItem(memoInfo.id);
+      collect.delItem(memoInfo.id);
+      collect.addItem({
+        id,
+        schema: beforeItem.schema,
+        dependency: beforeItem.dependency,
+        on: memoInfo.on,
+      });
+    } else {
+      // todo
+      // collect.updateItemSchema()
+    }
+  }, [collect, id, memoInfo.id, memoInfo.on]);
+
+  /** 删除 */
   useEffect(() => {
     return () => {
       collect?.delItem(id);

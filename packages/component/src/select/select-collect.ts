@@ -10,7 +10,8 @@ export class SelectCollect<ValueType = any>
     params: Partial<Omit<ISelectItem<ValueType>, "id">>
   ) => {
     const item = this.getItem(id);
-    if (item.value) {
+    if (params) {
+      // todo
       Object.assign(item, params);
     }
   };

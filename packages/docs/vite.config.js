@@ -2,14 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import inject from "@rollup/plugin-inject";
 import path from "path";
-import { readdirSync } from "fs";
 
-const PageDir = path.resolve(process.cwd(), "src", "page");
-const Router = (() => {
-  return readdirSync(PageDir)
-    .filter((page) => page)
-    .map((i) => path.resolve(PageDir, i, "index.html"));
-})();
+const PageDir = path.resolve(process.cwd(), "src");
+
 export default defineConfig({
   root: PageDir,
   plugins: [
@@ -26,9 +21,6 @@ export default defineConfig({
     },
   },
   build: {
-    rollupOptions: {
-      input: Router,
-    },
     outDir: path.resolve(process.cwd(), "dist"),
   },
 });
