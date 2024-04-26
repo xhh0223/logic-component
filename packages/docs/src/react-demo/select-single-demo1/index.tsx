@@ -8,9 +8,7 @@ import {
 const SelectSingleDemo1 = () => {
   const ins = useSelectSingleInstance();
   const [, update] = useState({});
-  setTimeout(() => {
-    console.log(ins.getAllItem());
-  }, 100);
+
   return (
     <div>
       <SelectSingle instance={ins}>
@@ -32,6 +30,8 @@ const SelectSingleDemo1 = () => {
                 </div>
               );
             }}
+            isChecked={false}
+            value={undefined}
           />
         ))}
       </SelectSingle>

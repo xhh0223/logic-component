@@ -1,5 +1,5 @@
 import React, { useRef, useMemo } from "react";
-
+import { omit } from "lodash-es";
 import { type SelectSingleProps } from "./typing";
 
 import { SelectCollect } from "./select-collect";
@@ -14,7 +14,9 @@ export const SelectSingle = <ValueType,>(
   useMemo(() => {
     if (instance) {
       instance.getAllItem = () => {
-        return collect.getAllItem()?.map(([key, value]) => [key, value]);
+        return collect
+          .getAllItem()
+          ?.map(([key, value]) => [key, omit(value, ["id", "refresh"])]);
       };
       instance.trigger = (id) => {
         const item = collect.getItem(id);

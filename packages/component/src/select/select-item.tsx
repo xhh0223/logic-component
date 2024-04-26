@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { type SelectItemProps } from "./typing";
 import { SelectCollectContext } from "./context";
 
@@ -6,16 +6,26 @@ export const SelectItem = <Value,>(props: SelectItemProps<Value>) => {
   const { id, value, render, allowRepeatChecked = false } = props;
   const collect = useContext(SelectCollectContext);
 
-  /** todo注意修改的情况 */
-  const memoInfo = useRef(props);
+  /** 记录第一次初始化的值 */
+  const memoInfo = useMemo(
+    () => ({
+      id,
+      value,
+      allowRepeatChecked,
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
   const [, update] = useState({});
+
   /** 新增 */
   useMemo(() => {
     collect.addItem({
-      id: memoInfo.current.id,
-      value: memoInfo.current.value,
+      id: memoInfo.id,
+      value: memoInfo.value,
       isChecked: false,
-      allowRepeatChecked: memoInfo.current.allowRepeatChecked,
+      allowRepeatChecked: memoInfo.allowRepeatChecked,
       refresh() {
         update({});
       },
@@ -25,20 +35,21 @@ export const SelectItem = <Value,>(props: SelectItemProps<Value>) => {
 
   /** 修改 */
   useMemo(() => {
-    if (id !== memoInfo.current.id) {
-      const beforeItem = collect.getItem(memoInfo.current.id);
-      collect.delItem(memoInfo.current.id);
+    if (id !== memoInfo.id) {
+      const beforeItem = collect.getItem(memoInfo.id);
+      collect.delItem(memoInfo.id);
+      memoInfo.id = id;
       collect.addItem({
-        id,
+        id: memoInfo.id,
         ...beforeItem,
       });
     } else {
-      collect.updateItemPartialColumn(memoInfo.current.id, {
+      collect.updateItemPartialColumn(memoInfo.id, {
         value,
         allowRepeatChecked,
       });
     }
-  }, [value, collect, id, allowRepeatChecked]);
+  }, [id, memoInfo, collect, value, allowRepeatChecked]);
 
   /** 删除 */
   useEffect(() => {
@@ -46,9 +57,10 @@ export const SelectItem = <Value,>(props: SelectItemProps<Value>) => {
       collect.delItem(id);
     };
   }, [collect, id]);
+
   return render({
-    id,
-    value,
+    id: memoInfo.id,
+    value: memoInfo.value,
     isChecked: !!collect.getItem(id)?.isChecked,
   });
 };

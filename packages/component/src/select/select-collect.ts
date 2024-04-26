@@ -1,34 +1,45 @@
 import { type Id } from "@/typing";
-import { type ISelectCollect, type ISelectItem } from "./typing";
+import {
+  type CanUpdateISelectItem,
+  type ISelectCollect,
+  type ISelectItem,
+} from "./typing";
 
+import { omit } from "lodash-es";
 export class SelectCollect<ValueType = any>
   implements ISelectCollect<ValueType>
 {
-  private readonly itemsCollect = new Map();
+  private readonly itemsCollect = new Map<Id, ISelectItem<ValueType>>();
+
   updateItemPartialColumn = (
     id: Id,
-    params: Partial<Omit<ISelectItem<ValueType>, "id">>
+    params: Partial<CanUpdateISelectItem<ValueType>>
   ) => {
     const item = this.getItem(id);
     if (params) {
-      // todo
-      Object.assign(item, params);
+      this.itemsCollect.set(id, {
+        ...item,
+        ...params,
+      });
     }
   };
 
   getItem = (id: Id) => {
-    return this.itemsCollect.get(id) as ISelectItem<any>;
+    const item = this.itemsCollect.get(id);
+    return item ? omit(item, ["id"]) : item;
   };
 
   addItem = (item: ISelectItem<ValueType>) => {
-    this.itemsCollect.set(item.id, item);
+    this.itemsCollect.set(item.id, omit(item, ["id"]));
   };
 
   delItem = (id: Id) => {
     this.itemsCollect.delete(id);
   };
 
-  getAllItem = (): Array<[Id, ISelectItem<ValueType>]> => {
-    return [...this.itemsCollect.entries()].map((i) => [i[0], i[1]]);
+  getAllItem = () => {
+    return [...this.itemsCollect.entries()].map(
+      ([key, value]) => [key, value] as const
+    ) as any;
   };
 }
