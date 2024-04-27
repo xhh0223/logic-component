@@ -45,9 +45,9 @@ export interface SelectMultipleProps<ValueType = any> {
   };
 }
 
-export type SelectItemProps<ValueType> = Omit<
+export type SelectItemProps<ValueType> = Pick<
   ISelectItem<ValueType>,
-  "refresh"
+  "id" | "allowRepeatChecked" | "value"
 > & {
   render: (params: RequiredISelectItem<ValueType>) => React.ReactNode;
 };

@@ -43,9 +43,11 @@ export interface TreeSelectMultipleProps<ValueType = any> {
   };
 }
 
-export type TreeSelectItemProps<ValueType> = Omit<
-  ITreeSelectItem<ValueType>,
-  "refresh"
-> & {
+export interface TreeSelectItemProps<ValueType> {
+  id: ITreeSelectItem<ValueType>["id"];
+  parentId: ITreeSelectItem<ValueType>["parentId"];
+  children?: ITreeSelectItem<ValueType>["children"];
+  value?: ITreeSelectItem<ValueType>["value"];
+  allowRepeatChecked?: ITreeSelectItem<ValueType>["allowRepeatChecked"];
   render: (params: RequiredITreeSelectItem<ValueType>) => React.ReactNode;
-};
+}

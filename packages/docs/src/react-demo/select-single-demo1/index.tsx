@@ -1,41 +1,36 @@
-import { useState } from "react";
-import { Schema, useSchemaInstance, SchemaItem } from "@component/index";
+import {
+  TreeSelectMultiple,
+  TreeSelectItem,
+  useTreeSelectMultipleInstance,
+} from "@logic-component/index";
 
 const SelectSingleDemo1 = () => {
-  const ins = useSchemaInstance();
-  const [, update] = useState({});
-
+  const ins = useTreeSelectMultipleInstance();
   return (
     <div>
-      <Schema instance={ins}>
+      <TreeSelectMultiple instance={ins}>
         {Array.from({ length: 10 }).map((i, index) => (
-          <SchemaItem
+          <TreeSelectItem
             key={index}
             id={Math.random()}
-            initSchema={{
-              value: Math.random(),
-            }}
-            initDependency={[1, 2, 3]}
-            render={(t, extra) => {
+            parentId={1}
+            children={[12]}
+            allowRepeatChecked={true}
+            render={({ id, isChecked, ...rest }) => {
               return (
                 <div
                   onClick={() => {
-                    ins.updateItemPartialColumn(t.id, {
-                      schema: {
-                        value: Math.random(),
-                      },
-                      dependency: [1, 2,3,5],
-                    });
-                    // update({});
+                    ins.trigger([id]);
                   }}
                 >
-                  {JSON.stringify(t)}
+                  {JSON.stringify(isChecked)}
                 </div>
               );
             }}
+            value={undefined}
           />
         ))}
-      </Schema>
+      </TreeSelectMultiple>
     </div>
   );
 };

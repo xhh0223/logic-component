@@ -23,7 +23,10 @@
         "noFallthroughCasesInSwitch": true,
         "baseUrl": ".",
         "paths": {
-            "@component/*": [
+            "@src/*": [
+                "src/*"
+            ],
+            "@logic-component/*": [
                 "../component/src/*"
             ],
             "@style/*": [

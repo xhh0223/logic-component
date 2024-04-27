@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { type TreeSelectItemProps } from "./typing";
 import { SelectCollectContext } from "./context";
 
-export const TreeSelectItem = <Value,>(props: TreeSelectItemProps<Value>) => {
+export const TreeSelectItem = <Value=any,>(props: TreeSelectItemProps<Value>) => {
   const {
     id,
     value,

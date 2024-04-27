@@ -1,7 +1,7 @@
 import React from "react";
 
 const SelectMultipleDemo1 = () => {
-  return <div>SelectMultipleDemo1</div>;
+  return <div></div>;
 };
 
 export default SelectMultipleDemo1;

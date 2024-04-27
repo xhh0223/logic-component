@@ -15,8 +15,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
+      "@src": path.resolve(process.cwd(), "src"),
       "@style": path.resolve(process.cwd(), "src", "style"),
-      "@component": path.resolve(process.cwd(), "..", "component", "src"),
+      "@logic-component": path.resolve(process.cwd(), "..", "component", "src"),
       "@/utils": path.resolve(process.cwd(), "..", "component", "src", "utils"),
     },
   },
