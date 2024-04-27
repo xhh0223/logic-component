@@ -5,7 +5,7 @@ export interface TreeNode {
   children?: TreeNode[];
 }
 
-export function genTreeData(...args: number[]) {
+export function genTreeData(args) {
   const tempArgs = args.slice(1, args.length);
   const result: string[] = [];
   Array.from({ length: args[0] }).forEach((_, index) => {
@@ -51,4 +51,19 @@ export function genTreeData(...args: number[]) {
     }
   }
   return tree;
+}
+
+export function genListTree(result = [], data) {
+  data.forEach((i) => {
+    result.push({
+      id: i.id,
+      parentId: i.parentId,
+      children: i.children,
+      value: i.value,
+    });
+    if (i.children) {
+      genListTree(result, i.children);
+    }
+  });
+  return result;
 }
