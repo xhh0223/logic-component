@@ -8,30 +8,26 @@ export const SelectItem = <Value,>(props: SelectItemProps<Value>) => {
 
   /** 记录第一次初始化的值 */
   const memoInfo = useMemo(
-    () => ({
-      id,
-      value,
-      allowRepeatChecked,
-    }),
+    () => {
+      /** 新增 */
+      collect.addItem({
+        id,
+        value,
+        isChecked: false,
+        allowRepeatChecked,
+        refresh() {
+          update({});
+        },
+      });
+      return {
+        id,
+      };
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
   const [, update] = useState({});
-
-  /** 新增 */
-  useMemo(() => {
-    collect.addItem({
-      id: memoInfo.id,
-      value: memoInfo.value,
-      isChecked: false,
-      allowRepeatChecked: memoInfo.allowRepeatChecked,
-      refresh() {
-        update({});
-      },
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   /** 修改 */
   useMemo(() => {
@@ -40,8 +36,10 @@ export const SelectItem = <Value,>(props: SelectItemProps<Value>) => {
       collect.delItem(memoInfo.id);
       memoInfo.id = id;
       collect.addItem({
-        id: memoInfo.id,
         ...beforeItem,
+        id,
+        value,
+        allowRepeatChecked,
       });
     } else {
       collect.updateItemPartialColumn(memoInfo.id, {
@@ -58,9 +56,10 @@ export const SelectItem = <Value,>(props: SelectItemProps<Value>) => {
     };
   }, [collect, id]);
 
+  const item = collect.getItem(id);
   return render({
-    id: memoInfo.id,
-    value: memoInfo.value,
-    isChecked: !!collect.getItem(id)?.isChecked,
+    id,
+    value: item.value,
+    isChecked: !!item.isChecked,
   });
 };

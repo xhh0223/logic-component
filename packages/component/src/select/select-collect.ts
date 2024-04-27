@@ -4,8 +4,7 @@ import {
   type ISelectCollect,
   type ISelectItem,
 } from "./typing";
-
-import { omit } from "lodash-es";
+import { pick } from "lodash-es";
 export class SelectCollect<ValueType = any>
   implements ISelectCollect<ValueType>
 {
@@ -19,18 +18,17 @@ export class SelectCollect<ValueType = any>
     if (params) {
       this.itemsCollect.set(id, {
         ...item,
-        ...params,
+        ...pick(params, ["isChecked", "allowRepeatChecked", "value"]),
       });
     }
   };
 
   getItem = (id: Id) => {
-    const item = this.itemsCollect.get(id);
-    return item ? omit(item, ["id"]) : item;
+    return this.itemsCollect.get(id);
   };
 
   addItem = (item: ISelectItem<ValueType>) => {
-    this.itemsCollect.set(item.id, omit(item, ["id"]));
+    this.itemsCollect.set(item.id, item);
   };
 
   delItem = (id: Id) => {

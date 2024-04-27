@@ -8,9 +8,9 @@ export interface ISelectItem<ValueType = any> {
   refresh: () => void;
 }
 
-export type CanUpdateISelectItem<ValueType> = Omit<
+export type CanUpdateISelectItem<ValueType> = Pick<
   ISelectItem<ValueType>,
-  "id"
+  "isChecked" | "allowRepeatChecked" | "value"
 >;
 
 export interface ISelectCollect<ValueType> {

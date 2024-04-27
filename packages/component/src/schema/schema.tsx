@@ -109,6 +109,7 @@ export function SchemaItem<Schema, Context>(
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return render(
     {
       id: memoInfo.currentId,
