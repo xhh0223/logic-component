@@ -1,40 +1,41 @@
-import React, { useEffect, useState } from "react";
-import {
-  SelectSingle,
-  useSelectSingleInstance,
-  SelectItem,
-} from "@component/index";
+import { useState } from "react";
+import { Schema, useSchemaInstance, SchemaItem } from "@component/index";
 
 const SelectSingleDemo1 = () => {
-  const ins = useSelectSingleInstance();
+  const ins = useSchemaInstance();
   const [, update] = useState({});
 
   return (
     <div>
-      <SelectSingle instance={ins}>
+      <Schema instance={ins}>
         {Array.from({ length: 10 }).map((i, index) => (
-          <SelectItem
+          <SchemaItem
             key={index}
             id={Math.random()}
-            render={function ({ id, isChecked }): React.ReactNode {
+            initSchema={{
+              value: Math.random(),
+            }}
+            initDependency={[1, 2, 3]}
+            render={(t, extra) => {
               return (
-                <div>
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={() => {
-                      ins.trigger(id);
-                      update({});
-                    }}
-                  />
+                <div
+                  onClick={() => {
+                    ins.updateItemPartialColumn(t.id, {
+                      schema: {
+                        value: Math.random(),
+                      },
+                      dependency: [1, 2,3,5],
+                    });
+                    // update({});
+                  }}
+                >
+                  {JSON.stringify(t)}
                 </div>
               );
             }}
-            isChecked={false}
-            value={undefined}
           />
         ))}
-      </SelectSingle>
+      </Schema>
     </div>
   );
 };

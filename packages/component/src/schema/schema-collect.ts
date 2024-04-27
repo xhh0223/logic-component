@@ -1,16 +1,17 @@
 import { type ISchemaItem, type ISchemaCollect } from "./typing";
 import { type Id } from "@/typing";
 
-type DependencySchema<Schema, Context> = Parameters<
-  ISchemaItem<Schema, Context>["on"]
->["0"]["dependencySchema"];
-
 export class SchemaCollect<Schema, Context = any>
   implements ISchemaCollect<Schema, Context>
 {
   private readonly schemaHashMap = new Map<
     Id,
-    { item: ISchemaItem<any, any>; listenerSet: Set<Id> }
+    {
+      item: ISchemaItem<Schema, Context>;
+      listenerSet: Set<Id>;
+      /** 方便快速查找依赖 */
+      dependencySet: Set<Id>;
+    }
   >();
 
   private context!: Context;
@@ -22,92 +23,112 @@ export class SchemaCollect<Schema, Context = any>
     this.context = context;
   };
 
+  addDependency(id) {
+    const {
+      dependencySet: targetDependencySet,
+      listenerSet: targetListenerSet,
+    } = this.schemaHashMap.get(id);
+
+    this.schemaHashMap.forEach((i) => {
+      const { listenerSet, dependencySet } = i;
+      /** 我的依赖集有你，你的监听集添加我 */
+      if (targetDependencySet.has(i.item.id)) {
+        listenerSet.add(id);
+      }
+      /** 你的依赖集有我，但是我的监听集合没有你 */
+      if (dependencySet.has(id) && !targetListenerSet.has(i.item.id)) {
+        targetListenerSet.add(i.item.id);
+      }
+    });
+  }
+
+  deleteDependency(id) {
+    const {
+      listenerSet: targetListenerSet,
+      dependencySet: targetDependencySet,
+    } = this.schemaHashMap.get(id);
+    targetListenerSet.clear();
+    targetDependencySet.clear();
+
+    this.schemaHashMap.forEach((i) => {
+      const { listenerSet } = i;
+      if (listenerSet.has(id)) {
+        listenerSet.delete(id);
+      }
+    });
+  }
+
   addItem = (schemaItem: ISchemaItem<Schema, Context>) => {
     this.schemaHashMap.set(schemaItem.id, {
       item: schemaItem,
       listenerSet: new Set(),
+      dependencySet: new Set(schemaItem.dependency),
     });
-
-    schemaItem?.dependency?.forEach((i) => {
-      const item = this.schemaHashMap.get(i);
-      if (item) {
-        item.listenerSet.add(schemaItem.id);
-      }
-    });
-    this.schemaHashMap.forEach((i) => {
-      const { id, dependency } = i.item;
-      const listenerSet = this.schemaHashMap.get(schemaItem.id)?.listenerSet;
-      if (listenerSet && dependency?.includes(schemaItem.id)) {
-        listenerSet.add(id);
-      }
-    });
+    this.addDependency(schemaItem.id);
   };
 
   delItem = (id: Id) => {
     const deletedItem = this.schemaHashMap.get(id);
-    this.schemaHashMap.delete(id);
-    if (deletedItem?.item?.dependency) {
-      deletedItem.item.dependency.forEach((i) => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const { listenerSet } = this.schemaHashMap.get(i)!;
-        listenerSet.delete(id);
-      });
+    if (deletedItem) {
+      this.deleteDependency(id);
+      this.schemaHashMap.delete(id);
     }
   };
 
-  getItem = (id: Id) => {
-    const item = this.schemaHashMap.get(id)?.item;
-    if (item) {
-      return {
-        id: item.id,
-        dependency: item.dependency,
-        schema: item.schema,
-      };
-    }
-  };
-
-  getAllItem = () => {
-    const result = [...this.schemaHashMap.entries()].map(([id, { item }]) => [
-      id,
-      {
-        id: item.id,
-        dependency: item.dependency,
-        schema: item.schema as Schema,
-      },
-    ]);
-    return result as any;
-  };
-
-  updateItemSchema = (
-    id: Id,
-    schema: Pick<ISchemaItem<Schema, Context>, "schema">
-  ): void => {
+  updateItemPartialColumn = (id, params): void => {
     const record = this.schemaHashMap.get(id);
     if (!record) {
       return;
     }
-    const { item, listenerSet } = record;
-    item.schema = schema;
+    const { listenerSet, dependencySet } = record;
+
+    if (params.dependency) {
+      /** 删除旧依赖 */
+      this.deleteDependency(id);
+      /** 重置依赖 */
+      dependencySet.clear();
+      params.dependency.forEach((i) => {
+        dependencySet.add(i);
+      });
+      /** 重新绑定依赖 */
+      this.addDependency(id);
+    }
+
+    /** 赋值 */
+    record.item = {
+      ...record.item,
+      ...params,
+    };
 
     /** 触发和听众的on方法 */
     [id, ...listenerSet.values()].forEach((i) => {
       /** 听众field */
-      const { item: schemaItem } = this.schemaHashMap.get(i) ?? {};
-      console.log(
-        schemaItem?.dependency?.map((i) => [i, this.getItem(i)?.schema])
-      );
+      const schemaItem = this.getItem(id);
+
       schemaItem?.on({
         triggerOnField: {
           id,
-          schema: item.schema,
+          schema: record.item.schema,
+          dependency: record.item.dependency,
         },
         /** 获取听众监听依赖的schema */
         dependencySchema: schemaItem?.dependency?.map((i) => [
           i,
           this.getItem(i)?.schema,
-        ]) as DependencySchema<Schema, Context>,
+        ]),
         context: this.getContext(),
       });
     });
+  };
+
+  getItem = (id) => {
+    return this.schemaHashMap.get(id)?.item;
+  };
+
+  getAllItem = () => {
+    const result = [...this.schemaHashMap.entries()].map(
+      ([id, { item }]) => [id, item] as any
+    );
+    return result;
   };
 }
