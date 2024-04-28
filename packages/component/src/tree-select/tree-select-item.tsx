@@ -2,14 +2,16 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { type TreeSelectItemProps } from "./typing";
 import { SelectCollectContext } from "./context";
 
-export const TreeSelectItem = <Value=any,>(props: TreeSelectItemProps<Value>) => {
+export const TreeSelectItem = <Value = any,>(
+  props: TreeSelectItemProps<Value>
+) => {
   const {
     id,
     value,
     render,
     allowRepeatChecked = false,
     children,
-    parentId,
+    parent,
   } = props;
   const collect = useContext(SelectCollectContext);
 
@@ -18,7 +20,7 @@ export const TreeSelectItem = <Value=any,>(props: TreeSelectItemProps<Value>) =>
     () => {
       /** 新增 */
       collect.addItem({
-        parentId,
+        parent,
         id,
         value,
         isChecked: false,
@@ -47,16 +49,20 @@ export const TreeSelectItem = <Value=any,>(props: TreeSelectItemProps<Value>) =>
       collect.addItem({
         ...beforeItem,
         id,
+        parent,
+        children,
         value,
         allowRepeatChecked,
       });
     } else {
       collect.updateItemPartialColumn(memoInfo.id, {
+        parent,
+        children,
         value,
         allowRepeatChecked,
       });
     }
-  }, [id, memoInfo, collect, value, allowRepeatChecked]);
+  }, [id, memoInfo, collect, value, allowRepeatChecked, parent, children]);
 
   /** 删除 */
   useEffect(() => {
@@ -71,5 +77,6 @@ export const TreeSelectItem = <Value=any,>(props: TreeSelectItemProps<Value>) =>
     value: item.value,
     isChecked: !!item.isChecked,
     children: item.children,
+    parent: item.parent,
   });
 };

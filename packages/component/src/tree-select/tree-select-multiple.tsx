@@ -17,7 +17,7 @@ export const TreeSelectMultiple = <ValueType,>(
           .getAllItem()
           ?.map(([key, item]) => [
             key,
-            pick(item, ["id", "isChecked", "value"]),
+            pick(item, ["id", "isChecked", "value", "children", "parent"]),
           ]);
       };
       instance.selectAll = () => {
@@ -48,11 +48,9 @@ export const TreeSelectMultiple = <ValueType,>(
             });
             item.refresh();
           }
-          result.push({
-            id: item.id,
-            isChecked: item.isChecked,
-            value: item.value,
-          });
+          result.push(
+            pick(item, ["id", "isChecked", "value", "children", "parent"])
+          );
         });
         return result;
       };
@@ -69,6 +67,7 @@ export const TreeSelectMultiple = <ValueType,>(
 
 export const useTreeSelectMultipleInstance = <ValueType,>() => {
   return useRef({
+    selectAll: defaultFn,
     trigger: defaultFn,
     getAllItem: defaultFn,
   }).current as unknown as TreeSelectMultipleProps<ValueType>["instance"];

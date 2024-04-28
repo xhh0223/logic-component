@@ -31,7 +31,7 @@ export type RequiredISelectItem<ValueType> = Required<
 export interface SelectSingleProps<ValueType = any> {
   children: React.ReactNode;
   instance: {
-    trigger: (id: Id) => void;
+    trigger: (id: Id) => RequiredISelectItem<ValueType> | undefined;
     getAllItem: () => Array<[Id, RequiredISelectItem<ValueType>]>;
   };
 }

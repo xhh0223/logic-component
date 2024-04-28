@@ -1,14 +1,18 @@
 import { type Id } from "@/typing";
-import { type ISelectItem } from "@/select/typing";
 
-export type ITreeSelectItem<ValueType> = ISelectItem<ValueType> & {
-  parentId: Id;
+export interface ITreeSelectItem<ValueType> {
+  id: Id;
+  isChecked?: boolean;
+  allowRepeatChecked?: boolean;
+  value?: ValueType;
+  refresh: () => void;
+  parent: ITreeSelectItem<ValueType>;
   children?: ITreeSelectItem<ValueType>;
-};
+}
 
-export type CanUpdateITreeSelectItem<ValueType> = Omit<
+export type CanUpdateITreeSelectItem<ValueType> = Pick<
   ITreeSelectItem<ValueType>,
-  "id"
+  "isChecked" | "allowRepeatChecked" | "children" | "parent" | "value"
 >;
 
 export interface ISelectCollect<ValueType> {
@@ -23,13 +27,16 @@ export interface ISelectCollect<ValueType> {
 }
 
 export type RequiredITreeSelectItem<ValueType> = Required<
-  Pick<ITreeSelectItem<ValueType>, "id" | "isChecked" | "value" | "children">
+  Pick<
+    ITreeSelectItem<ValueType>,
+    "id" | "isChecked" | "value" | "children" | "parent"
+  >
 >;
 
 export interface TreeSelectSingleProps<ValueType = any> {
   children: React.ReactNode;
   instance: {
-    trigger: (id: Id) => void;
+    trigger: (id: Id) => RequiredITreeSelectItem<ValueType> | undefined;
     getAllItem: () => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
   };
 }
@@ -45,7 +52,7 @@ export interface TreeSelectMultipleProps<ValueType = any> {
 
 export interface TreeSelectItemProps<ValueType> {
   id: ITreeSelectItem<ValueType>["id"];
-  parentId: ITreeSelectItem<ValueType>["parentId"];
+  parent: ITreeSelectItem<ValueType>["parent"];
   children?: ITreeSelectItem<ValueType>["children"];
   value?: ITreeSelectItem<ValueType>["value"];
   allowRepeatChecked?: ITreeSelectItem<ValueType>["allowRepeatChecked"];

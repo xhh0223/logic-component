@@ -20,7 +20,13 @@ export class SelectCollect<ValueType = any>
     if (params) {
       this.itemsCollect.set(id, {
         ...item,
-        ...pick(params, ["isChecked", "allowRepeatChecked", "value"]),
+        ...pick(params, [
+          "isChecked",
+          "allowRepeatChecked",
+          "value",
+          "parent",
+          "children",
+        ]),
       });
     }
   };

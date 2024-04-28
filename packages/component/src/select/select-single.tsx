@@ -55,6 +55,7 @@ export const SelectSingle = <ValueType,>(
             }
           });
         }
+        return pick(collect.getItem(id), ["id", "isChecked", "value"]);
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

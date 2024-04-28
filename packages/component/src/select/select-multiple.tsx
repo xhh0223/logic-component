@@ -48,11 +48,7 @@ export const SelectMultiple = <ValueType,>(
             });
             item.refresh();
           }
-          result.push({
-            id: item.id,
-            isChecked: item.isChecked,
-            value: item.value,
-          });
+          result.push(pick(item, ["id", "isChecked", "value"]));
         });
         return result;
       };
@@ -69,6 +65,7 @@ export const SelectMultiple = <ValueType,>(
 
 export const useSelectMultipleInstance = <ValueType,>() => {
   return useRef({
+    selectAll: defaultFn,
     trigger: defaultFn,
     getAllItem: defaultFn,
   }).current as unknown as SelectMultipleProps<ValueType>["instance"];

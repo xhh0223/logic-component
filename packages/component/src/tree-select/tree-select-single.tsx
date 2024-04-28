@@ -18,7 +18,7 @@ export const TreeSelectSingle = <ValueType,>(
           .getAllItem()
           ?.map(([key, item]) => [
             key,
-            pick(item, ["id", "isChecked", "value"]),
+            pick(item, ["id", "isChecked", "value", "children", "parent"]),
           ]);
       };
       instance.trigger = (id) => {
@@ -55,6 +55,13 @@ export const TreeSelectSingle = <ValueType,>(
             }
           });
         }
+        return pick(collect.getItem(id), [
+          "id",
+          "isChecked",
+          "value",
+          "children",
+          "parent",
+        ]);
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
