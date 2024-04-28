@@ -1,6 +1,5 @@
+import { lazy } from "react";
 import ReactDOM from "react-dom/client";
-import SelectSingleDemo1 from "./select-single-demo1";
-import TreeSelectSingleDemo1 from "./tree-select-single-demo1";
 
 const mountDemo = (
   components: Array<{ component: React.FC; elementId: string }>
@@ -12,33 +11,33 @@ const mountDemo = (
   });
 };
 
-const mountInfo = [
-  {
-    component: SelectSingleDemo1,
-    elementId: "select-single-demo1",
-  },
-  {
-    component: SelectSingleDemo1,
-    elementId: "demo2",
-  },
-  {
-    component: TreeSelectSingleDemo1,
-    elementId: "demo1",
-  },
-];
-
-jQuery("#demo").append(
-  ...mountInfo.map((i) => `<div id=${i.elementId}></div>`)
+// @ts-ignore
+const mountInfo = Object.entries(import.meta.glob("./*/index.tsx")).map(
+  ([path, fn]) => {
+    const elementId = path.replace(/.[\//](.+)[\//]\index.tsx/, "$1");
+    return {
+      elementId,
+      component: lazy(fn as any),
+    };
+  }
 );
 
-jQuery("#demo-navs>ul>li").each((i, e) => {
-  const id = mountInfo[i].elementId;
-  e.id = id;
-  jQuery(id).hide();
-  jQuery(e).on("click", () => {
-    jQuery(id).show();
-    jQuery(id).siblings().hide();
-  });
-});
-
+/** 左侧菜单与组件绑定好关系 */
+jQuery("#demo").append(
+  ...mountInfo.map((i, index) => {
+    jQuery(jQuery("#demo-navs>ul>li").get(index))
+      .attr(`${i.elementId}`, "")
+      .on("click", () => {
+        jQuery(`#${i.elementId}`).show();
+        jQuery(`#${i.elementId}`).siblings().hide();
+      });
+    return `<div id=${i.elementId}></div>`;
+  })
+);
+/** 挂在demo */
 mountDemo(mountInfo);
+
+/** 初始化隐藏demo */
+mountInfo.forEach((i) => {
+  jQuery(`#${i.elementId}`).hide();
+});
