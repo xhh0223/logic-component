@@ -29,7 +29,13 @@ jQuery("#demo").append(
       .attr(`${i.elementId}`, "")
       .on("click", () => {
         jQuery(`#${i.elementId}`).show();
-        jQuery(`#${i.elementId}`).siblings().hide();
+        jQuery(`#${i.elementId}`)
+          .siblings()
+          .each((_, e) => {
+            if (jQuery(e).attr("id")) {
+              jQuery(e).hide();
+            }
+          });
       });
     return `<div id=${i.elementId}></div>`;
   })
