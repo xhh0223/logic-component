@@ -11,7 +11,6 @@
     "classnames": "^2.3.2",
     "commitlint": "^17.7.1",
     "eslint": "^8.23.0",
-  
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "prettier": "^3.0.3",
@@ -36,5 +35,6 @@
       "stylelint --fix"
     ]
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": "https://github.com/xhh0223/logic-component.git"
 }

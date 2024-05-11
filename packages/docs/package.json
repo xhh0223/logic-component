@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@types/jquery": "^3.5.29",
+    "antd": "^5.17.0",
     "jquery": "^3.7.1",
     "logic-component": "workspace:*",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "react-router-dom": "^6.6.1"
   },
   "devDependencies": {
     "@rollup/plugin-inject": "^5.0.5",

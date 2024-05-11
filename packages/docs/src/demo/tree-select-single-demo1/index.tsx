@@ -1,7 +1,4 @@
-import React from "react";
-
 const TreeSelectSingleDemo1 = () => {
-
   return <div>123</div>;
 };
 
