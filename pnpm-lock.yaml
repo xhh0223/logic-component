@@ -74,6 +74,9 @@ importers:
 
   packages/docs:
     dependencies:
+      '@ant-design/icons':
+        specifier: ^5.3.7
+        version: 5.3.7(react-dom@18.2.0)(react@18.2.0)
       '@types/jquery':
         specifier: ^3.5.29
         version: 3.5.29

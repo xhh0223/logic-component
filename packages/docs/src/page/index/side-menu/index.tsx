@@ -1,33 +1,39 @@
 import { Menu, MenuProps } from "antd";
-import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./index.scss";
+
 const SideMenu = () => {
-  const nav = useNavigate();
+  const { pathname } = useLocation();
+  const MenuKey = {
+    select: "select",
+    [`select-single`]: "/select-single",
+    [`select-multiple`]: "/select-multiple",
+    treeSelect: "tree-select",
+    [`tree-select-single`]: "/tree-select-single",
+  };
   const sideMenuData: MenuProps["items"] = [
     {
-      key: "1",
-      label: "select",
+      key: MenuKey.select,
+      label: MenuKey.select,
       children: [
         {
-          key: "1-1",
-          label: <Link to={"/select-single-demo1"}>select-single</Link>,
+          key: MenuKey["select-single"],
+          label: <Link to={MenuKey["select-single"]}>select-single</Link>,
         },
         {
-          key: "1-2",
-          label: <Link to={"/select-multiple-demo1"}>select-multiple</Link>,
+          key: MenuKey["select-multiple"],
+          label: <Link to={MenuKey["select-multiple"]}>select-multiple</Link>,
         },
       ],
     },
     {
-      key: "2",
-      label: "tree-select",
+      key: MenuKey.treeSelect,
+      label: MenuKey.treeSelect,
       children: [
         {
-          key: "2-1",
+          key: MenuKey["tree-select-single"],
           label: (
-            <Link to={"/tree-select-single-demo1"}>
-              tree-select-single-demo1
-            </Link>
+            <Link to={MenuKey["tree-select-single"]}>tree-select-single</Link>
           ),
         },
       ],
@@ -37,8 +43,8 @@ const SideMenu = () => {
   return (
     <Menu
       className="menu"
-      defaultSelectedKeys={["1"]}
-      defaultOpenKeys={["1", "2"]}
+      defaultSelectedKeys={[pathname ?? MenuKey["select-single"]]}
+      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect]}
       mode="inline"
       items={sideMenuData}
     />
