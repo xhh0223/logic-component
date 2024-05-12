@@ -3,7 +3,7 @@ import Demo1 from "./demo1";
 
 const Index = () => {
   return (
-    <Flex gap={16}>
+    <Flex gap={16} vertical>
       <Demo1 />
     </Flex>
   );

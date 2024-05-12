@@ -7,7 +7,7 @@ import { Card, Checkbox, Avatar, Flex } from "antd";
 import { useCallback, useMemo } from "react";
 
 const Demo1 = () => {
-  const selectSingleIns = useSelectMultipleInstance();
+  const ins = useSelectMultipleInstance();
 
   const CardWithCheck = useCallback(
     (props: { isChecked: boolean; onClick: () => void }) => {
@@ -42,7 +42,7 @@ const Demo1 = () => {
 
   return (
     <div>
-      <SelectMultiple instance={selectSingleIns}>
+      <SelectMultiple instance={ins}>
         <Flex wrap gap={16}>
           {Array.from({ length: 10 }).map((_, index) => (
             <SelectItem
@@ -53,7 +53,7 @@ const Demo1 = () => {
                   <CardWithCheck
                     isChecked={isChecked}
                     onClick={() => {
-                      selectSingleIns.trigger([id]);
+                      ins.trigger([id]);
                     }}
                   />
                 );
