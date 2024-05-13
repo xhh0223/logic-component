@@ -30,6 +30,21 @@ export const TreeSelectSingle = <ValueType,>(
         });
         return result;
       };
+
+      instance.getDescendantsIdsList = (id) => {
+        const descendantsIds = collect.getItem(id).descendantsIds;
+        const list = (ids, result = []) => {
+          const items = instance.getItems(ids?.map((i) => i.id));
+          items.forEach(([id, item]) => {
+            result.push(id);
+            if (item.descendantsIds) {
+              list(item.descendantsIds, result);
+            }
+          });
+          return result;
+        };
+        return list(descendantsIds);
+      };
       instance.trigger = (id) => {
         const item = collect.getItem(id);
 
@@ -82,5 +97,6 @@ export const useTreeSelectSingleInstance = <ValueType,>() => {
     trigger: defaultFn,
     getAllItem: defaultFn,
     getItems: defaultFn,
+    getDescendantsIdsList:defaultFn,
   }).current as unknown as TreeSelectSingleProps<ValueType>["instance"];
 };

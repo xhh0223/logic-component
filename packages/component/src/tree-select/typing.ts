@@ -42,6 +42,7 @@ export interface TreeSelectSingleProps<ValueType = any> {
     trigger: (id: Id) => RequiredITreeSelectItem<ValueType> | undefined;
     getAllItem: () => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
     getItems: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
+    getDescendantsIdsList: (id: Id) => Id[];
   };
 }
 
@@ -49,9 +50,14 @@ export interface TreeSelectMultipleProps<ValueType = any> {
   children: React.ReactNode;
   instance: {
     trigger: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
-    selectAll: () => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
+    select: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
+    cancelSelected: (
+      ids: Id[]
+    ) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
     getAllItem: () => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
     getItems: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
+    getDescendantsIdsList: (id: Id) => Id[];
+    // todo 获取所有的祖先idsList
   };
 }
 

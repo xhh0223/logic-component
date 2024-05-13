@@ -10,6 +10,7 @@ const SideMenu = () => {
     [`select-multiple`]: "/select-multiple",
     treeSelect: "tree-select",
     [`tree-select-single`]: "/tree-select-single",
+    [`tree-select-multiple`]: "/tree-select-multiple",
   };
   const sideMenuData: MenuProps["items"] = [
     {
@@ -34,6 +35,14 @@ const SideMenu = () => {
           key: MenuKey["tree-select-single"],
           label: (
             <Link to={MenuKey["tree-select-single"]}>tree-select-single</Link>
+          ),
+        },
+        {
+          key: MenuKey["tree-select-multiple"],
+          label: (
+            <Link to={MenuKey["tree-select-multiple"]}>
+              tree-select-multiple
+            </Link>
           ),
         },
       ],

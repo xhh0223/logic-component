@@ -12,7 +12,7 @@ const wrapLoading = (importComponent) => {
 };
 
 // @ts-ignore
-const mountInfo = Object.entries(import.meta.glob("@src/demo/*/index.tsx")).map(
+const demoInfo = Object.entries(import.meta.glob("@src/demo/*/index.tsx")).map(
   ([path, importComponent]) => {
     const routePath = path.split(/[/\/]/).at(-2);
     return {
@@ -28,7 +28,7 @@ export const Router = createRouter([
     path: "/",
     element: wrapLoading(() => import("@src/page/index")),
     children: [
-      ...mountInfo.map((i) => ({
+      ...demoInfo.map((i) => ({
         path: i.path,
         element: i.element,
       })),
