@@ -23,18 +23,19 @@ const Demo1 = () => {
     transformTreeDataToList(treeData);
     return list;
   })();
+
   return (
     <div>
       <TreeSelectSingle instance={ins}>
         {treeList.map((i) => (
           <TreeSelectItem
+            key={i.id}
             id={i.id}
             value={i}
-            children={i.children?.map((i) => ({
+            parentId={i.parentId}
+            descendantsIds={i.children?.map((i) => ({
               id: i.id,
-              parent: {
-                id: i.parentId,
-              },
+              children: i.children,
             }))}
             render={({ id, isChecked, value }) => {
               return (

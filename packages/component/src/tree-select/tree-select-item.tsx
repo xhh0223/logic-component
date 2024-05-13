@@ -10,8 +10,8 @@ export const TreeSelectItem = <Value = any,>(
     value,
     render,
     allowRepeatChecked = false,
-    children,
-    parent,
+    descendantsIds,
+    parentId,
   } = props;
   const collect = useContext(SelectCollectContext);
 
@@ -20,12 +20,12 @@ export const TreeSelectItem = <Value = any,>(
     () => {
       /** 新增 */
       collect.addItem({
-        parent,
+        parentId,
         id,
         value,
         isChecked: false,
         allowRepeatChecked,
-        children,
+        descendantsIds,
         refresh() {
           update({});
         },
@@ -49,20 +49,28 @@ export const TreeSelectItem = <Value = any,>(
       collect.addItem({
         ...beforeItem,
         id,
-        parent,
-        children,
+        parentId,
+        descendantsIds,
         value,
         allowRepeatChecked,
       });
     } else {
       collect.updateItemPartialColumn(memoInfo.id, {
-        parent,
-        children,
+        parentId,
+        descendantsIds,
         value,
         allowRepeatChecked,
       });
     }
-  }, [id, memoInfo, collect, value, allowRepeatChecked, parent, children]);
+  }, [
+    id,
+    memoInfo,
+    collect,
+    value,
+    allowRepeatChecked,
+    parentId,
+    descendantsIds,
+  ]);
 
   /** 删除 */
   useEffect(() => {
@@ -76,7 +84,7 @@ export const TreeSelectItem = <Value = any,>(
     id,
     value: item.value,
     isChecked: !!item.isChecked,
-    children: item.children,
-    parent: item.parent,
+    descendantsIds: item.descendantsIds,
+    parentId: item.parentId,
   });
 };

@@ -6,13 +6,16 @@ export interface ITreeSelectItem<ValueType> {
   allowRepeatChecked?: boolean;
   value?: ValueType;
   refresh: () => void;
-  parent: ITreeSelectItem<ValueType>;
-  children?: ITreeSelectItem<ValueType>;
+  parentId: Id;
+  descendantsIds?: Array<{
+    id: Id;
+    children: Pick<ITreeSelectItem<ValueType>, "descendantsIds">;
+  }>;
 }
 
 export type CanUpdateITreeSelectItem<ValueType> = Pick<
   ITreeSelectItem<ValueType>,
-  "isChecked" | "allowRepeatChecked" | "children" | "parent" | "value"
+  "isChecked" | "allowRepeatChecked" | "descendantsIds" | "parentId" | "value"
 >;
 
 export interface ISelectCollect<ValueType> {
@@ -29,7 +32,7 @@ export interface ISelectCollect<ValueType> {
 export type RequiredITreeSelectItem<ValueType> = Required<
   Pick<
     ITreeSelectItem<ValueType>,
-    "id" | "isChecked" | "value" | "children" | "parent"
+    "id" | "isChecked" | "value" | "descendantsIds" | "parentId"
   >
 >;
 
@@ -52,8 +55,9 @@ export interface TreeSelectMultipleProps<ValueType = any> {
 
 export interface TreeSelectItemProps<ValueType> {
   id: ITreeSelectItem<ValueType>["id"];
-  parent?: Pick<TreeSelectItemProps<ValueType>, "id" | "parent">;
-  children?: Pick<TreeSelectItemProps<ValueType>, "id" | "parent">[];
+  parentId: ITreeSelectItem<ValueType>["parentId"];
+  /** 后代ids */
+  descendantsIds?: ITreeSelectItem<ValueType>["descendantsIds"];
   value?: ITreeSelectItem<ValueType>["value"];
   allowRepeatChecked?: ITreeSelectItem<ValueType>["allowRepeatChecked"];
   render: (params: RequiredITreeSelectItem<ValueType>) => React.ReactNode;

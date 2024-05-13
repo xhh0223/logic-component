@@ -52,18 +52,3 @@ export function genTreeData(args) {
   }
   return tree;
 }
-
-export function genListTree(result = [], data) {
-  data.forEach((i) => {
-    result.push({
-      id: i.id,
-      parentId: i.parentId,
-      children: i.children,
-      value: i.value,
-    });
-    if (i.children) {
-      genListTree(result, i.children);
-    }
-  });
-  return result;
-}
