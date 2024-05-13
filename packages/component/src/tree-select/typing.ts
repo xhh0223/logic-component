@@ -41,6 +41,7 @@ export interface TreeSelectSingleProps<ValueType = any> {
   instance: {
     trigger: (id: Id) => RequiredITreeSelectItem<ValueType> | undefined;
     getAllItem: () => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
+    getItems: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
   };
 }
 
@@ -50,6 +51,7 @@ export interface TreeSelectMultipleProps<ValueType = any> {
     trigger: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
     selectAll: () => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
     getAllItem: () => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
+    getItems: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
   };
 }
 

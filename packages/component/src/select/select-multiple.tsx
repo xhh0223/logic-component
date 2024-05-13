@@ -5,6 +5,9 @@ import { SelectCollect } from "./select-collect";
 import { defaultFn } from "@/utils";
 import { SelectCollectContext } from "./context";
 import { pick } from "lodash-es";
+import { Id } from "@/typing";
+
+const PickColumns = ["id", "isChecked", "value"];
 export const SelectMultiple = <ValueType,>(
   props: SelectMultipleProps<ValueType>
 ) => {
@@ -15,10 +18,17 @@ export const SelectMultiple = <ValueType,>(
       instance.getAllItem = () => {
         return collect
           .getAllItem()
-          ?.map(([key, item]) => [
-            key,
-            pick(item, ["id", "isChecked", "value"]),
-          ]);
+          ?.map(([id, item]) => [id, pick(item, PickColumns)]);
+      };
+      instance.getItems = (ids: Id[]) => {
+        const result = [];
+        ids.forEach((id) => {
+          const item = collect.getItem(id);
+          if (item) {
+            result.push([id, pick(item, PickColumns)]);
+          }
+        });
+        return result as any;
       };
       instance.selectAll = () => {
         collect.getAllItem().forEach(([key, item]) => {
@@ -48,7 +58,7 @@ export const SelectMultiple = <ValueType,>(
             });
             item.refresh();
           }
-          result.push(pick(item, ["id", "isChecked", "value"]));
+          result.push(pick(item, PickColumns));
         });
         return result;
       };
@@ -67,6 +77,7 @@ export const useSelectMultipleInstance = <ValueType,>() => {
   return useRef({
     selectAll: defaultFn,
     trigger: defaultFn,
+    getItems: defaultFn,
     getAllItem: defaultFn,
   }).current as unknown as SelectMultipleProps<ValueType>["instance"];
 };

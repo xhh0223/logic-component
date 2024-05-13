@@ -1,10 +1,13 @@
-import React, { useRef, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import { type TreeSelectMultipleProps } from "./typing";
 
 import { SelectCollect } from "./select-collect";
 import { defaultFn } from "@/utils";
 import { SelectCollectContext } from "./context";
 import { pick } from "lodash-es";
+
+const PickColumns = ["id", "isChecked", "value", "descendantsIds", "parentId"];
+
 export const TreeSelectMultiple = <ValueType,>(
   props: TreeSelectMultipleProps<ValueType>
 ) => {
@@ -15,11 +18,20 @@ export const TreeSelectMultiple = <ValueType,>(
       instance.getAllItem = () => {
         return collect
           .getAllItem()
-          ?.map(([key, item]) => [
-            key,
-            pick(item, ["id", "isChecked", "value", "children", "parent"]),
-          ]);
+          ?.map(([key, item]) => [key, pick(item, PickColumns)]);
       };
+
+      instance.getItems = (ids) => {
+        let result = [];
+        ids.forEach((i) => {
+          const item = collect.getItem(i);
+          if (item) {
+            result.push([item.id, pick(item, PickColumns)]);
+          }
+        });
+        return result;
+      };
+
       instance.selectAll = () => {
         collect.getAllItem().forEach(([key, item]) => {
           if (!item.isChecked) {
@@ -29,6 +41,7 @@ export const TreeSelectMultiple = <ValueType,>(
         });
         return instance.getAllItem();
       };
+
       instance.trigger = (ids) => {
         const result: any = [];
         ids.forEach((id) => {
@@ -48,9 +61,7 @@ export const TreeSelectMultiple = <ValueType,>(
             });
             item.refresh();
           }
-          result.push(
-            pick(item, ["id", "isChecked", "value", "children", "parent"])
-          );
+          result.push(pick(item, PickColumns));
         });
         return result;
       };
@@ -70,5 +81,6 @@ export const useTreeSelectMultipleInstance = <ValueType,>() => {
     selectAll: defaultFn,
     trigger: defaultFn,
     getAllItem: defaultFn,
+    getItems: defaultFn,
   }).current as unknown as TreeSelectMultipleProps<ValueType>["instance"];
 };

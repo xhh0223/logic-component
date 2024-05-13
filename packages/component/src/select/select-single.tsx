@@ -1,11 +1,11 @@
-import React, { useRef, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import { pick } from "lodash-es";
 import { type SelectSingleProps } from "./typing";
-
+import { Id } from "@/typing";
 import { SelectCollect } from "./select-collect";
 import { defaultFn } from "@/utils";
 import { SelectCollectContext } from "./context";
-
+const PickColumns = ["id", "isChecked", "value"];
 export const SelectSingle = <ValueType,>(
   props: SelectSingleProps<ValueType>
 ) => {
@@ -16,10 +16,17 @@ export const SelectSingle = <ValueType,>(
       instance.getAllItem = () => {
         return collect
           .getAllItem()
-          ?.map(([key, item]) => [
-            key,
-            pick(item, ["id", "isChecked", "value"]),
-          ]);
+          ?.map(([key, item]) => [key, pick(item, PickColumns)]);
+      };
+      instance.getItems = (ids: Id[]) => {
+        const result = [];
+        ids.forEach((id) => {
+          const item = collect.getItem(id);
+          if (item) {
+            result.push([id, pick(item, PickColumns)]);
+          }
+        });
+        return result as any;
       };
       instance.trigger = (id) => {
         const item = collect.getItem(id);
@@ -55,7 +62,7 @@ export const SelectSingle = <ValueType,>(
             }
           });
         }
-        return pick(collect.getItem(id), ["id", "isChecked", "value"]);
+        return pick(collect.getItem(id), PickColumns);
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

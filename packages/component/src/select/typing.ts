@@ -33,6 +33,7 @@ export interface SelectSingleProps<ValueType = any> {
   instance: {
     trigger: (id: Id) => RequiredISelectItem<ValueType> | undefined;
     getAllItem: () => Array<[Id, RequiredISelectItem<ValueType>]>;
+    getItems: (id: Id[]) => Array<[Id, RequiredISelectItem<ValueType>]>;
   };
 }
 
@@ -42,6 +43,7 @@ export interface SelectMultipleProps<ValueType = any> {
     trigger: (ids: Id[]) => Array<[Id, RequiredISelectItem<ValueType>]>;
     selectAll: () => Array<[Id, RequiredISelectItem<ValueType>]>;
     getAllItem: () => Array<[Id, RequiredISelectItem<ValueType>]>;
+    getItems: (id: Id[]) => Array<[Id, RequiredISelectItem<ValueType>]>;
   };
 }
 

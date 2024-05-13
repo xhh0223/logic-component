@@ -1,10 +1,12 @@
-import React, { useRef, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import { pick } from "lodash-es";
 import { type TreeSelectSingleProps } from "./typing";
 
 import { SelectCollect } from "./select-collect";
 import { defaultFn } from "@/utils";
 import { SelectCollectContext } from "./context";
+
+const PickColumns = ["id", "isChecked", "value", "descendantsIds", "parentId"];
 
 export const TreeSelectSingle = <ValueType,>(
   props: TreeSelectSingleProps<ValueType>
@@ -16,10 +18,17 @@ export const TreeSelectSingle = <ValueType,>(
       instance.getAllItem = () => {
         return collect
           .getAllItem()
-          ?.map(([key, item]) => [
-            key,
-            pick(item, ["id", "isChecked", "value", "children", "parent"]),
-          ]);
+          ?.map(([key, item]) => [key, pick(item, PickColumns)]);
+      };
+      instance.getItems = (ids) => {
+        let result = [];
+        ids.forEach((i) => {
+          const item = collect.getItem(i);
+          if (item) {
+            result.push([item.id, pick(item, PickColumns)]);
+          }
+        });
+        return result;
       };
       instance.trigger = (id) => {
         const item = collect.getItem(id);
@@ -55,13 +64,7 @@ export const TreeSelectSingle = <ValueType,>(
             }
           });
         }
-        return pick(collect.getItem(id), [
-          "id",
-          "isChecked",
-          "value",
-          "children",
-          "parent",
-        ]);
+        return pick(collect.getItem(id), PickColumns);
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,5 +81,6 @@ export const useTreeSelectSingleInstance = <ValueType,>() => {
   return useRef({
     trigger: defaultFn,
     getAllItem: defaultFn,
+    getItems: defaultFn,
   }).current as unknown as TreeSelectSingleProps<ValueType>["instance"];
 };
