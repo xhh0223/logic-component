@@ -21,11 +21,11 @@ export class SelectCollect<ValueType = any>
       this.itemsCollect.set(id, {
         ...item,
         ...pick(params, [
+          "parentId",
+          "descendantsIds",
           "isChecked",
           "allowRepeatChecked",
           "value",
-          "parent",
-          "children",
         ]),
       });
     }
@@ -44,8 +44,6 @@ export class SelectCollect<ValueType = any>
   };
 
   getAllItem = () => {
-    return [...this.itemsCollect.entries()].map(
-      ([key, value]) => [key, value] as const
-    ) as any;
+    return [...this.itemsCollect.entries()].map(([, value]) => value) as any;
   };
 }

@@ -15,28 +15,23 @@ export const TreeSelectSingle = <ValueType,>(
   const { current: collect } = useRef(new SelectCollect<ValueType>());
   useMemo(() => {
     if (instance) {
-      instance.getAllItem = () => {
-        return collect
-          .getAllItem()
-          ?.map(([key, item]) => [key, pick(item, PickColumns)]);
-      };
       instance.getItems = (ids) => {
         let result = [];
         ids.forEach((i) => {
           const item = collect.getItem(i);
           if (item) {
-            result.push([item.id, pick(item, PickColumns)]);
+            result.push(pick(item, PickColumns));
           }
         });
         return result;
       };
 
       instance.getDescendantsIdsList = (id) => {
-        const descendantsIds = collect.getItem(id).descendantsIds;
+        const descendantsIds = collect.getItem(id)?.descendantsIds ?? [];
         const list = (ids, result = []) => {
           const items = instance.getItems(ids?.map((i) => i.id));
-          items.forEach(([id, item]) => {
-            result.push(id);
+          items.forEach((item) => {
+            result.push(item.id);
             if (item.descendantsIds) {
               list(item.descendantsIds, result);
             }
@@ -45,9 +40,22 @@ export const TreeSelectSingle = <ValueType,>(
         };
         return list(descendantsIds);
       };
+
+      instance.getAncestorsIdsList = (id) => {
+        const getResult = (id, result = []) => {
+          const parentId = collect.getItem(id)?.parentId;
+          if (parentId) {
+            result.push(parentId);
+            getResult(parentId);
+          }
+          return result;
+        };
+
+        return getResult(id);
+      };
+
       instance.trigger = (id) => {
         const item = collect.getItem(id);
-
         if (!item) {
           return;
         }
@@ -56,9 +64,9 @@ export const TreeSelectSingle = <ValueType,>(
           if (!item.isChecked) {
             collect.updateItemPartialColumn(id, { isChecked: true });
             item.refresh();
-            collect.getAllItem().forEach(([key, item]) => {
-              if (key !== id && item.isChecked) {
-                collect.updateItemPartialColumn(key, {
+            collect.getAllItem().forEach((item) => {
+              if (item.id !== id && item.isChecked) {
+                collect.updateItemPartialColumn(item.id, {
                   isChecked: false,
                 });
                 item.refresh();
@@ -70,9 +78,9 @@ export const TreeSelectSingle = <ValueType,>(
             isChecked: !item.isChecked,
           });
           item.refresh();
-          collect.getAllItem().forEach(([key, item]) => {
-            if (key !== id && item.isChecked) {
-              collect.updateItemPartialColumn(key, {
+          collect.getAllItem().forEach((item) => {
+            if (item.id !== id && item.isChecked) {
+              collect.updateItemPartialColumn(item.id, {
                 isChecked: false,
               });
               item.refresh();
@@ -95,8 +103,8 @@ export const TreeSelectSingle = <ValueType,>(
 export const useTreeSelectSingleInstance = <ValueType,>() => {
   return useRef({
     trigger: defaultFn,
-    getAllItem: defaultFn,
     getItems: defaultFn,
-    getDescendantsIdsList:defaultFn,
+    getDescendantsIdsList: defaultFn,
+    getAncestorsIdsList: defaultFn,
   }).current as unknown as TreeSelectSingleProps<ValueType>["instance"];
 };

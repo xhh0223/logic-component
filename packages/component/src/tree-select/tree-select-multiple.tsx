@@ -15,29 +15,36 @@ export const TreeSelectMultiple = <ValueType,>(
   const { current: collect } = useRef(new SelectCollect<ValueType>());
   useMemo(() => {
     if (instance) {
-      instance.getAllItem = () => {
-        return collect
-          .getAllItem()
-          ?.map(([key, item]) => [key, pick(item, PickColumns)]);
-      };
-
       instance.getItems = (ids) => {
         let result = [];
         ids?.forEach((id) => {
           const item = collect.getItem(id);
           if (item) {
-            result.push([item.id, pick(item, PickColumns)]);
+            result.push(pick(item, PickColumns));
           }
         });
         return result;
+      };
+
+      instance.getAncestorsIdsList = (id) => {
+        const getResult = (id, result = []) => {
+          const parentId = collect.getItem(id)?.parentId;
+          if (parentId) {
+            result.push(parentId);
+            getResult(parentId);
+          }
+          return result;
+        };
+
+        return getResult(id);
       };
 
       instance.getDescendantsIdsList = (id) => {
         const descendantsIds = collect.getItem(id)?.descendantsIds ?? [];
         const list = (ids, result = []) => {
           const items = instance.getItems(ids?.map((i) => i.id));
-          items.forEach(([id, item]) => {
-            result.push(id);
+          items.forEach((item) => {
+            result.push(item.id);
             if (item.descendantsIds) {
               list(item.descendantsIds, result);
             }
@@ -56,7 +63,7 @@ export const TreeSelectMultiple = <ValueType,>(
               collect.updateItemPartialColumn(id, { isChecked: true });
               item.refresh();
             }
-            result.push([item.id, pick(item, PickColumns)]);
+            result.push(pick(item, PickColumns));
           }
         });
         return result;
@@ -71,7 +78,7 @@ export const TreeSelectMultiple = <ValueType,>(
               collect.updateItemPartialColumn(id, { isChecked: false });
               item.refresh();
             }
-            result.push([item.id, pick(item, PickColumns)]);
+            result.push(pick(item, PickColumns));
           }
         });
         return result;
@@ -116,8 +123,8 @@ export const useTreeSelectMultipleInstance = <ValueType,>() => {
     select: defaultFn,
     cancelSelected: defaultFn,
     trigger: defaultFn,
-    getAllItem: defaultFn,
     getItems: defaultFn,
     getDescendantsIdsList: defaultFn,
+    getAncestorsIdsList: defaultFn,
   }).current as unknown as TreeSelectMultipleProps<ValueType>["instance"];
 };

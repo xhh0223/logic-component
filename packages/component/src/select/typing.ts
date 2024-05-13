@@ -21,7 +21,7 @@ export interface ISelectCollect<ValueType> {
     id: Id,
     params: Partial<CanUpdateISelectItem<ValueType>>
   ) => void;
-  getAllItem: () => Array<[Id, ISelectItem<ValueType>]>;
+  getAllItem: () => Array<ISelectItem<ValueType>>;
 }
 
 export type RequiredISelectItem<ValueType> = Required<
@@ -32,18 +32,17 @@ export interface SelectSingleProps<ValueType = any> {
   children: React.ReactNode;
   instance: {
     trigger: (id: Id) => RequiredISelectItem<ValueType> | undefined;
-    getAllItem: () => Array<[Id, RequiredISelectItem<ValueType>]>;
-    getItems: (id: Id[]) => Array<[Id, RequiredISelectItem<ValueType>]>;
+    getItems: (id: Id[]) => Array<RequiredISelectItem<ValueType>>;
   };
 }
 
 export interface SelectMultipleProps<ValueType = any> {
   children: React.ReactNode;
   instance: {
-    trigger: (ids: Id[]) => Array<[Id, RequiredISelectItem<ValueType>]>;
-    selectAll: () => Array<[Id, RequiredISelectItem<ValueType>]>;
-    getAllItem: () => Array<[Id, RequiredISelectItem<ValueType>]>;
-    getItems: (id: Id[]) => Array<[Id, RequiredISelectItem<ValueType>]>;
+    trigger: (ids: Id[]) => Array<RequiredISelectItem<ValueType>>;
+    select: (id: Id[]) => Array<RequiredISelectItem<ValueType>>;
+    cancelSelected: (id: Id[]) => Array<RequiredISelectItem<ValueType>>;
+    getItems: (id: Id[]) => Array<RequiredISelectItem<ValueType>>;
   };
 }
 

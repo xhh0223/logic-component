@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import { type SelectMultipleProps } from "./typing";
 
 import { SelectCollect } from "./select-collect";
@@ -15,30 +15,43 @@ export const SelectMultiple = <ValueType,>(
   const { current: collect } = useRef(new SelectCollect<ValueType>());
   useMemo(() => {
     if (instance) {
-      instance.getAllItem = () => {
-        return collect
-          .getAllItem()
-          ?.map(([id, item]) => [id, pick(item, PickColumns)]);
-      };
       instance.getItems = (ids: Id[]) => {
         const result = [];
         ids.forEach((id) => {
           const item = collect.getItem(id);
           if (item) {
-            result.push([id, pick(item, PickColumns)]);
+            result.push(pick(item, PickColumns));
           }
         });
         return result as any;
       };
-      instance.selectAll = () => {
-        collect.getAllItem().forEach(([key, item]) => {
+
+      instance.select = (ids) => {
+        const result = [];
+        ids?.forEach((id) => {
+          const item = collect.getItem(id);
           if (!item.isChecked) {
-            collect.updateItemPartialColumn(key, { isChecked: true });
+            collect.updateItemPartialColumn(id, { isChecked: true });
             item.refresh();
           }
+          result.push(item);
         });
-        return instance.getAllItem();
+        return result;
       };
+
+      instance.cancelSelected = (ids) => {
+        const result = [];
+        ids?.forEach((id) => {
+          const item = collect.getItem(id);
+          if (item.isChecked) {
+            collect.updateItemPartialColumn(id, { isChecked: false });
+            item.refresh();
+          }
+          result.push(item);
+        });
+        return result;
+      };
+
       instance.trigger = (ids) => {
         const result: any = [];
         ids.forEach((id) => {
@@ -75,9 +88,9 @@ export const SelectMultiple = <ValueType,>(
 
 export const useSelectMultipleInstance = <ValueType,>() => {
   return useRef({
-    selectAll: defaultFn,
+    select: defaultFn,
+    cancelSelected: defaultFn,
     trigger: defaultFn,
     getItems: defaultFn,
-    getAllItem: defaultFn,
   }).current as unknown as SelectMultipleProps<ValueType>["instance"];
 };

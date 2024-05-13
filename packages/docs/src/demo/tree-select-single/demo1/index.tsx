@@ -33,10 +33,7 @@ const Demo1 = () => {
             id={i.id}
             value={i}
             parentId={i.parentId}
-            descendantsIds={i.children?.map((i) => ({
-              id: i.id,
-              children: i.children,
-            }))}
+            descendantsIds={i.children}
             render={({ id, isChecked, value }) => {
               return (
                 <Flex>

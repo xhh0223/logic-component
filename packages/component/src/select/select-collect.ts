@@ -36,8 +36,6 @@ export class SelectCollect<ValueType = any>
   };
 
   getAllItem = () => {
-    return [...this.itemsCollect.entries()].map(
-      ([key, value]) => [key, value] as const
-    ) as any;
+    return [...this.itemsCollect.entries()].map(([, value]) => value) as any;
   };
 }

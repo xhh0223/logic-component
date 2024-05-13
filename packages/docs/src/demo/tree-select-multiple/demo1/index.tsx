@@ -10,7 +10,7 @@ const Demo1 = () => {
   const ins = useTreeSelectMultipleInstance();
 
   const treeList = (() => {
-    const treeData = genTreeData([3, 2, 2]);
+    const treeData = genTreeData([2, 2, 2, 2, 2]);
     const list = [];
     const transformTreeDataToList = (tree) => {
       tree.forEach((i) => {
@@ -51,7 +51,7 @@ const Demo1 = () => {
                           ins.getDescendantsIdsList(parentId);
                         const allSelected = ins
                           .getItems(parentDescendantsIds)
-                          .filter(([_, i]) => i.isChecked);
+                          .filter((i) => i.isChecked);
 
                         if (!allSelected?.length) {
                           return;

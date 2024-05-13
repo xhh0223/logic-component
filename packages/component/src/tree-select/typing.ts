@@ -26,7 +26,7 @@ export interface ISelectCollect<ValueType> {
     id: Id,
     params: Partial<ITreeSelectItem<ValueType>>
   ) => void;
-  getAllItem: () => Array<[Id, ITreeSelectItem<ValueType>]>;
+  getAllItem: () => Array<ITreeSelectItem<ValueType>>;
 }
 
 export type RequiredITreeSelectItem<ValueType> = Required<
@@ -40,24 +40,21 @@ export interface TreeSelectSingleProps<ValueType = any> {
   children: React.ReactNode;
   instance: {
     trigger: (id: Id) => RequiredITreeSelectItem<ValueType> | undefined;
-    getAllItem: () => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
-    getItems: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
+    getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
     getDescendantsIdsList: (id: Id) => Id[];
+    getAncestorsIdsList: (id: Id) => Id[];
   };
 }
 
 export interface TreeSelectMultipleProps<ValueType = any> {
   children: React.ReactNode;
   instance: {
-    trigger: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
-    select: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
-    cancelSelected: (
-      ids: Id[]
-    ) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
-    getAllItem: () => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
-    getItems: (ids: Id[]) => Array<[Id, RequiredITreeSelectItem<ValueType>]>;
+    trigger: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
+    select: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
+    cancelSelected: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
+    getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
     getDescendantsIdsList: (id: Id) => Id[];
-    // todo 获取所有的祖先idsList
+    getAncestorsIdsList: (id: Id) => Id[];
   };
 }
 
