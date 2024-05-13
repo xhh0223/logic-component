@@ -45,6 +45,16 @@ const Demo1 = () => {
                       /** select current node */
                       ins.trigger([id]);
 
+                      /** select descend node */
+                      (() => {
+                        const ids = ins.getDescendantsIdsList(id);
+                        if (!isChecked) {
+                          ins.select(ids);
+                        } else {
+                          ins.cancelSelected(ids);
+                        }
+                      })();
+
                       /** select parent node */
                       (() => {
                         const parentDescendantsIds =
@@ -63,16 +73,6 @@ const Demo1 = () => {
                           ins.select([parentId]);
                         } else {
                           ins.cancelSelected([parentId]);
-                        }
-                      })();
-
-                      /** select descend node */
-                      (() => {
-                        const ids = ins.getDescendantsIdsList(id);
-                        if (!isChecked) {
-                          ins.select(ids);
-                        } else {
-                          ins.cancelSelected(ids);
                         }
                       })();
                     }}
