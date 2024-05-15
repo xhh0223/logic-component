@@ -29,7 +29,7 @@ export interface ISchemaCollect<Schema, Context = any> {
   ) => void;
   getItem: (id: Id) => ISchemaItem<Schema, Context> | undefined;
 
-  getAllItem: () => Array<[Id, ISchemaItem<Schema, Context>]>;
+  getAllItem: () => Array<ISchemaItem<Schema, Context>>;
 }
 
 export type RequiredIScheItem<Schema, Context> = Pick<
@@ -43,19 +43,22 @@ export type OnParams<Schema, Context> = Parameters<
 
 export interface SchemaProps<Schema, Context> {
   children: ReactNode;
-  instance: Pick<
+  handler: Pick<
     ISchemaCollect<Schema, Context>,
-    "setContext" | "getContext" | "updateItemPartialColumn"
+    "setContext" | "getContext"
   > & {
     getItem: (id: Id) => RequiredIScheItem<Schema, Context>;
-    getAllItem: () => Array<[Id, RequiredIScheItem<Schema, Context>]>;
+    getAllItem: () => Array<RequiredIScheItem<Schema, Context>>;
+    updateItem: ISchemaCollect<Schema, Context>["updateItemPartialColumn"];
   };
 }
 
 export interface SchemaItemProps<Schema, Context> {
   id: Id;
   render: (
-    currentInfo: RequiredIScheItem<Schema, Context>,
+    currentItemInfo: RequiredIScheItem<Schema, Context> & {
+      handler: SchemaProps<Schema, Context>["handler"];
+    },
     params: OnParams<Schema, Context>
   ) => ReactNode;
   initDependency?: Id[];

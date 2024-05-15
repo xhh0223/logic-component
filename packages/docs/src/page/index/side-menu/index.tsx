@@ -11,6 +11,8 @@ const SideMenu = () => {
     treeSelect: "tree-select",
     [`tree-select-single`]: "/tree-select-single",
     [`tree-select-multiple`]: "/tree-select-multiple",
+    schemaDemo: "schemaDemo",
+    schema: "/schema",
   };
   const sideMenuData: MenuProps["items"] = [
     {
@@ -47,13 +49,23 @@ const SideMenu = () => {
         },
       ],
     },
+    {
+      key: MenuKey.schemaDemo,
+      label: MenuKey.schemaDemo,
+      children: [
+        {
+          key: MenuKey["schema"],
+          label: <Link to={MenuKey["schema"]}>schema</Link>,
+        },
+      ],
+    },
   ];
 
   return (
     <Menu
       className="menu"
       defaultSelectedKeys={[pathname ?? MenuKey["select-single"]]}
-      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect]}
+      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect, MenuKey.schemaDemo]}
       mode="inline"
       items={sideMenuData}
     />

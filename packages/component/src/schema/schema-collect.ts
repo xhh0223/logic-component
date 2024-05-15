@@ -126,9 +126,6 @@ export class SchemaCollect<Schema, Context = any>
   };
 
   getAllItem = () => {
-    const result = [...this.schemaHashMap.entries()].map(
-      ([id, { item }]) => [id, item] as any
-    );
-    return result;
+    return [...this.schemaHashMap.values()].map((i) => i.item);
   };
 }

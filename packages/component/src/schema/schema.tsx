@@ -14,9 +14,11 @@ import {
   type SchemaItemProps,
   type SchemaProps,
 } from "./typing";
-import { defaultFn } from "@/utils";
 
-const SchemaCollectContext = createContext<ISchemaCollect<any, any>>(
+const SchemaCollectContext = createContext<{
+  collect: ISchemaCollect<any, any>;
+  handler: SchemaProps<any, any>["handler"];
+}>(
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   null!
 );
@@ -24,33 +26,32 @@ const SchemaCollectContext = createContext<ISchemaCollect<any, any>>(
 export function Schema<Schema = any, Context = any>(
   props: SchemaProps<Schema, Context>
 ) {
-  const { children, instance } = props;
+  const { children, handler: outerHandler } = props;
   const { current: collect } = useRef(new SchemaCollect());
 
-  useMemo(() => {
-    if (instance) {
-      instance.getContext = collect.getContext;
-      instance.setContext = collect.setContext;
-      instance.getItem = (id) => {
+  const innerStance = useMemo(() => {
+    const ins: SchemaProps<Schema, Context>["handler"] = {
+      getContext: collect.getContext,
+      setContext: collect.setContext,
+      getItem: (id) => {
         return pick(collect.getItem(id), ["dependency", "id", "schema"]);
-      };
-
-      instance.getAllItem = () => {
+      },
+      getAllItem: () => {
         return collect
           .getAllItem()
-          .map(([key, value]) => [
-            key,
-            pick(value, ["dependency", "id", "schema"]),
-          ]);
-      };
-      instance.updateItemPartialColumn = collect.updateItemPartialColumn;
-    }
+          .map((value) => pick(value, ["dependency", "id", "schema"]));
+      },
+      updateItem: collect.updateItemPartialColumn,
+    };
+
+    Object.assign(outerHandler, ins);
+    return ins;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     // eslint-disable-next-line react/react-in-jsx-scope
-    <SchemaCollectContext.Provider value={collect}>
+    <SchemaCollectContext.Provider value={{ collect, handler: innerStance }}>
       {children}
     </SchemaCollectContext.Provider>
   );
@@ -60,7 +61,7 @@ export function SchemaItem<Schema, Context>(
   props: SchemaItemProps<Schema, Context>
 ) {
   const { id, render, initDependency, initSchema } = props;
-  const collect = useContext(SchemaCollectContext);
+  const { collect, handler } = useContext(SchemaCollectContext);
 
   const [, update] = useState({});
 
@@ -112,6 +113,7 @@ export function SchemaItem<Schema, Context>(
 
   return render(
     {
+      handler,
       id: memoInfo.currentId,
       schema: memoInfo.schema,
       dependency: memoInfo.dependency,
@@ -120,12 +122,9 @@ export function SchemaItem<Schema, Context>(
   );
 }
 
-export function useSchemaInstance<Schema, Context>() {
-  return useRef({
-    setContext: defaultFn,
-    getContext: defaultFn,
-    updateItemSchema: defaultFn,
-    getItem: defaultFn,
-    getAllItem: defaultFn,
-  }).current as unknown as SchemaProps<Schema, Context>["instance"];
+export function useSchemaHandler<Schema, Context>() {
+  return useRef({}).current as unknown as SchemaProps<
+    Schema,
+    Context
+  >["handler"];
 }
