@@ -44,12 +44,13 @@ export function Schema<Schema = any, Context = any>(
       updateItem: collect.updateItemPartialColumn,
     };
 
-    if (outerHandler) {
-      Object.assign(outerHandler, handler);
-    }
-    return innerHandler;
+    return handler;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (outerHandler) {
+    Object.assign(outerHandler, innerHandler);
+  }
 
   return (
     // eslint-disable-next-line react/react-in-jsx-scope

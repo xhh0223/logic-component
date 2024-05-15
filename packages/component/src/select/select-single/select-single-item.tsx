@@ -2,7 +2,9 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { type SelectSingleItemProps } from "../typing";
 import { SelectSingleCollectContext } from "./context";
 
-export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) => {
+export const SelectSingleItem = <Value,>(
+  props: SelectSingleItemProps<Value>
+) => {
   const { id, value, render, allowRepeatChecked = false } = props;
   const { collect, handler } = useContext(SelectSingleCollectContext);
 

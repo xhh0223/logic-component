@@ -1,7 +1,7 @@
 import { useRef, useMemo } from "react";
-import { type SelectMultipleProps } from "./typing";
+import { type SelectMultipleProps } from "../typing";
 
-import { SelectCollect } from "./select-collect";
+import { SelectCollect } from "../select-collect";
 import { SelectMultipleCollectContext } from "./context";
 import { pick } from "lodash-es";
 import { Id } from "@/typing";
@@ -12,7 +12,8 @@ export const SelectMultiple = <ValueType,>(
 ) => {
   const { children, handler: outerHandler } = props;
   const { current: collect } = useRef(new SelectCollect<ValueType>());
-  useMemo(() => {
+
+  const innerHandler = useMemo(() => {
     const handler: SelectMultipleProps<ValueType>["handler"] = {
       getItems: (ids: Id[]) => {
         const result = [];
@@ -72,15 +73,15 @@ export const SelectMultiple = <ValueType,>(
         return result;
       },
     };
-    if (outerHandler) {
-      Object.assign(outerHandler, handler);
-    }
+    return handler;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  if (outerHandler) {
+    Object.assign(outerHandler, innerHandler);
+  }
   return (
     <SelectMultipleCollectContext.Provider
-      value={{ collect, handler: outerHandler }}
+      value={{ collect, handler: innerHandler }}
     >
       {children}
     </SelectMultipleCollectContext.Provider>

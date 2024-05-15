@@ -1,21 +1,19 @@
-import { Schema, SchemaItem, useSchemaInstance } from "@logic-component/index";
+import { Schema, SchemaItem } from "@logic-component/index";
 import { Flex } from "antd";
 
 const Demo1 = () => {
-  const ins = useSchemaInstance();
-
   return (
     <div>
-      <Schema handler={ins}>
+      <Schema>
         <Flex wrap gap={16} vertical={true}>
           <SchemaItem
             id={Math.random()}
             initSchema={{ show: true, content: Math.random() }}
-            render={({ id, schema }) => (
+            render={({ id, schema, handler }) => (
               <>
                 <div
                   onClick={() => {
-                    ins.updateItem(id, {
+                    handler.updateItem(id, {
                       schema: { show: !schema.show, content: Math.random() },
                     });
                   }}

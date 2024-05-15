@@ -43,7 +43,7 @@ export type OnParams<Schema, Context> = Parameters<
 
 export interface SchemaProps<Schema, Context> {
   children: ReactNode;
-  handler: Pick<
+  handler?: Pick<
     ISchemaCollect<Schema, Context>,
     "setContext" | "getContext"
   > & {

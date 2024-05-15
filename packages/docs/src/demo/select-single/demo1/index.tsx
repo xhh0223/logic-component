@@ -1,14 +1,8 @@
-import {
-  SelectItem,
-  SelectSingle,
-  useSelectSingleInstance,
-} from "@logic-component/select";
+import { SelectSingle, SelectSingleItem } from "@logic-component/select";
 import { Avatar, Card, Checkbox, Flex } from "antd";
 import { useCallback, useMemo } from "react";
 
 const Demo1 = () => {
-  const ins = useSelectSingleInstance();
-
   const CardWithCheck = useCallback(
     (props: { isChecked: boolean; onClick: () => void }) => {
       const { isChecked, onClick } = props;
@@ -42,23 +36,23 @@ const Demo1 = () => {
 
   return (
     <div>
-      <SelectSingle instance={ins}>
+      <SelectSingle>
         <Flex wrap gap={16}>
           {Array.from({ length: 10 }).map((_, index) => (
-            <SelectItem
+            <SelectSingleItem
               key={index}
               id={Math.random()}
-              render={({ isChecked, id }) => {
+              render={({ handler, isChecked, id }) => {
                 return (
                   <CardWithCheck
                     isChecked={isChecked}
                     onClick={() => {
-                      ins.trigger(id);
+                      handler.trigger(id);
                     }}
                   />
                 );
               }}
-            ></SelectItem>
+            ></SelectSingleItem>
           ))}
         </Flex>
       </SelectSingle>

@@ -61,12 +61,14 @@ export const SelectSingle = <ValueType,>(
         return pick(collect.getItem(id), PickColumns);
       },
     };
-    if (outerHandler) {
-      Object.assign(outerHandler, handler);
-    }
-    return outerHandler;
+
+    return handler;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (outerHandler) {
+    Object.assign(outerHandler, innerHandler);
+  }
 
   return (
     <SelectSingleCollectContext.Provider

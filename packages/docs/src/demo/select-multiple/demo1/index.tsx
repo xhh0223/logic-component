@@ -1,14 +1,8 @@
-import {
-  SelectItem,
-  SelectMultiple,
-  useSelectMultipleInstance,
-} from "@logic-component/select";
+import { SelectMultiple, SelectMultipleItem } from "@logic-component/select";
 import { Card, Checkbox, Avatar, Flex } from "antd";
 import { useCallback, useMemo } from "react";
 
 const Demo1 = () => {
-  const ins = useSelectMultipleInstance();
-
   const CardWithCheck = useCallback(
     (props: { isChecked: boolean; onClick: () => void }) => {
       const { isChecked, onClick } = props;
@@ -42,23 +36,23 @@ const Demo1 = () => {
 
   return (
     <div>
-      <SelectMultiple instance={ins}>
+      <SelectMultiple>
         <Flex wrap gap={16}>
           {Array.from({ length: 10 }).map((_, index) => (
-            <SelectItem
+            <SelectMultipleItem
               key={index}
               id={Math.random()}
-              render={({ isChecked, id }) => {
+              render={({ handler, isChecked, id }) => {
                 return (
                   <CardWithCheck
                     isChecked={isChecked}
                     onClick={() => {
-                      ins.trigger([id]);
+                      handler.trigger([id]);
                     }}
                   />
                 );
               }}
-            ></SelectItem>
+            ></SelectMultipleItem>
           ))}
         </Flex>
       </SelectMultiple>
