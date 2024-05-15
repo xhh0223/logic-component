@@ -1,6 +1,6 @@
 import { useRef, useMemo } from "react";
 import { pick } from "lodash-es";
-import { type SelectSingleProps } from "../typing";
+import { type SelectSingleProps } from "./typing";
 import { Id } from "@/typing";
 import { SelectCollect } from "../select-collect";
 import { SelectSingleCollectContext } from "./context";

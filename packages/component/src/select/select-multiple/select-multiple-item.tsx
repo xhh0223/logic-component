@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { SelectMultipleItemProps } from "../typing";
+import { SelectMultipleItemProps } from "./typing";
 import { SelectMultipleCollectContext } from "./context";
 
 export const SelectMultipleItem = <Value,>(

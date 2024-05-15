@@ -28,41 +28,7 @@ export type RequiredISelectItem<ValueType> = Required<
   Pick<ISelectItem<ValueType>, "id" | "isChecked" | "value">
 >;
 
-export interface SelectSingleProps<ValueType = any> {
-  children: React.ReactNode;
-  handler?: {
-    trigger: (id: Id) => RequiredISelectItem<ValueType> | undefined;
-    getItems: (id: Id[]) => Array<RequiredISelectItem<ValueType>>;
-  };
-}
-
-export interface SelectMultipleProps<ValueType = any> {
-  children: React.ReactNode;
-  handler?: {
-    trigger: (ids: Id[]) => Array<RequiredISelectItem<ValueType>>;
-    select: (id: Id[]) => Array<RequiredISelectItem<ValueType>>;
-    cancelSelected: (id: Id[]) => Array<RequiredISelectItem<ValueType>>;
-    getItems: (id: Id[]) => Array<RequiredISelectItem<ValueType>>;
-  };
-}
-
-type SelectItemProps<ValueType> = Pick<
+export type CommonSelectItemProps<ValueType> = Pick<
   ISelectItem<ValueType>,
   "id" | "allowRepeatChecked" | "value"
 >;
-
-export type SelectSingleItemProps<ValueType> = SelectItemProps<ValueType> & {
-  render: (
-    params: RequiredISelectItem<ValueType> & {
-      handler: SelectSingleProps["handler"];
-    }
-  ) => React.ReactNode;
-};
-
-export type SelectMultipleItemProps<ValueType> = SelectItemProps<ValueType> & {
-  render: (
-    params: RequiredISelectItem<ValueType> & {
-      handler: SelectMultipleProps["handler"];
-    }
-  ) => React.ReactNode;
-};
