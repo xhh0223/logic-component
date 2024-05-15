@@ -1,5 +1,5 @@
 import { useRef, useMemo } from "react";
-import { type SelectMultipleProps } from "../typing";
+import { type SelectMultipleProps } from "./typing";
 
 import { SelectCollect } from "../select-collect";
 import { SelectMultipleCollectContext } from "./context";

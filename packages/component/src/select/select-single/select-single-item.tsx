@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { type SelectSingleItemProps } from "../typing";
+import { type SelectSingleItemProps } from "./typing";
 import { SelectSingleCollectContext } from "./context";
 
 export const SelectSingleItem = <Value,>(

@@ -1,5 +1,6 @@
 import { createContext } from "react";
-import { SelectMultipleProps, type ISelectCollect } from "../typing";
+import { SelectMultipleProps } from "./typing";
+import { type ISelectCollect } from "../typing";
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 export const SelectMultipleCollectContext = createContext<{
