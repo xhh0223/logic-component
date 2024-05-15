@@ -1,19 +1,20 @@
 import { useRef, useMemo } from "react";
 import { pick } from "lodash-es";
-import { type SelectSingleProps } from "./typing";
+import { type SelectSingleProps } from "../typing";
 import { Id } from "@/typing";
-import { SelectCollect } from "./select-collect";
-import { defaultFn } from "@/utils";
-import { SelectCollectContext } from "./context";
+import { SelectCollect } from "../select-collect";
+import { SelectSingleCollectContext } from "./context";
+
 const PickColumns = ["id", "isChecked", "value"];
+
 export const SelectSingle = <ValueType,>(
   props: SelectSingleProps<ValueType>
 ) => {
-  const { children, instance } = props;
+  const { children, handler: outerHandler } = props;
   const { current: collect } = useRef(new SelectCollect<ValueType>());
-  useMemo(() => {
-    if (instance) {
-      instance.getItems = (ids: Id[]) => {
+  const innerHandler = useMemo(() => {
+    const handler: SelectSingleProps<ValueType>["handler"] = {
+      getItems: (ids: Id[]) => {
         const result = [];
         ids.forEach((id) => {
           const item = collect.getItem(id);
@@ -22,9 +23,8 @@ export const SelectSingle = <ValueType,>(
           }
         });
         return result as any;
-      };
-
-      instance.trigger = (id) => {
+      },
+      trigger: (id) => {
         const item = collect.getItem(id);
 
         if (!item) {
@@ -59,21 +59,25 @@ export const SelectSingle = <ValueType,>(
           });
         }
         return pick(collect.getItem(id), PickColumns);
-      };
+      },
+    };
+    if (outerHandler) {
+      Object.assign(outerHandler, handler);
     }
+    return outerHandler;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <SelectCollectContext.Provider value={collect}>
+    <SelectSingleCollectContext.Provider
+      value={{ collect, handler: innerHandler }}
+    >
       {children}
-    </SelectCollectContext.Provider>
+    </SelectSingleCollectContext.Provider>
   );
 };
 
-export const useSelectSingleInstance = <ValueType,>() => {
-  return useRef({
-    trigger: defaultFn,
-    getItems: defaultFn,
-  }).current as unknown as SelectSingleProps<ValueType>["instance"];
+export const useSelectSingleHandler = <ValueType,>() => {
+  return useRef({})
+    .current as unknown as SelectSingleProps<ValueType>["handler"];
 };

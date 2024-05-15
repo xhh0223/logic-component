@@ -1,8 +1,9 @@
 export type {
-  SelectItemProps,
+  SelectSingleItemProps,
+  SelectMultipleItemProps,
   SelectSingleProps,
   SelectMultipleProps,
 } from "./typing";
-export { SelectSingle, useSelectSingleInstance } from "./select-single";
-export { SelectItem } from "./select-item";
-export { SelectMultiple, useSelectMultipleInstance } from "./select-multiple";
+
+export * from "./select-single";
+export * from "./select-multiple";

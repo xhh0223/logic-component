@@ -2,8 +2,7 @@ import { useRef, useMemo } from "react";
 import { type SelectMultipleProps } from "./typing";
 
 import { SelectCollect } from "./select-collect";
-import { defaultFn } from "@/utils";
-import { SelectCollectContext } from "./context";
+import { SelectMultipleCollectContext } from "./context";
 import { pick } from "lodash-es";
 import { Id } from "@/typing";
 
@@ -11,11 +10,11 @@ const PickColumns = ["id", "isChecked", "value"];
 export const SelectMultiple = <ValueType,>(
   props: SelectMultipleProps<ValueType>
 ) => {
-  const { children, instance } = props;
+  const { children, handler: outerHandler } = props;
   const { current: collect } = useRef(new SelectCollect<ValueType>());
   useMemo(() => {
-    if (instance) {
-      instance.getItems = (ids: Id[]) => {
+    const handler: SelectMultipleProps<ValueType>["handler"] = {
+      getItems: (ids: Id[]) => {
         const result = [];
         ids.forEach((id) => {
           const item = collect.getItem(id);
@@ -24,9 +23,8 @@ export const SelectMultiple = <ValueType,>(
           }
         });
         return result as any;
-      };
-
-      instance.select = (ids) => {
+      },
+      select: (ids) => {
         const result = [];
         ids?.forEach((id) => {
           const item = collect.getItem(id);
@@ -37,9 +35,8 @@ export const SelectMultiple = <ValueType,>(
           result.push(item);
         });
         return result;
-      };
-
-      instance.cancelSelected = (ids) => {
+      },
+      cancelSelected: (ids) => {
         const result = [];
         ids?.forEach((id) => {
           const item = collect.getItem(id);
@@ -50,9 +47,8 @@ export const SelectMultiple = <ValueType,>(
           result.push(item);
         });
         return result;
-      };
-
-      instance.trigger = (ids) => {
+      },
+      trigger: (ids) => {
         const result: any = [];
         ids.forEach((id) => {
           const item = collect.getItem(id);
@@ -74,23 +70,24 @@ export const SelectMultiple = <ValueType,>(
           result.push(pick(item, PickColumns));
         });
         return result;
-      };
+      },
+    };
+    if (outerHandler) {
+      Object.assign(outerHandler, handler);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <SelectCollectContext.Provider value={collect}>
+    <SelectMultipleCollectContext.Provider
+      value={{ collect, handler: outerHandler }}
+    >
       {children}
-    </SelectCollectContext.Provider>
+    </SelectMultipleCollectContext.Provider>
   );
 };
 
-export const useSelectMultipleInstance = <ValueType,>() => {
-  return useRef({
-    select: defaultFn,
-    cancelSelected: defaultFn,
-    trigger: defaultFn,
-    getItems: defaultFn,
-  }).current as unknown as SelectMultipleProps<ValueType>["instance"];
+export const useSelectMultipleHandler = <ValueType,>() => {
+  return useRef({})
+    .current as unknown as SelectMultipleProps<ValueType>["handler"];
 };

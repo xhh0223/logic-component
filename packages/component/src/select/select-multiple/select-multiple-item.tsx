@@ -1,10 +1,12 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { type SelectItemProps } from "./typing";
-import { SelectCollectContext } from "./context";
+import { SelectMultipleItemProps } from "../typing";
+import { SelectMultipleCollectContext } from "./context";
 
-export const SelectItem = <Value,>(props: SelectItemProps<Value>) => {
+export const SelectMultipleItem = <Value,>(
+  props: SelectMultipleItemProps<Value>
+) => {
   const { id, value, render, allowRepeatChecked = false } = props;
-  const collect = useContext(SelectCollectContext);
+  const { collect, handler } = useContext(SelectMultipleCollectContext);
 
   /** 记录第一次初始化的值 */
   const memoInfo = useMemo(
@@ -58,6 +60,7 @@ export const SelectItem = <Value,>(props: SelectItemProps<Value>) => {
 
   const item = collect.getItem(id);
   return render({
+    handler,
     id,
     value: item.value,
     isChecked: !!item.isChecked,

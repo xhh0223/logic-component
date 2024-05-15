@@ -29,8 +29,8 @@ export function Schema<Schema = any, Context = any>(
   const { children, handler: outerHandler } = props;
   const { current: collect } = useRef(new SchemaCollect());
 
-  const innerStance = useMemo(() => {
-    const ins: SchemaProps<Schema, Context>["handler"] = {
+  const innerHandler = useMemo(() => {
+    const handler: SchemaProps<Schema, Context>["handler"] = {
       getContext: collect.getContext,
       setContext: collect.setContext,
       getItem: (id) => {
@@ -44,14 +44,16 @@ export function Schema<Schema = any, Context = any>(
       updateItem: collect.updateItemPartialColumn,
     };
 
-    Object.assign(outerHandler, ins);
-    return ins;
+    if (outerHandler) {
+      Object.assign(outerHandler, handler);
+    }
+    return innerHandler;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     // eslint-disable-next-line react/react-in-jsx-scope
-    <SchemaCollectContext.Provider value={{ collect, handler: innerStance }}>
+    <SchemaCollectContext.Provider value={{ collect, handler: innerHandler }}>
       {children}
     </SchemaCollectContext.Provider>
   );
