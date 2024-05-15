@@ -36,34 +36,11 @@ export type RequiredITreeSelectItem<ValueType> = Required<
   >
 >;
 
-export interface TreeSelectSingleProps<ValueType = any> {
-  children: React.ReactNode;
-  instance: {
-    trigger: (id: Id) => RequiredITreeSelectItem<ValueType> | undefined;
-    getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
-    getDescendantsIdsList: (id: Id) => Id[];
-    getAncestorsIdsList: (id: Id) => Id[];
-  };
-}
-
-export interface TreeSelectMultipleProps<ValueType = any> {
-  children: React.ReactNode;
-  instance: {
-    trigger: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
-    select: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
-    cancelSelected: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
-    getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
-    getDescendantsIdsList: (id: Id) => Id[];
-    getAncestorsIdsList: (id: Id) => Id[];
-  };
-}
-
-export interface TreeSelectItemProps<ValueType> {
+export interface CommonTreeSelectItemProps<ValueType> {
   id: ITreeSelectItem<ValueType>["id"];
   parentId: ITreeSelectItem<ValueType>["parentId"];
   /** 后代ids */
   descendantsIds?: ITreeSelectItem<ValueType>["descendantsIds"];
   value?: ITreeSelectItem<ValueType>["value"];
   allowRepeatChecked?: ITreeSelectItem<ValueType>["allowRepeatChecked"];
-  render: (params: RequiredITreeSelectItem<ValueType>) => React.ReactNode;
 }

@@ -1,14 +1,8 @@
-import {
-  TreeSelectSingle,
-  TreeSelectItem,
-  useTreeSelectSingleInstance,
-} from "@logic-component/index";
+import { TreeSelectSingle, TreeSelectSingleItem } from "@logic-component/index";
 import { genTreeData } from "@src/utils";
 import { Checkbox, Flex } from "antd";
 
 const Demo1 = () => {
-  const ins = useTreeSelectSingleInstance();
-
   const treeList = (() => {
     const treeData = genTreeData([3, 2, 2]);
     const list = [];
@@ -26,20 +20,20 @@ const Demo1 = () => {
 
   return (
     <div>
-      <TreeSelectSingle instance={ins}>
+      <TreeSelectSingle>
         {treeList.map((i) => (
-          <TreeSelectItem
+          <TreeSelectSingleItem
             key={i.id}
             id={i.id}
             value={i}
             parentId={i.parentId}
             descendantsIds={i.children}
-            render={({ id, isChecked, value }) => {
+            render={({ handler, id, isChecked, value }) => {
               return (
                 <Flex>
                   <Checkbox
                     onClick={() => {
-                      ins.trigger(id);
+                      handler.trigger(id);
                     }}
                     checked={isChecked}
                   >

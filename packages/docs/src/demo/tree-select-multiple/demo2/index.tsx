@@ -1,30 +1,28 @@
 import {
-  TreeSelectItem,
   TreeSelectMultiple,
-  useTreeSelectMultipleInstance,
+  TreeSelectMultipleItem,
 } from "@logic-component/index";
 import { genTreeData } from "@src/utils";
 import { Checkbox, Flex, Tag } from "antd";
 import { useState } from "react";
 
 const Demo2 = () => {
-  const ins = useTreeSelectMultipleInstance();
   const [everyLevelData, setEveryLevelData] = useState([
     genTreeData([3, 2, 2]),
   ]);
 
   return (
     <div>
-      <TreeSelectMultiple instance={ins}>
+      <TreeSelectMultiple>
         <Flex>
           {everyLevelData.map((levelData, level) => {
             return (
               <div key={level}>
                 {levelData?.map((i) => (
-                  <TreeSelectItem
+                  <TreeSelectMultipleItem
                     key={i.id}
                     id={i.id}
-                    render={({ isChecked, descendantsIds, id }) => {
+                    render={({ handler, isChecked, descendantsIds, id }) => {
                       return (
                         <Flex gap={16}>
                           {descendantsIds ? (
@@ -43,7 +41,7 @@ const Demo2 = () => {
                           ) : (
                             <Checkbox
                               onClick={() => {
-                                ins.trigger([id]);
+                                handler.trigger([id]);
                               }}
                               checked={isChecked}
                             >

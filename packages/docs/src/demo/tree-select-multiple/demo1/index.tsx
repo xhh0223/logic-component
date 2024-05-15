@@ -1,14 +1,11 @@
 import {
   TreeSelectMultiple,
-  TreeSelectItem,
-  useTreeSelectMultipleInstance,
+  TreeSelectMultipleItem,
 } from "@logic-component/index";
 import { genTreeData } from "@src/utils";
 import { Checkbox, Flex } from "antd";
 
 const Demo1 = () => {
-  const ins = useTreeSelectMultipleInstance();
-
   const treeList = (() => {
     const treeData = genTreeData([2, 2, 2, 2, 2]);
     const list = [];
@@ -26,9 +23,9 @@ const Demo1 = () => {
 
   return (
     <div>
-      <TreeSelectMultiple instance={ins}>
+      <TreeSelectMultiple>
         {treeList.map((i) => (
-          <TreeSelectItem
+          <TreeSelectMultipleItem
             key={i.id}
             id={i.id}
             value={i}
@@ -37,29 +34,29 @@ const Demo1 = () => {
               id: i.id,
               children: i.children,
             }))}
-            render={({ id, isChecked, value, parentId }) => {
+            render={({ handler, id, isChecked, value, parentId }) => {
               return (
                 <Flex>
                   <Checkbox
                     onClick={() => {
                       /** select current node */
-                      ins.trigger([id]);
+                      handler.trigger([id]);
 
                       /** select descend node */
                       (() => {
-                        const ids = ins.getDescendantsIdsList(id);
+                        const ids = handler.getDescendantsIdsList(id);
                         if (!isChecked) {
-                          ins.select(ids);
+                          handler.select(ids);
                         } else {
-                          ins.cancelSelected(ids);
+                          handler.cancelSelected(ids);
                         }
                       })();
 
                       /** select parent node */
                       (() => {
                         const parentDescendantsIds =
-                          ins.getDescendantsIdsList(parentId);
-                        const allSelected = ins
+                          handler.getDescendantsIdsList(parentId);
+                        const allSelected = handler
                           .getItems(parentDescendantsIds)
                           .filter((i) => i.isChecked);
 
@@ -70,9 +67,9 @@ const Demo1 = () => {
                         if (
                           allSelected.length === parentDescendantsIds.length
                         ) {
-                          ins.select([parentId]);
+                          handler.select([parentId]);
                         } else {
-                          ins.cancelSelected([parentId]);
+                          handler.cancelSelected([parentId]);
                         }
                       })();
                     }}

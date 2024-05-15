@@ -2,46 +2,30 @@ import { useRef, useMemo } from "react";
 import { pick } from "lodash-es";
 import { type TreeSelectSingleProps } from "./typing";
 
-import { SelectCollect } from "./select-collect";
+import { SelectCollect } from "../select-collect";
 import { defaultFn } from "@/utils";
-import { SelectCollectContext } from "./context";
+import { TreeSelectSingleCollectContext } from "./context";
 
 const PickColumns = ["id", "isChecked", "value", "descendantsIds", "parentId"];
 
 export const TreeSelectSingle = <ValueType,>(
   props: TreeSelectSingleProps<ValueType>
 ) => {
-  const { children, instance } = props;
+  const { children, handler: outHandler } = props;
   const { current: collect } = useRef(new SelectCollect<ValueType>());
-  useMemo(() => {
-    if (instance) {
-      instance.getItems = (ids) => {
+  const innerHandler = useMemo(() => {
+    const handler: TreeSelectSingleProps["handler"] = {
+      getItems: (ids) => {
         let result = [];
-        ids.forEach((i) => {
-          const item = collect.getItem(i);
+        ids?.forEach((id) => {
+          const item = collect.getItem(id);
           if (item) {
             result.push(pick(item, PickColumns));
           }
         });
         return result;
-      };
-
-      instance.getDescendantsIdsList = (id) => {
-        const descendantsIds = collect.getItem(id)?.descendantsIds ?? [];
-        const list = (ids, result = []) => {
-          const items = instance.getItems(ids?.map((i) => i.id));
-          items.forEach((item) => {
-            result.push(item.id);
-            if (item.descendantsIds) {
-              list(item.descendantsIds, result);
-            }
-          });
-          return result;
-        };
-        return list(descendantsIds);
-      };
-
-      instance.getAncestorsIdsList = (id) => {
+      },
+      getAncestorsIdsList: (id) => {
         const getResult = (id, result = []) => {
           const parentId = collect.getItem(id)?.parentId;
           if (parentId) {
@@ -52,9 +36,22 @@ export const TreeSelectSingle = <ValueType,>(
         };
 
         return getResult(id);
-      };
-
-      instance.trigger = (id) => {
+      },
+      getDescendantsIdsList: (id) => {
+        const descendantsIds = collect.getItem(id)?.descendantsIds ?? [];
+        const list = (ids, result = []) => {
+          const items = handler.getItems(ids?.map((i) => i.id));
+          items.forEach((item) => {
+            result.push(item.id);
+            if (item.descendantsIds) {
+              list(item.descendantsIds, result);
+            }
+          });
+          return result;
+        };
+        return list(descendantsIds);
+      },
+      trigger: (id) => {
         const item = collect.getItem(id);
         if (!item) {
           return;
@@ -88,23 +85,30 @@ export const TreeSelectSingle = <ValueType,>(
           });
         }
         return pick(collect.getItem(id), PickColumns);
-      };
-    }
+      },
+    };
+
+    return handler;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (outHandler) {
+    Object.assign(outHandler, innerHandler);
+  }
   return (
-    <SelectCollectContext.Provider value={collect}>
+    <TreeSelectSingleCollectContext.Provider
+      value={{ collect, handler: innerHandler }}
+    >
       {children}
-    </SelectCollectContext.Provider>
+    </TreeSelectSingleCollectContext.Provider>
   );
 };
 
-export const useTreeSelectSingleInstance = <ValueType,>() => {
+export const useTreeSelectSingleHandler = <ValueType,>() => {
   return useRef({
     trigger: defaultFn,
     getItems: defaultFn,
     getDescendantsIdsList: defaultFn,
     getAncestorsIdsList: defaultFn,
-  }).current as unknown as TreeSelectSingleProps<ValueType>["instance"];
+  }).current as unknown as TreeSelectSingleProps<ValueType>["handler"];
 };

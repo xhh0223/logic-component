@@ -1,9 +1,8 @@
 import { useRef, useMemo } from "react";
 import { type TreeSelectMultipleProps } from "./typing";
 
-import { SelectCollect } from "./select-collect";
-import { defaultFn } from "@/utils";
-import { SelectCollectContext } from "./context";
+import { SelectCollect } from "../select-collect";
+import { TreeSelectMultipleCollectContext } from "./context";
 import { pick } from "lodash-es";
 
 const PickColumns = ["id", "isChecked", "value", "descendantsIds", "parentId"];
@@ -11,11 +10,12 @@ const PickColumns = ["id", "isChecked", "value", "descendantsIds", "parentId"];
 export const TreeSelectMultiple = <ValueType,>(
   props: TreeSelectMultipleProps<ValueType>
 ) => {
-  const { children, instance } = props;
+  const { children, handler: outerHandler } = props;
   const { current: collect } = useRef(new SelectCollect<ValueType>());
-  useMemo(() => {
-    if (instance) {
-      instance.getItems = (ids) => {
+
+  const innerHandler = useMemo(() => {
+    const handler: TreeSelectMultipleProps<ValueType>["handler"] = {
+      getItems: (ids) => {
         let result = [];
         ids?.forEach((id) => {
           const item = collect.getItem(id);
@@ -24,9 +24,8 @@ export const TreeSelectMultiple = <ValueType,>(
           }
         });
         return result;
-      };
-
-      instance.getAncestorsIdsList = (id) => {
+      },
+      getAncestorsIdsList: (id) => {
         const getResult = (id, result = []) => {
           const parentId = collect.getItem(id)?.parentId;
           if (parentId) {
@@ -37,12 +36,11 @@ export const TreeSelectMultiple = <ValueType,>(
         };
 
         return getResult(id);
-      };
-
-      instance.getDescendantsIdsList = (id) => {
+      },
+      getDescendantsIdsList: (id) => {
         const descendantsIds = collect.getItem(id)?.descendantsIds ?? [];
         const list = (ids, result = []) => {
-          const items = instance.getItems(ids?.map((i) => i.id));
+          const items = handler.getItems(ids?.map((i) => i.id));
           items.forEach((item) => {
             result.push(item.id);
             if (item.descendantsIds) {
@@ -52,9 +50,8 @@ export const TreeSelectMultiple = <ValueType,>(
           return result;
         };
         return list(descendantsIds);
-      };
-
-      instance.select = (ids) => {
+      },
+      select: (ids) => {
         const result = [];
         ids?.forEach((id) => {
           const item = collect.getItem(id);
@@ -67,9 +64,8 @@ export const TreeSelectMultiple = <ValueType,>(
           }
         });
         return result;
-      };
-
-      instance.cancelSelected = (ids) => {
+      },
+      cancelSelected: (ids) => {
         const result = [];
         ids?.forEach((id) => {
           const item = collect.getItem(id);
@@ -82,9 +78,8 @@ export const TreeSelectMultiple = <ValueType,>(
           }
         });
         return result;
-      };
-
-      instance.trigger = (ids) => {
+      },
+      trigger: (ids) => {
         const result: any = [];
         ids.forEach((id) => {
           const item = collect.getItem(id);
@@ -106,25 +101,23 @@ export const TreeSelectMultiple = <ValueType,>(
           result.push(pick(item, PickColumns));
         });
         return result;
-      };
-    }
+      },
+    };
+    return handler;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  if (outerHandler) {
+    Object.assign(outerHandler, innerHandler);
+  }
   return (
-    <SelectCollectContext.Provider value={collect}>
+    <TreeSelectMultipleCollectContext.Provider
+      value={{ collect, handler: innerHandler }}
+    >
       {children}
-    </SelectCollectContext.Provider>
+    </TreeSelectMultipleCollectContext.Provider>
   );
 };
 
-export const useTreeSelectMultipleInstance = <ValueType,>() => {
-  return useRef({
-    select: defaultFn,
-    cancelSelected: defaultFn,
-    trigger: defaultFn,
-    getItems: defaultFn,
-    getDescendantsIdsList: defaultFn,
-    getAncestorsIdsList: defaultFn,
-  }).current as unknown as TreeSelectMultipleProps<ValueType>["instance"];
+export const useTreeSelectMultipleHandler = <ValueType,>() => {
+  return useRef({}).current as TreeSelectMultipleProps<ValueType>["handler"];
 };

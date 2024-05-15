@@ -1,9 +1,9 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { type TreeSelectItemProps } from "./typing";
-import { SelectCollectContext } from "./context";
+import { type TreeSelectSingleItemProps } from "./typing";
+import { TreeSelectSingleCollectContext } from "./context";
 
-export const TreeSelectItem = <Value = any,>(
-  props: TreeSelectItemProps<Value>
+export const TreeSelectSingleItem = <Value = any,>(
+  props: TreeSelectSingleItemProps<Value>
 ) => {
   const {
     id,
@@ -13,7 +13,7 @@ export const TreeSelectItem = <Value = any,>(
     descendantsIds,
     parentId,
   } = props;
-  const collect = useContext(SelectCollectContext);
+  const { collect, handler } = useContext(TreeSelectSingleCollectContext);
 
   /** 记录第一次初始化的值 */
   const memoInfo = useMemo(
@@ -81,6 +81,7 @@ export const TreeSelectItem = <Value = any,>(
 
   const item = collect.getItem(id);
   return render({
+    handler,
     id,
     value: item.value,
     isChecked: !!item.isChecked,
