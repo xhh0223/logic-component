@@ -116,7 +116,6 @@ export class SchemaCollect<Schema, Context = any>
           i,
           this.getItem(i)?.schema,
         ]),
-        context: this.getContext(),
       });
     });
     return this.getItem(id);
@@ -130,3 +129,4 @@ export class SchemaCollect<Schema, Context = any>
     return [...this.schemaHashMap.values()].map((i) => i.item);
   };
 }
+

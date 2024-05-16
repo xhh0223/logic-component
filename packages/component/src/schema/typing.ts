@@ -9,8 +9,6 @@ export interface ISchemaItem<Schema, Context> {
     triggerOnField: RequiredIScheItem<Schema, Context>;
     /** 获取依赖的schema */
     dependencySchema: Array<[Id, Schema]>;
-    /** 字段外上下文 */
-    context: Context;
   }) => void;
 }
 
@@ -37,7 +35,7 @@ export type RequiredIScheItem<Schema, Context> = Pick<
   "dependency" | "id" | "schema"
 >;
 
-export type OnParams<Schema, Context> = Parameters<
+export type DependencyInfo<Schema, Context> = Parameters<
   ISchemaItem<Schema, Context>["on"]
 >;
 
@@ -59,10 +57,11 @@ export interface SchemaProps<Schema, Context> {
 export interface SchemaItemProps<Schema, Context> {
   id: Id;
   render: (
-    currentItemInfo: RequiredIScheItem<Schema, Context> & {
+    info: RequiredIScheItem<Schema, Context> & {
       handler: SchemaProps<Schema, Context>["handler"];
+      context: Context;
     },
-    params: OnParams<Schema, Context>
+    dependencyInfo: DependencyInfo<Schema, Context>
   ) => ReactNode;
   initDependency?: Id[];
   initSchema: Schema;

@@ -73,24 +73,25 @@ export function SchemaItem<Schema, Context>(
 
   const memoInfo = useMemo(
     () => {
+      const cacheInfo = {
+        dependency: initDependency,
+        schema: initSchema,
+        dependencyInfo: null as any,
+        currentId: id,
+      };
       /** 新增 */
       collect.addItem({
         id,
         dependency: initDependency,
-        on(extraInfo) {
-          memoInfo.dependency = extraInfo.triggerOnField.dependency;
-          memoInfo.schema = extraInfo.triggerOnField.schema;
-          memoInfo.params = extraInfo;
+        on(dependencyInfo) {
+          cacheInfo.dependency = dependencyInfo.triggerOnField.dependency;
+          cacheInfo.schema = dependencyInfo.triggerOnField.schema;
+          cacheInfo.dependencyInfo = dependencyInfo;
           update({});
         },
         schema: initSchema,
       });
-      return {
-        dependency: initDependency,
-        schema: initSchema,
-        params: null as any,
-        currentId: id,
-      };
+      return cacheInfo;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -120,17 +121,18 @@ export function SchemaItem<Schema, Context>(
   return render(
     {
       handler,
+      context: handler.getContext(),
       id: memoInfo.currentId,
       schema: memoInfo.schema,
       dependency: memoInfo.dependency,
     },
-    memoInfo.params
+    memoInfo.dependencyInfo
   );
 }
 
-export function useSchemaHandler<Schema, Context>() {
-  return useRef({}).current as unknown as SchemaProps<
-    Schema,
-    Context
-  >["handler"];
+export function useSchemaHandler<Schema, Context>(): SchemaProps<
+  Schema,
+  Context
+>["handler"] {
+  return useRef({}).current as SchemaProps<Schema, Context>["handler"];
 }
