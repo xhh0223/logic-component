@@ -58,7 +58,7 @@ export const TreeSelectMultiple = <ValueType,>(
               collect.updateItemPartialColumn(id, { isChecked: true });
               item.refresh();
             }
-            result.push(pick(item, PickColumns));
+            result.push(pick(collect.getItem(id), PickColumns));
           }
         });
         return result;
@@ -72,7 +72,7 @@ export const TreeSelectMultiple = <ValueType,>(
               collect.updateItemPartialColumn(id, { isChecked: false });
               item.refresh();
             }
-            result.push(pick(item, PickColumns));
+            result.push(pick(collect.getItem(id), PickColumns));
           }
         });
         return result;
@@ -96,7 +96,7 @@ export const TreeSelectMultiple = <ValueType,>(
             });
             item.refresh();
           }
-          result.push(pick(item, PickColumns));
+          result.push(pick(collect.getItem(id), PickColumns));
         });
         return result;
       },

@@ -68,7 +68,7 @@ export const SelectMultiple = <ValueType,>(
             });
             item.refresh();
           }
-          result.push(pick(item, PickColumns));
+          result.push(pick(collect.getItem(id), PickColumns));
         });
         return result;
       },
