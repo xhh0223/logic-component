@@ -10,6 +10,7 @@ import {
 import { pick, omit } from "lodash-es";
 import { SchemaCollect } from "./schema-collect";
 import {
+  DependencyInfo,
   type ISchemaCollect,
   type SchemaItemProps,
   type SchemaProps,
@@ -37,6 +38,11 @@ export function Schema<Schema = any, Context = any>(
       setContext: collect.setContext,
       getItem: (id) => {
         return pick(collect.getItem(id), PickColumns);
+      },
+      getItemDependencyInfo: (id) => {
+        return collect
+          .getItemDependencyInfo(id)
+          ?.map((i) => pick(i, PickColumns));
       },
       getAllItem: () => {
         return collect.getAllItem().map((value) => pick(value, PickColumns));
@@ -73,24 +79,28 @@ export function SchemaItem<Schema, Context>(
 
   const memoInfo = useMemo(
     () => {
-      const cacheInfo = {
-        dependency: initDependency,
-        schema: initSchema,
-        dependencyInfo: null as any,
-        currentId: id,
-      };
+      let cacheInfo = {} as any;
       /** 新增 */
       collect.addItem({
         id,
         dependency: initDependency,
-        on(dependencyInfo) {
-          cacheInfo.dependency = dependencyInfo.triggerOnField.dependency;
-          cacheInfo.schema = dependencyInfo.triggerOnField.schema;
+        on<Schema>(dependencyInfo) {
+          cacheInfo.dependency = dependencyInfo.currentTrigger?.dependency;
+          cacheInfo.schema = dependencyInfo.currentTrigger?.schema;
           cacheInfo.dependencyInfo = dependencyInfo;
           update({});
         },
         schema: initSchema,
       });
+      cacheInfo = {
+        dependency: initDependency,
+        schema: initSchema,
+        currentId: id,
+        dependencyInfo: {
+          currentTrigger: handler.getItem(id),
+          dependencySchema: handler.getItemDependencyInfo(id),
+        } as unknown as DependencyInfo<Schema>,
+      };
       return cacheInfo;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

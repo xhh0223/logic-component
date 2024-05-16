@@ -1,43 +1,37 @@
 import { type Id } from "@/typing";
 import { type ReactNode } from "react";
 
-export interface ISchemaItem<Schema, Context> {
+export type RequiredIScheItem<Schema> = Pick<
+  ISchemaItem<Schema>,
+  "dependency" | "id" | "schema"
+>;
+
+export interface ISchemaItem<Schema> {
   id: Id;
   schema: Schema;
   dependency: Id[];
-  on: (params: {
-    triggerOnField: RequiredIScheItem<Schema, Context>;
-    /** 获取依赖的schema */
-    dependencySchema: Array<[Id, Schema]>;
+  on: <Schema = any>(params: {
+    currentTrigger: RequiredIScheItem<Schema>;
+    dependencySchema?: Array<RequiredIScheItem<Schema>>;
   }) => void;
 }
 
-export type CanUpdateColumn<Schema, Context> = Partial<
-  Pick<ISchemaItem<Schema, Context>, "dependency" | "schema">
+export type CanUpdateColumn<Schema> = Partial<
+  Pick<ISchemaItem<Schema>, "dependency" | "schema">
 >;
 
 export interface ISchemaCollect<Schema, Context = any> {
   getContext: () => Context;
   setContext: (context: Context) => void;
-  addItem: (params: ISchemaItem<Schema, Context>) => void;
+  addItem: (params: ISchemaItem<Schema>) => void;
   delItem: (id: Id) => void;
-  updateItemPartialColumn: (
-    id: Id,
-    params: CanUpdateColumn<Schema, Context>
-  ) => void;
-  getItem: (id: Id) => ISchemaItem<Schema, Context> | undefined;
-
-  getAllItem: () => Array<ISchemaItem<Schema, Context>>;
+  updateItemPartialColumn: (id: Id, params: CanUpdateColumn<Schema>) => void;
+  getItem: (id: Id) => ISchemaItem<Schema> | undefined;
+  getItemDependencyInfo(id: Id): Array<ISchemaItem<Schema>>;
+  getAllItem: () => Array<ISchemaItem<Schema>>;
 }
 
-export type RequiredIScheItem<Schema, Context> = Pick<
-  ISchemaItem<Schema, Context>,
-  "dependency" | "id" | "schema"
->;
-
-export type DependencyInfo<Schema, Context> = Parameters<
-  ISchemaItem<Schema, Context>["on"]
->;
+export type DependencyInfo<Schema> = Parameters<ISchemaItem<Schema>["on"]>;
 
 export interface SchemaProps<Schema, Context> {
   children: ReactNode;
@@ -45,23 +39,24 @@ export interface SchemaProps<Schema, Context> {
     ISchemaCollect<Schema, Context>,
     "setContext" | "getContext"
   > & {
-    getItem: (id: Id) => RequiredIScheItem<Schema, Context>;
-    getAllItem: () => Array<RequiredIScheItem<Schema, Context>>;
+    getItem: (id: Id) => RequiredIScheItem<Schema>;
+    getItemDependencyInfo: (id: Id) => Array<RequiredIScheItem<Schema>>;
+    getAllItem: () => Array<RequiredIScheItem<Schema>>;
     updateItem: (
       id: Id,
-      params: CanUpdateColumn<Schema, Context>
-    ) => RequiredIScheItem<Schema, Context>;
+      params: CanUpdateColumn<Schema>
+    ) => RequiredIScheItem<Schema>;
   };
 }
 
 export interface SchemaItemProps<Schema, Context> {
   id: Id;
   render: (
-    info: RequiredIScheItem<Schema, Context> & {
+    params: RequiredIScheItem<Schema> & {
       handler: SchemaProps<Schema, Context>["handler"];
       context: Context;
     },
-    dependencyInfo: DependencyInfo<Schema, Context>
+    dependencyInfo: DependencyInfo<Schema>
   ) => ReactNode;
   initDependency?: Id[];
   initSchema: Schema;

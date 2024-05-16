@@ -7,7 +7,28 @@ const Demo1 = () => {
       <Schema>
         <Flex wrap gap={16} vertical={true}>
           <SchemaItem
-            id={Math.random()}
+            id={1}
+            initDependency={[2]}
+            initSchema={{ show: true, content: Math.random() }}
+            render={({ id, schema, handler, context }, de) => {
+              return (
+                <>
+                  <div
+                    onClick={() => {
+                      handler.updateItem(id, {
+                        schema: { show: !schema.show, content: Math.random() },
+                      });
+                    }}
+                  >
+                    test
+                  </div>
+                  {schema.show && <div>{schema.content}</div>}
+                </>
+              );
+            }}
+          />
+          <SchemaItem
+            id={2}
             initSchema={{ show: true, content: Math.random() }}
             render={({ id, schema, handler }) => (
               <>

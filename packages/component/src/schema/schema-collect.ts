@@ -1,13 +1,13 @@
+import { pick } from "lodash-es";
 import { type ISchemaItem, type ISchemaCollect } from "./typing";
 import { type Id } from "@/typing";
-
 export class SchemaCollect<Schema, Context = any>
   implements ISchemaCollect<Schema, Context>
 {
   private readonly schemaHashMap = new Map<
     Id,
     {
-      item: ISchemaItem<Schema, Context>;
+      item: ISchemaItem<Schema>;
       listenerSet: Set<Id>;
       /** 方便快速查找依赖 */
       dependencySet: Set<Id>;
@@ -58,7 +58,7 @@ export class SchemaCollect<Schema, Context = any>
     });
   }
 
-  addItem = (schemaItem: ISchemaItem<Schema, Context>) => {
+  addItem = (schemaItem: ISchemaItem<Schema>) => {
     this.schemaHashMap.set(schemaItem.id, {
       item: schemaItem,
       listenerSet: new Set(),
@@ -101,25 +101,30 @@ export class SchemaCollect<Schema, Context = any>
     };
 
     /** 触发和听众的on方法 */
-    [id, ...listenerSet.values()].forEach((i) => {
+    [id, ...listenerSet.values()].forEach((itemId) => {
       /** 听众field */
-      const schemaItem = this.getItem(id);
+      const schemaItem = this.getItem(itemId);
 
       schemaItem?.on({
-        triggerOnField: {
+        currentTrigger: {
           id,
           schema: record.item.schema,
           dependency: record.item.dependency,
         },
         /** 获取听众监听依赖的schema */
-        dependencySchema: schemaItem?.dependency?.map((i) => [
-          i,
-          this.getItem(i)?.schema,
-        ]),
+        dependencySchema: this.getItemDependencyInfo(itemId)?.map((i) =>
+          pick(i, ["id", "schema", "dependency"])
+        ),
       });
     });
     return this.getItem(id);
   };
+
+  getItemDependencyInfo(id: Id): Array<ISchemaItem<Schema>> {
+    return this.getItem(id)
+      ?.dependency?.map((id) => this.getItem(id))
+      .filter(Boolean);
+  }
 
   getItem = (id) => {
     return this.schemaHashMap.get(id)?.item;
@@ -129,4 +134,3 @@ export class SchemaCollect<Schema, Context = any>
     return [...this.schemaHashMap.values()].map((i) => i.item);
   };
 }
-
