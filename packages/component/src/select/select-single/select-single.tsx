@@ -35,9 +35,9 @@ export const SelectSingle = <ValueType,>(
           if (!item.isChecked) {
             collect.updateItemPartialColumn(id, { isChecked: true });
             item.refresh();
-            collect.getAllItem().forEach(([key, item]) => {
-              if (key !== id && item.isChecked) {
-                collect.updateItemPartialColumn(key, {
+            collect.getAllItem().forEach((item) => {
+              if (item.id !== id && item.isChecked) {
+                collect.updateItemPartialColumn(item.id, {
                   isChecked: false,
                 });
                 item.refresh();
