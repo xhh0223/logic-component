@@ -25,7 +25,7 @@ export const TreeSelectMultiple = <ValueType,>(
         });
         return result;
       },
-      getAncestorsIdsList: (id) => {
+      getAncestorsIds: (id) => {
         const getResult = (id, result = []) => {
           const parentId = collect.getItem(id)?.parentId;
           if (parentId) {
@@ -37,15 +37,13 @@ export const TreeSelectMultiple = <ValueType,>(
 
         return getResult(id);
       },
-      getDescendantsIdsList: (id) => {
-        const descendantsIds = collect.getItem(id)?.descendantsIds ?? [];
+      getDescendantsIds: (id) => {
+        const descendantsIds = collect.getItem(id)?.childrenIds ?? [];
         const list = (ids, result = []) => {
-          const items = handler.getItems(ids?.map((i) => i.id));
-          items.forEach((item) => {
+          const items = ids?.map((i) => collect.getItem(i))?.filter(Boolean);
+          items?.forEach((item) => {
             result.push(item.id);
-            if (item.descendantsIds) {
-              list(item.descendantsIds, result);
-            }
+            list(item.childrenIds, result);
           });
           return result;
         };

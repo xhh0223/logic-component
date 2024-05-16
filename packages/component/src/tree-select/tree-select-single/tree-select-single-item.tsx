@@ -10,7 +10,7 @@ export const TreeSelectSingleItem = <Value = any,>(
     value,
     render,
     allowRepeatChecked = false,
-    descendantsIds,
+    childrenIds,
     parentId,
   } = props;
   const { collect, handler } = useContext(TreeSelectSingleCollectContext);
@@ -25,7 +25,7 @@ export const TreeSelectSingleItem = <Value = any,>(
         value,
         isChecked: false,
         allowRepeatChecked,
-        descendantsIds,
+        childrenIds,
         refresh() {
           update({});
         },
@@ -50,14 +50,14 @@ export const TreeSelectSingleItem = <Value = any,>(
         ...beforeItem,
         id,
         parentId,
-        descendantsIds,
+        childrenIds,
         value,
         allowRepeatChecked,
       });
     } else {
       collect.updateItemPartialColumn(memoInfo.id, {
         parentId,
-        descendantsIds,
+        childrenIds,
         value,
         allowRepeatChecked,
       });
@@ -69,7 +69,7 @@ export const TreeSelectSingleItem = <Value = any,>(
     value,
     allowRepeatChecked,
     parentId,
-    descendantsIds,
+    childrenIds,
   ]);
 
   /** 删除 */
@@ -85,7 +85,7 @@ export const TreeSelectSingleItem = <Value = any,>(
     id,
     value: item.value,
     isChecked: !!item.isChecked,
-    descendantsIds: item.descendantsIds,
+    childrenIds: item.childrenIds,
     parentId: item.parentId,
   });
 };

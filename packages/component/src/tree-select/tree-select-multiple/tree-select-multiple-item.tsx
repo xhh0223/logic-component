@@ -10,7 +10,7 @@ export const TreeSelectMultipleItem = <Value = any,>(
     value,
     render,
     allowRepeatChecked = false,
-    descendantsIds,
+    childrenIds,
     parentId,
   } = props;
   const { collect, handler } = useContext(TreeSelectMultipleCollectContext);
@@ -25,7 +25,7 @@ export const TreeSelectMultipleItem = <Value = any,>(
         value,
         isChecked: false,
         allowRepeatChecked,
-        descendantsIds,
+        childrenIds,
         refresh() {
           update({});
         },
@@ -50,27 +50,19 @@ export const TreeSelectMultipleItem = <Value = any,>(
         ...beforeItem,
         id,
         parentId,
-        descendantsIds,
+        childrenIds,
         value,
         allowRepeatChecked,
       });
     } else {
       collect.updateItemPartialColumn(memoInfo.id, {
         parentId,
-        descendantsIds,
+        childrenIds,
         value,
         allowRepeatChecked,
       });
     }
-  }, [
-    id,
-    memoInfo,
-    collect,
-    value,
-    allowRepeatChecked,
-    parentId,
-    descendantsIds,
-  ]);
+  }, [id, memoInfo, collect, value, allowRepeatChecked, parentId, childrenIds]);
 
   /** 删除 */
   useEffect(() => {
@@ -85,7 +77,7 @@ export const TreeSelectMultipleItem = <Value = any,>(
     id,
     value: item.value,
     isChecked: !!item.isChecked,
-    descendantsIds: item.descendantsIds,
+    childrenIds: item.childrenIds,
     parentId: item.parentId,
   });
 };

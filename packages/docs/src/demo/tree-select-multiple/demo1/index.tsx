@@ -30,10 +30,7 @@ const Demo1 = () => {
             id={i.id}
             value={i}
             parentId={i.parentId}
-            descendantsIds={i.children?.map((i) => ({
-              id: i.id,
-              children: i.children,
-            }))}
+            childrenIds={i.children?.map((i) => i.id)}
             render={({ handler, id, isChecked, value, parentId }) => {
               return (
                 <Flex>
@@ -44,7 +41,7 @@ const Demo1 = () => {
 
                       /** select descend node */
                       (() => {
-                        const ids = handler.getDescendantsIdsList(id);
+                        const ids = handler.getDescendantsIds(id);
                         if (!isChecked) {
                           handler.select(ids);
                         } else {
@@ -55,7 +52,7 @@ const Demo1 = () => {
                       /** select parent node */
                       (() => {
                         const parentDescendantsIds =
-                          handler.getDescendantsIdsList(parentId);
+                          handler.getDescendantsIds(parentId);
                         const allSelected = handler
                           .getItems(parentDescendantsIds)
                           .filter((i) => i.isChecked);

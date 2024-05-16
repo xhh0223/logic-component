@@ -8,8 +8,8 @@ export interface TreeSelectMultipleProps<ValueType = any> {
     select: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
     cancelSelected: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
     getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
-    getDescendantsIdsList: (id: Id) => Id[];
-    getAncestorsIdsList: (id: Id) => Id[];
+    getDescendantsIds: (id: Id) => Id[];
+    getAncestorsIds: (id: Id) => Id[];
   };
 }
 

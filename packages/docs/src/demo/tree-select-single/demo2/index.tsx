@@ -19,10 +19,10 @@ const Demo2 = () => {
                   <TreeSelectSingleItem
                     key={i.id}
                     id={i.id}
-                    render={({ handler, isChecked, descendantsIds, id }) => {
+                    render={({ handler, isChecked, childrenIds, id }) => {
                       return (
                         <Flex gap={16}>
-                          {descendantsIds ? (
+                          {childrenIds ? (
                             <Tag
                               onClick={() => {
                                 everyLevelData.splice(
@@ -49,7 +49,7 @@ const Demo2 = () => {
                       );
                     }}
                     parentId={i.parentId}
-                    descendantsIds={i.children as any}
+                    childrenIds={i.children?.map((i) => i.id)}
                   />
                 ))}
               </div>

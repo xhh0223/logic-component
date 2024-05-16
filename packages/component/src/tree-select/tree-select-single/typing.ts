@@ -6,8 +6,8 @@ export interface TreeSelectSingleProps<ValueType = any> {
   handler?: {
     trigger: (id: Id) => RequiredITreeSelectItem<ValueType> | undefined;
     getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>;
-    getDescendantsIdsList: (id: Id) => Id[];
-    getAncestorsIdsList: (id: Id) => Id[];
+    getDescendantsIds: (id: Id) => Id[];
+    getAncestorsIds: (id: Id) => Id[];
   };
 }
 

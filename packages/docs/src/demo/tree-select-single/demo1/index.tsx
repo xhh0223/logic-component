@@ -27,7 +27,7 @@ const Demo1 = () => {
             id={i.id}
             value={i}
             parentId={i.parentId}
-            descendantsIds={i.children}
+            childrenIds={i.children?.map((i) => i.id)}
             render={({ handler, id, isChecked, value }) => {
               return (
                 <Flex>
