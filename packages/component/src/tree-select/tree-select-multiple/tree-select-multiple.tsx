@@ -5,7 +5,7 @@ import { SelectCollect } from "../select-collect";
 import { TreeSelectMultipleCollectContext } from "./context";
 import { pick } from "lodash-es";
 
-const PickColumns = ["id", "isChecked", "value", "descendantsIds", "parentId"];
+const PickColumns = ["id", "isChecked", "value", "childrenIds", "parentId"];
 
 export const TreeSelectMultiple = <ValueType,>(
   props: TreeSelectMultipleProps<ValueType>

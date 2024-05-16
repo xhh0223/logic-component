@@ -3,10 +3,9 @@ import { pick } from "lodash-es";
 import { type TreeSelectSingleProps } from "./typing";
 
 import { SelectCollect } from "../select-collect";
-import { defaultFn } from "@/utils";
 import { TreeSelectSingleCollectContext } from "./context";
 
-const PickColumns = ["id", "isChecked", "value", "descendantsIds", "parentId"];
+const PickColumns = ["id", "isChecked", "value", "childrenIds", "parentId"];
 
 export const TreeSelectSingle = <ValueType,>(
   props: TreeSelectSingleProps<ValueType>
@@ -103,10 +102,6 @@ export const TreeSelectSingle = <ValueType,>(
 };
 
 export const useTreeSelectSingleHandler = <ValueType,>() => {
-  return useRef({
-    trigger: defaultFn,
-    getItems: defaultFn,
-    getDescendantsIdsList: defaultFn,
-    getAncestorsIdsList: defaultFn,
-  }).current as unknown as TreeSelectSingleProps<ValueType>["handler"];
+  return useRef({})
+    .current as unknown as TreeSelectSingleProps<ValueType>["handler"];
 };

@@ -33,7 +33,7 @@ export const SelectMultiple = <ValueType,>(
             collect.updateItemPartialColumn(id, { isChecked: true });
             item.refresh();
           }
-          result.push(item);
+          result.push(pick(collect.getItem(id), PickColumns));
         });
         return result;
       },
@@ -45,7 +45,7 @@ export const SelectMultiple = <ValueType,>(
             collect.updateItemPartialColumn(id, { isChecked: false });
             item.refresh();
           }
-          result.push(item);
+          result.push(pick(collect.getItem(id), PickColumns));
         });
         return result;
       },

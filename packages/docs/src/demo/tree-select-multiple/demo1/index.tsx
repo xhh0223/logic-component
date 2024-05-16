@@ -28,7 +28,6 @@ const Demo1 = () => {
           <TreeSelectMultipleItem
             key={i.id}
             id={i.id}
-            value={i}
             parentId={i.parentId}
             childrenIds={i.children?.map((i) => i.id)}
             render={({ handler, id, isChecked, value, parentId }) => {
@@ -72,7 +71,7 @@ const Demo1 = () => {
                     }}
                     checked={isChecked}
                   >
-                    {value.value}
+                    {id}
                   </Checkbox>
                 </Flex>
               );

@@ -22,7 +22,7 @@ export class SelectCollect<ValueType = any>
         ...item,
         ...pick(params, [
           "parentId",
-          "descendantsIds",
+          "childrenIds",
           "isChecked",
           "allowRepeatChecked",
           "value",

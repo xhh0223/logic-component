@@ -25,10 +25,9 @@ const Demo1 = () => {
           <TreeSelectSingleItem
             key={i.id}
             id={i.id}
-            value={i}
             parentId={i.parentId}
             childrenIds={i.children?.map((i) => i.id)}
-            render={({ handler, id, isChecked, value }) => {
+            render={({ handler, id, isChecked }) => {
               return (
                 <Flex>
                   <Checkbox
@@ -37,7 +36,7 @@ const Demo1 = () => {
                     }}
                     checked={isChecked}
                   >
-                    {value.value}
+                    {id}
                   </Checkbox>
                 </Flex>
               );
