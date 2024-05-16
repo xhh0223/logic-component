@@ -49,7 +49,10 @@ export interface SchemaProps<Schema, Context> {
   > & {
     getItem: (id: Id) => RequiredIScheItem<Schema, Context>;
     getAllItem: () => Array<RequiredIScheItem<Schema, Context>>;
-    updateItem: ISchemaCollect<Schema, Context>["updateItemPartialColumn"];
+    updateItem: (
+      id: Id,
+      params: CanUpdateColumn<Schema, Context>
+    ) => RequiredIScheItem<Schema, Context>;
   };
 }
 

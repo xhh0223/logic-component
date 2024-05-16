@@ -75,7 +75,7 @@ export class SchemaCollect<Schema, Context = any>
     }
   };
 
-  updateItemPartialColumn = (id, params): void => {
+  updateItemPartialColumn = (id, params) => {
     const record = this.schemaHashMap.get(id);
     if (!record) {
       return;
@@ -119,6 +119,7 @@ export class SchemaCollect<Schema, Context = any>
         context: this.getContext(),
       });
     });
+    return this.getItem(id);
   };
 
   getItem = (id) => {

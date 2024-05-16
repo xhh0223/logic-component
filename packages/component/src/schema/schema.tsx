@@ -23,6 +23,8 @@ const SchemaCollectContext = createContext<{
   null!
 );
 
+const PickColumns = ["dependency", "id", "schema"];
+
 export function Schema<Schema = any, Context = any>(
   props: SchemaProps<Schema, Context>
 ) {
@@ -34,14 +36,15 @@ export function Schema<Schema = any, Context = any>(
       getContext: collect.getContext,
       setContext: collect.setContext,
       getItem: (id) => {
-        return pick(collect.getItem(id), ["dependency", "id", "schema"]);
+        return pick(collect.getItem(id), PickColumns);
       },
       getAllItem: () => {
-        return collect
-          .getAllItem()
-          .map((value) => pick(value, ["dependency", "id", "schema"]));
+        return collect.getAllItem().map((value) => pick(value, PickColumns));
       },
-      updateItem: collect.updateItemPartialColumn,
+      updateItem: (id, params) => {
+        collect.updateItemPartialColumn(id, params);
+        return handler.getItem(id);
+      },
     };
 
     return handler;
