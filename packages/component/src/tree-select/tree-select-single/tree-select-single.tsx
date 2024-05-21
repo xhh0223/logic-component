@@ -15,7 +15,7 @@ export const TreeSelectSingle = <ValueType,>(
   const innerHandler = useMemo(() => {
     const handler: TreeSelectSingleProps["handler"] = {
       getItems: (ids) => {
-        let result = [];
+        const result = [];
         ids?.forEach((id) => {
           const item = collect.getItem(id);
           if (item) {
@@ -86,7 +86,6 @@ export const TreeSelectSingle = <ValueType,>(
     };
 
     return handler;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (outHandler) {

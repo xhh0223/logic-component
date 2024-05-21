@@ -74,7 +74,6 @@ export const SelectMultiple = <ValueType,>(
       },
     };
     return handler;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (outerHandler) {
     Object.assign(outerHandler, innerHandler);

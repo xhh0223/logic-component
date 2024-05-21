@@ -2,6 +2,7 @@ import { Schema, SchemaItem } from "@logic-component/index";
 import { Flex } from "antd";
 
 const Demo1 = () => {
+  console.log(12);
   return (
     <div>
       <Schema>
@@ -10,7 +11,7 @@ const Demo1 = () => {
             id={1}
             initDependency={[2]}
             initSchema={{ show: true, content: Math.random() }}
-            render={({ id, schema, handler, context }, de) => {
+            render={({ id, schema, handler }) => {
               return (
                 <>
                   <div

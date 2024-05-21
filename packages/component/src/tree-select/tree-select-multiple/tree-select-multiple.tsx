@@ -16,7 +16,7 @@ export const TreeSelectMultiple = <ValueType,>(
   const innerHandler = useMemo(() => {
     const handler: TreeSelectMultipleProps<ValueType>["handler"] = {
       getItems: (ids) => {
-        let result = [];
+        const result = [];
         ids?.forEach((id) => {
           const item = collect.getItem(id);
           if (item) {
@@ -102,7 +102,6 @@ export const TreeSelectMultiple = <ValueType,>(
       },
     };
     return handler;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (outerHandler) {
     Object.assign(outerHandler, innerHandler);

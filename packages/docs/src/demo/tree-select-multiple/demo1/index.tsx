@@ -30,7 +30,7 @@ const Demo1 = () => {
             id={i.id}
             parentId={i.parentId}
             childrenIds={i.children?.map((i) => i.id)}
-            render={({ handler, id, isChecked, value, parentId }) => {
+            render={({ handler, id, isChecked, parentId }) => {
               return (
                 <Flex>
                   <Checkbox

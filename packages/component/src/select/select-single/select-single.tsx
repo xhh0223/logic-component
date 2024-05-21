@@ -63,7 +63,6 @@ export const SelectSingle = <ValueType,>(
     };
 
     return handler;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (outerHandler) {

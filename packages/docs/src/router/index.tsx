@@ -14,6 +14,7 @@ const wrapLoading = (importComponent) => {
 // @ts-ignore
 const demoInfo = Object.entries(import.meta.glob("@src/demo/*/index.tsx")).map(
   ([path, importComponent]) => {
+    // eslint-disable-next-line no-useless-escape
     const routePath = path.split(/[/\/]/).at(-2);
     return {
       path: routePath,

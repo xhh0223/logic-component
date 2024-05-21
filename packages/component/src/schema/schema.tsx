@@ -54,7 +54,6 @@ export function Schema<Schema = any, Context = any>(
     };
 
     return handler;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (outerHandler) {
@@ -77,35 +76,31 @@ export function SchemaItem<Schema, Context>(
 
   const [, update] = useState({});
 
-  const memoInfo = useMemo(
-    () => {
-      let cacheInfo = {} as any;
-      /** 新增 */
-      collect.addItem({
-        id,
-        dependency: initDependency,
-        on<Schema>(dependencyInfo) {
-          cacheInfo.dependency = dependencyInfo.currentTrigger?.dependency;
-          cacheInfo.schema = dependencyInfo.currentTrigger?.schema;
-          cacheInfo.dependencyInfo = dependencyInfo;
-          update({});
-        },
-        schema: initSchema,
-      });
-      cacheInfo = {
-        dependency: initDependency,
-        schema: initSchema,
-        currentId: id,
-        dependencyInfo: {
-          currentTrigger: handler.getItem(id),
-          dependencySchema: handler.getItemDependencyInfo(id),
-        } as unknown as DependencyInfo<Schema>,
-      };
-      return cacheInfo;
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const memoInfo = useMemo(() => {
+    let cacheInfo = {} as any;
+    /** 新增 */
+    collect.addItem({
+      id,
+      dependency: initDependency,
+      on(dependencyInfo) {
+        cacheInfo.dependency = dependencyInfo.currentTrigger?.dependency;
+        cacheInfo.schema = dependencyInfo.currentTrigger?.schema;
+        cacheInfo.dependencyInfo = dependencyInfo;
+        update({});
+      },
+      schema: initSchema,
+    });
+    cacheInfo = {
+      dependency: initDependency,
+      schema: initSchema,
+      currentId: id,
+      dependencyInfo: {
+        currentTrigger: handler.getItem(id),
+        dependencySchema: handler.getItemDependencyInfo(id),
+      } as unknown as DependencyInfo<Schema>,
+    };
+    return cacheInfo;
+  }, []);
 
   /** 修改 */
   useMemo(() => {
@@ -125,7 +120,6 @@ export function SchemaItem<Schema, Context>(
     return () => {
       collect?.delItem(id);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return render(

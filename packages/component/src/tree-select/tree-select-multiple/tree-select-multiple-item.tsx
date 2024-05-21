@@ -16,27 +16,23 @@ export const TreeSelectMultipleItem = <Value = any,>(
   const { collect, handler } = useContext(TreeSelectMultipleCollectContext);
 
   /** 记录第一次初始化的值 */
-  const memoInfo = useMemo(
-    () => {
-      /** 新增 */
-      collect.addItem({
-        parentId,
-        id,
-        value,
-        isChecked: false,
-        allowRepeatChecked,
-        childrenIds,
-        refresh() {
-          update({});
-        },
-      });
-      return {
-        id,
-      };
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const memoInfo = useMemo(() => {
+    /** 新增 */
+    collect.addItem({
+      parentId,
+      id,
+      value,
+      isChecked: false,
+      allowRepeatChecked,
+      childrenIds,
+      refresh() {
+        update({});
+      },
+    });
+    return {
+      id,
+    };
+  }, []);
 
   const [, update] = useState({});
 
