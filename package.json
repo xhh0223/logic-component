@@ -26,10 +26,13 @@
     "vite-plugin-dts": "^3.9.0"
   },
   "lint-staged": {
-    "*.{ts,tsx,js}": [
-      "eslint . --fix",
-      "prettier . --write",
+    "**/*.{ts,tsx,js}": [
+      "eslint --fix",
+      "prettier --write",
       "git add"
+    ],
+    "**/*.scss": [
+      "stylelint --fix"
     ]
   },
   "license": "MIT",
