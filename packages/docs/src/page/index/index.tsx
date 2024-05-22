@@ -1,6 +1,7 @@
 import { Flex } from "antd";
-import SideMenu from "./side-menu";
 import { Outlet } from "react-router-dom";
+
+import SideMenu from "./side-menu";
 
 const Index = () => {
   return (

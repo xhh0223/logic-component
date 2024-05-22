@@ -1,3 +1,5 @@
+import { pick } from "lodash-es";
+
 import { type Id } from "@/typing";
 
 import {
@@ -5,8 +7,6 @@ import {
   type ISelectCollect,
   type ITreeSelectItem,
 } from "./typing";
-
-import { pick } from "lodash-es";
 export class SelectCollect<ValueType = any>
   implements ISelectCollect<ValueType>
 {

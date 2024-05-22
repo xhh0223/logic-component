@@ -1,10 +1,11 @@
-import { useRef, useMemo } from "react";
-import { type SelectMultipleProps } from "./typing";
+import { pick } from "lodash-es";
+import { useMemo,useRef } from "react";
+
+import { Id } from "@/typing";
 
 import { SelectCollect } from "../select-collect";
 import { SelectMultipleCollectContext } from "./context";
-import { pick } from "lodash-es";
-import { Id } from "@/typing";
+import { type SelectMultipleProps } from "./typing";
 
 const PickColumns = ["id", "isChecked", "value"];
 export const SelectMultiple = <ValueType,>(

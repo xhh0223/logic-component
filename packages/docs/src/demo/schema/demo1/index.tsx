@@ -2,7 +2,6 @@ import { Schema, SchemaItem } from "@logic-component/index";
 import { Flex } from "antd";
 
 const Demo1 = () => {
-  console.log(12);
   return (
     <div>
       <Schema>

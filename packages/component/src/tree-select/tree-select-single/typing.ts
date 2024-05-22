@@ -1,4 +1,5 @@
 import { Id } from "@/typing";
+
 import { CommonTreeSelectItemProps, RequiredITreeSelectItem } from "../typing";
 
 export interface TreeSelectSingleProps<ValueType = any> {

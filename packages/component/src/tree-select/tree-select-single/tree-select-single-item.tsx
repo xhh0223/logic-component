@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { type TreeSelectSingleItemProps } from "./typing";
+
 import { TreeSelectSingleCollectContext } from "./context";
+import { type TreeSelectSingleItemProps } from "./typing";
 
 export const TreeSelectSingleItem = <Value = any,>(
   props: TreeSelectSingleItemProps<Value>

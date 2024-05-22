@@ -1,5 +1,6 @@
 import { Id } from "@/typing";
-import { RequiredITreeSelectItem, CommonTreeSelectItemProps } from "../typing";
+
+import { CommonTreeSelectItemProps,RequiredITreeSelectItem } from "../typing";
 
 export interface TreeSelectMultipleProps<ValueType = any> {
   children: React.ReactNode;

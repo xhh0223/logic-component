@@ -1,6 +1,7 @@
+import "./index.scss";
+
 import { Menu, MenuProps } from "antd";
 import { Link, useLocation } from "react-router-dom";
-import "./index.scss";
 
 const SideMenu = () => {
   const { pathname } = useLocation();

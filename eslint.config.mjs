@@ -1,8 +1,8 @@
-import globals from "globals";
 import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
 import pluginReactConfig from "eslint-plugin-react/configs/recommended.js";
-
+import importSort from "eslint-plugin-simple-import-sort";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 const needCheckFiles = [
   "packages/docs/src/**/*.ts",
   "packages/docs/src/**/*.tsx",
@@ -29,12 +29,16 @@ export default [
   })),
   { ...pluginReactConfig, files: needCheckFiles },
   {
+    plugins: {
+      [`simple-import-sort`]: importSort,
+    },
     rules: {
       "react/react-in-jsx-scope": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/ban-ts-comment": "off",
       "no-useless-escape": "off",
       "no-console": "error",
+      "simple-import-sort/imports": "error",
     },
   },
 ];

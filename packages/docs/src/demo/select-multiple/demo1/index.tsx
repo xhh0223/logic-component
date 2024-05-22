@@ -1,5 +1,5 @@
 import { SelectMultiple, SelectMultipleItem } from "@logic-component/select";
-import { Card, Checkbox, Avatar, Flex } from "antd";
+import { Avatar, Card, Checkbox, Flex } from "antd";
 import { useCallback, useMemo } from "react";
 
 const Demo1 = () => {

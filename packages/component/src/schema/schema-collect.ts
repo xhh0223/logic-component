@@ -1,6 +1,8 @@
 import { pick } from "lodash-es";
-import { type ISchemaItem, type ISchemaCollect } from "./typing";
+
 import { type Id } from "@/typing";
+
+import { type ISchemaCollect,type ISchemaItem } from "./typing";
 export class SchemaCollect<Schema, Context = any>
   implements ISchemaCollect<Schema, Context>
 {

@@ -1,6 +1,6 @@
-import { Suspense, lazy } from "react";
-import { createHashRouter as createRouter } from "react-router-dom";
 import { Spin } from "antd";
+import { lazy,Suspense } from "react";
+import { createHashRouter as createRouter } from "react-router-dom";
 
 const wrapLoading = (importComponent) => {
   const LazyComponent = lazy(importComponent);

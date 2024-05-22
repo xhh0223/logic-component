@@ -1,4 +1,5 @@
 import { Id } from "@/typing";
+
 import { CommonSelectItemProps, RequiredISelectItem } from "../typing";
 
 export interface SelectMultipleProps<ValueType = any> {

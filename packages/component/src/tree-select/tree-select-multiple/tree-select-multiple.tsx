@@ -1,9 +1,9 @@
-import { useRef, useMemo } from "react";
-import { type TreeSelectMultipleProps } from "./typing";
+import { pick } from "lodash-es";
+import { useMemo,useRef } from "react";
 
 import { SelectCollect } from "../select-collect";
 import { TreeSelectMultipleCollectContext } from "./context";
-import { pick } from "lodash-es";
+import { type TreeSelectMultipleProps } from "./typing";
 
 const PickColumns = ["id", "isChecked", "value", "childrenIds", "parentId"];
 

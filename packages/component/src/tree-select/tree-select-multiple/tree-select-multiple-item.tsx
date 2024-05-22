@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { type TreeSelectMultipleItemProps } from "./typing";
+
 import { TreeSelectMultipleCollectContext } from "./context";
+import { type TreeSelectMultipleItemProps } from "./typing";
 
 export const TreeSelectMultipleItem = <Value = any,>(
   props: TreeSelectMultipleItemProps<Value>

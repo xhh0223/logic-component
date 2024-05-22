@@ -1,7 +1,7 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import inject from "@rollup/plugin-inject";
+import react from "@vitejs/plugin-react";
 import path from "path";
+import { defineConfig } from "vite";
 
 const PageDir = path.resolve(process.cwd(), "src");
 
