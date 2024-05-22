@@ -34,6 +34,7 @@ export default [
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/ban-ts-comment": "off",
       "no-useless-escape": "off",
+      "no-console": "error",
     },
   },
 ];
