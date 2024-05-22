@@ -1,12 +1,10 @@
-import { TreeSelectSingle, TreeSelectSingleItem } from "@logic-component/index";
-import { genTreeData } from "@src/utils";
-import { Checkbox, Flex, Tag } from "antd";
-import { useState } from "react";
+import { TreeSelectSingle, TreeSelectSingleItem } from '@logic-component/index'
+import { genTreeData } from '@src/utils'
+import { Checkbox, Flex, Tag } from 'antd'
+import { useState } from 'react'
 
 const Demo2 = () => {
-  const [everyLevelData, setEveryLevelData] = useState([
-    genTreeData([3, 2, 2]),
-  ]);
+  const [everyLevelData, setEveryLevelData] = useState([genTreeData([3, 2, 2])])
 
   return (
     <div>
@@ -25,12 +23,9 @@ const Demo2 = () => {
                           {childrenIds ? (
                             <Tag
                               onClick={() => {
-                                everyLevelData.splice(
-                                  level + 1,
-                                  everyLevelData.length - (level + 1)
-                                );
-                                everyLevelData[level + 1] = i.children;
-                                setEveryLevelData([...everyLevelData]);
+                                everyLevelData.splice(level + 1, everyLevelData.length - (level + 1))
+                                everyLevelData[level + 1] = i.children
+                                setEveryLevelData([...everyLevelData])
                               }}
                             >
                               {id}
@@ -38,7 +33,7 @@ const Demo2 = () => {
                           ) : (
                             <Checkbox
                               onClick={() => {
-                                handler.trigger(id);
+                                handler.trigger(id)
                               }}
                               checked={isChecked}
                             >
@@ -46,19 +41,19 @@ const Demo2 = () => {
                             </Checkbox>
                           )}
                         </Flex>
-                      );
+                      )
                     }}
                     parentId={i.parentId}
                     childrenIds={i.children?.map((i) => i.id)}
                   />
                 ))}
               </div>
-            );
+            )
           })}
         </Flex>
       </TreeSelectSingle>
     </div>
-  );
-};
+  )
+}
 
-export default Demo2;
+export default Demo2

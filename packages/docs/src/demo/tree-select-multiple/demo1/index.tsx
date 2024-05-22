@@ -1,25 +1,22 @@
-import {
-  TreeSelectMultiple,
-  TreeSelectMultipleItem,
-} from "@logic-component/index";
-import { genTreeData } from "@src/utils";
-import { Checkbox, Flex } from "antd";
+import { TreeSelectMultiple, TreeSelectMultipleItem } from '@logic-component/index'
+import { genTreeData } from '@src/utils'
+import { Checkbox, Flex } from 'antd'
 
 const Demo1 = () => {
   const treeList = (() => {
-    const treeData = genTreeData([2, 2, 2, 2, 2]);
-    const list = [];
+    const treeData = genTreeData([2, 2, 2, 2, 2])
+    const list = []
     const transformTreeDataToList = (tree) => {
       tree.forEach((i) => {
-        list.push(i);
+        list.push(i)
         if (i?.children?.length) {
-          transformTreeDataToList(i.children);
+          transformTreeDataToList(i.children)
         }
-      });
-    };
-    transformTreeDataToList(treeData);
-    return list;
-  })();
+      })
+    }
+    transformTreeDataToList(treeData)
+    return list
+  })()
 
   return (
     <div>
@@ -36,51 +33,46 @@ const Demo1 = () => {
                   <Checkbox
                     onClick={() => {
                       /** select current node */
-                      handler.trigger([id]);
+                      handler.trigger([id])
 
                       /** select descend node */
-                      (() => {
-                        const ids = handler.getDescendantsIds(id);
+                      ;(() => {
+                        const ids = handler.getDescendantsIds(id)
                         if (!isChecked) {
-                          handler.select(ids);
+                          handler.select(ids)
                         } else {
-                          handler.cancelSelected(ids);
+                          handler.cancelSelected(ids)
                         }
-                      })();
+                      })()
 
                       /** select parent node */
-                      (() => {
-                        const parentDescendantsIds =
-                          handler.getDescendantsIds(parentId);
-                        const allSelected = handler
-                          .getItems(parentDescendantsIds)
-                          .filter((i) => i.isChecked);
+                      ;(() => {
+                        const parentDescendantsIds = handler.getDescendantsIds(parentId)
+                        const allSelected = handler.getItems(parentDescendantsIds).filter((i) => i.isChecked)
 
                         if (!allSelected?.length) {
-                          return;
+                          return
                         }
 
-                        if (
-                          allSelected.length === parentDescendantsIds.length
-                        ) {
-                          handler.select([parentId]);
+                        if (allSelected.length === parentDescendantsIds.length) {
+                          handler.select([parentId])
                         } else {
-                          handler.cancelSelected([parentId]);
+                          handler.cancelSelected([parentId])
                         }
-                      })();
+                      })()
                     }}
                     checked={isChecked}
                   >
                     {id}
                   </Checkbox>
                 </Flex>
-              );
+              )
             }}
           />
         ))}
       </TreeSelectMultiple>
     </div>
-  );
-};
+  )
+}
 
-export default Demo1;
+export default Demo1

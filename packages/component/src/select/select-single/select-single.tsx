@@ -1,86 +1,81 @@
-import { pick } from "lodash-es";
-import { useMemo,useRef } from "react";
+import { pick } from 'lodash-es'
+import { useMemo, useRef } from 'react'
 
-import { Id } from "@/typing";
+import { Id } from '@/typing'
 
-import { SelectCollect } from "../select-collect";
-import { SelectSingleCollectContext } from "./context";
-import { type SelectSingleProps } from "./typing";
+import { SelectCollect } from '../select-collect'
+import { SelectSingleCollectContext } from './context'
+import { type SelectSingleProps } from './typing'
 
-const PickColumns = ["id", "isChecked", "value"];
+const PickColumns = ['id', 'isChecked', 'value']
 
-export const SelectSingle = <ValueType,>(
-  props: SelectSingleProps<ValueType>
-) => {
-  const { children, handler: outerHandler } = props;
-  const { current: collect } = useRef(new SelectCollect<ValueType>());
+export const SelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>) => {
+  const { children, handler: outerHandler } = props
+  const { current: collect } = useRef(new SelectCollect<ValueType>())
   const innerHandler = useMemo(() => {
-    const handler: SelectSingleProps<ValueType>["handler"] = {
+    const handler: SelectSingleProps<ValueType>['handler'] = {
       getItems: (ids: Id[]) => {
-        const result = [];
+        const result = []
         ids.forEach((id) => {
-          const item = collect.getItem(id);
+          const item = collect.getItem(id)
           if (item) {
-            result.push(pick(item, PickColumns));
+            result.push(pick(item, PickColumns))
           }
-        });
-        return result as any;
+        })
+        return result as any
       },
       trigger: (id) => {
-        const item = collect.getItem(id);
+        const item = collect.getItem(id)
 
         if (!item) {
-          return;
+          return
         }
         /** 允许重复点击一个 */
         if (item.allowRepeatChecked) {
           if (!item.isChecked) {
-            collect.updateItemPartialColumn(id, { isChecked: true });
-            item.refresh();
+            collect.updateItemPartialColumn(id, { isChecked: true })
+            item.refresh()
             collect.getAllItem().forEach((item) => {
               if (item.id !== id && item.isChecked) {
                 collect.updateItemPartialColumn(item.id, {
                   isChecked: false,
-                });
-                item.refresh();
+                })
+                item.refresh()
               }
-            });
+            })
           }
         } else {
           collect.updateItemPartialColumn(id, {
             isChecked: !item.isChecked,
-          });
-          item.refresh();
+          })
+          item.refresh()
           collect.getAllItem().forEach((item) => {
             if (item.id !== id && item.isChecked) {
               collect.updateItemPartialColumn(item.id, {
                 isChecked: false,
-              });
-              item.refresh();
+              })
+              item.refresh()
             }
-          });
+          })
         }
-        return pick(collect.getItem(id), PickColumns);
+        return pick(collect.getItem(id), PickColumns)
       },
-    };
+    }
 
-    return handler;
-  }, []);
+    return handler
+  }, [])
 
   if (outerHandler) {
-    Object.assign(outerHandler, innerHandler);
+    Object.assign(outerHandler, innerHandler)
   }
 
   return (
-    <SelectSingleCollectContext.Provider
-      value={{ collect, handler: innerHandler }}
-    >
+    <SelectSingleCollectContext.Provider value={{ collect, handler: innerHandler }}>
       {children}
     </SelectSingleCollectContext.Provider>
-  );
-};
+  )
+}
 
 export const useSelectSingleHandler = <ValueType,>() => {
-  return useRef({})
-    .current as unknown as SelectSingleProps<ValueType>["handler"];
-};
+  return useRef({}).current as unknown as SelectSingleProps<ValueType>['handler']
+}

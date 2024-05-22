@@ -1,5 +1,5 @@
-import { Schema, SchemaItem } from "@logic-component/index";
-import { Flex } from "antd";
+import { Schema, SchemaItem } from '@logic-component/index'
+import { Flex } from 'antd'
 
 const Demo1 = () => {
   return (
@@ -17,14 +17,14 @@ const Demo1 = () => {
                     onClick={() => {
                       handler.updateItem(id, {
                         schema: { show: !schema.show, content: Math.random() },
-                      });
+                      })
                     }}
                   >
                     test
                   </div>
                   {schema.show && <div>{schema.content}</div>}
                 </>
-              );
+              )
             }}
           />
           <SchemaItem
@@ -36,7 +36,7 @@ const Demo1 = () => {
                   onClick={() => {
                     handler.updateItem(id, {
                       schema: { show: !schema.show, content: Math.random() },
-                    });
+                    })
                   }}
                 >
                   test
@@ -48,7 +48,7 @@ const Demo1 = () => {
         </Flex>
       </Schema>
     </div>
-  );
-};
+  )
+}
 
-export default Demo1;
+export default Demo1

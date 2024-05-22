@@ -1,7 +1,7 @@
-import { Flex } from "antd";
+import { Flex } from 'antd'
 
-import Demo1 from "./demo1";
-import Demo2 from "./demo2";
+import Demo1 from './demo1'
+import Demo2 from './demo2'
 
 const Index = () => {
   return (
@@ -9,7 +9,7 @@ const Index = () => {
       <Demo1 />
       <Demo2 />
     </Flex>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

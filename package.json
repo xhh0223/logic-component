@@ -25,17 +25,11 @@
     "vite": "^5.2.10",
     "vite-plugin-dts": "^3.9.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "packages/(docs)|(component)/src/**/*.ts?(x)": [
-      "eslint --fix"
-    ],
-    "packages/(docs)|(component)/src/**/*.scss": [
-      "stylelint --fix"
+    "*.{ts,tsx,js}": [
+      "eslint . --fix",
+      "prettier . --write",
+      "git add"
     ]
   },
   "license": "MIT",

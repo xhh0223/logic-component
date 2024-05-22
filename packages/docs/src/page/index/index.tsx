@@ -1,14 +1,14 @@
-import { Flex } from "antd";
-import { Outlet } from "react-router-dom";
+import { Flex } from 'antd'
+import { Outlet } from 'react-router-dom'
 
-import SideMenu from "./side-menu";
+import SideMenu from './side-menu'
 
 const Index = () => {
   return (
     <>
       <Flex align="center">
         <h1>logic-component</h1>
-        <a target="" style={{ marginLeft: "auto" }}>
+        <a target="" style={{ marginLeft: 'auto' }}>
           github
         </a>
       </Flex>
@@ -19,7 +19,7 @@ const Index = () => {
         </div>
       </Flex>
     </>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

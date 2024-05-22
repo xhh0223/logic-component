@@ -1,49 +1,34 @@
-import { pick } from "lodash-es";
+import { pick } from 'lodash-es'
 
-import { type Id } from "@/typing";
+import { type Id } from '@/typing'
 
-import {
-  type CanUpdateITreeSelectItem,
-  type ISelectCollect,
-  type ITreeSelectItem,
-} from "./typing";
-export class SelectCollect<ValueType = any>
-  implements ISelectCollect<ValueType>
-{
-  private readonly itemsCollect = new Map<Id, ITreeSelectItem<ValueType>>();
+import { type CanUpdateITreeSelectItem, type ISelectCollect, type ITreeSelectItem } from './typing'
+export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType> {
+  private readonly itemsCollect = new Map<Id, ITreeSelectItem<ValueType>>()
 
-  updateItemPartialColumn = (
-    id: Id,
-    params: Partial<CanUpdateITreeSelectItem<ValueType>>
-  ) => {
-    const item = this.getItem(id);
+  updateItemPartialColumn = (id: Id, params: Partial<CanUpdateITreeSelectItem<ValueType>>) => {
+    const item = this.getItem(id)
     if (params) {
       this.itemsCollect.set(id, {
         ...item,
-        ...pick(params, [
-          "parentId",
-          "childrenIds",
-          "isChecked",
-          "allowRepeatChecked",
-          "value",
-        ]),
-      });
+        ...pick(params, ['parentId', 'childrenIds', 'isChecked', 'allowRepeatChecked', 'value']),
+      })
     }
-  };
+  }
 
   getItem = (id: Id) => {
-    return this.itemsCollect.get(id);
-  };
+    return this.itemsCollect.get(id)
+  }
 
   addItem = (item: ITreeSelectItem<ValueType>) => {
-    this.itemsCollect.set(item.id, item);
-  };
+    this.itemsCollect.set(item.id, item)
+  }
 
   delItem = (id: Id) => {
-    this.itemsCollect.delete(id);
-  };
+    this.itemsCollect.delete(id)
+  }
 
   getAllItem = () => {
-    return [...this.itemsCollect.entries()].map(([, value]) => value) as any;
-  };
+    return [...this.itemsCollect.entries()].map(([, value]) => value) as any
+  }
 }
