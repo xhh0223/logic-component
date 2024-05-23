@@ -1,5 +1,8 @@
 {
   "type": "module",
+  "scripts": {
+    "prepare": "husky"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
     "@commitlint/config-conventional": "^17.8.1",
@@ -14,7 +17,7 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-simple-import-sort": "^12.1.0",
     "globals": "^15.3.0",
-    "husky": "^8.0.3",
+    "husky": "^9.0.11",
     "lint-staged": "^13.3.0",
     "prettier": "^3.0.3",
     "react": "^18.2.0",
@@ -29,8 +32,7 @@
   "lint-staged": {
     "**/*.{ts,tsx,js}": [
       "eslint --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "**/*.scss": [
       "stylelint --fix"
