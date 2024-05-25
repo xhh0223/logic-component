@@ -1,6 +1,9 @@
 {
   "type": "module",
   "scripts": {
+    "dev": "vite -c packages/docs/vite.config.js dev",
+    "build:docs": "vite -c packages/docs/vite.config.js build",
+    "build": "vite -c packages/component/vite.config.js build",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -32,7 +35,8 @@
   "lint-staged": {
     "**/*.{ts,tsx,js}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "git add ."
     ],
     "**/*.scss": [
       "stylelint --fix"
