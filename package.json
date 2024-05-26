@@ -1,5 +1,19 @@
 {
+  "name": "react-logic-component",
+  "version": "1.0.1-alpha.1",
   "type": "module",
+  "types": "packages/component/dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "main": "packages/component/dist/lib/index.js",
+  "module": "packages/component/dist/lib/index.js",
+  "exports": {
+    ".": {
+      "import": "./packages/component/dist/lib/index.js",
+      "require": "./packages/component/dist/lib/index.js"
+    }
+  },
   "scripts": {
     "dev": "vite -c packages/docs/vite.config.js dev",
     "build:docs": "vite -c packages/docs/vite.config.js build",
