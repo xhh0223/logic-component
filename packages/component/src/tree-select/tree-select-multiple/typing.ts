@@ -4,7 +4,7 @@ import { Id } from '@/typing'
 
 import { CommonTreeSelectItemProps, RequiredITreeSelectItem } from '../typing'
 
-export interface TreeSelectMultipleRef<ValueType> {
+export interface TreeSelectMultipleRef<ValueType = any> {
   trigger: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>
   select: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>
   cancelSelected: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>

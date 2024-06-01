@@ -4,7 +4,7 @@ import { Id } from '@/typing'
 
 import { CommonSelectItemProps, RequiredISelectItem } from '../typing'
 
-export interface SelectSingleRef<ValueType> {
+export interface SelectSingleRef<ValueType = any> {
   trigger: (id: Id) => RequiredISelectItem<ValueType> | undefined
   getItems: (id: Id[]) => Array<RequiredISelectItem<ValueType>>
 }

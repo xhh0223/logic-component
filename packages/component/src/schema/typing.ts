@@ -29,7 +29,10 @@ export interface ISchemaCollect<Schema, Context = any> {
 
 export type DependencyInfo<Schema> = Parameters<ISchemaItem<Schema>['on']>
 
-export type SchemaRef<Schema, Context> = Pick<ISchemaCollect<Schema, Context>, 'setContext' | 'getContext'> & {
+export type SchemaRef<Schema = any, Context = any> = Pick<
+  ISchemaCollect<Schema, Context>,
+  'setContext' | 'getContext'
+> & {
   getItem: (id: Id) => RequiredIScheItem<Schema>
   getItemDependencyInfo: (id: Id) => Array<RequiredIScheItem<Schema>>
   getAllItem: () => Array<RequiredIScheItem<Schema>>
