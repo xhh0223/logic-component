@@ -29,21 +29,21 @@ export interface ISchemaCollect<Schema, Context = any> {
 
 export type DependencyInfo<Schema> = Parameters<ISchemaItem<Schema>['on']>
 
-export interface SchemaProps<Schema, Context> {
-  children: ReactNode
-  handler?: Pick<ISchemaCollect<Schema, Context>, 'setContext' | 'getContext'> & {
-    getItem: (id: Id) => RequiredIScheItem<Schema>
-    getItemDependencyInfo: (id: Id) => Array<RequiredIScheItem<Schema>>
-    getAllItem: () => Array<RequiredIScheItem<Schema>>
-    updateItem: (id: Id, params: CanUpdateColumn<Schema>) => RequiredIScheItem<Schema>
-  }
+export type SchemaRef<Schema, Context> = Pick<ISchemaCollect<Schema, Context>, 'setContext' | 'getContext'> & {
+  getItem: (id: Id) => RequiredIScheItem<Schema>
+  getItemDependencyInfo: (id: Id) => Array<RequiredIScheItem<Schema>>
+  getAllItem: () => Array<RequiredIScheItem<Schema>>
+  updateItem: (id: Id, params: CanUpdateColumn<Schema>) => RequiredIScheItem<Schema>
 }
-
+export interface SchemaProps<Schema, Context> {
+  ref?: SchemaRef<Schema, Context>
+  children: ReactNode
+}
 export interface SchemaItemProps<Schema, Context> {
   id: Id
   render: (
     params: RequiredIScheItem<Schema> & {
-      handler: SchemaProps<Schema, Context>['handler']
+      handler: SchemaRef<Schema, Context>
       context: Context
     },
     dependencyInfo: DependencyInfo<Schema>,

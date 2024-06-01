@@ -1,56 +1,65 @@
 import { omit, pick } from 'lodash-es'
-import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  createContext,
+  forwardRef,
+  Ref,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import { SchemaCollect } from './schema-collect'
-import { DependencyInfo, type ISchemaCollect, type SchemaItemProps, type SchemaProps } from './typing'
+import { DependencyInfo, type ISchemaCollect, type SchemaItemProps, type SchemaProps, SchemaRef } from './typing'
 
 const SchemaCollectContext = createContext<{
   collect: ISchemaCollect<any, any>
-  handler: SchemaProps<any, any>['handler']
-}>(
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  null!,
-)
+  handler: SchemaRef<any, any>
+}>(null)
 
 const PickColumns = ['dependency', 'id', 'schema']
 
-export function Schema<Schema = any, Context = any>(props: SchemaProps<Schema, Context>) {
-  const { children, handler: outerHandler } = props
-  const { current: collect } = useRef(new SchemaCollect())
+const InnerSchema = forwardRef(
+  <Schema, Context>(props: SchemaProps<Schema, Context>, ref: Ref<SchemaRef<Schema, Context>>) => {
+    const { children } = props
+    const { current: collect } = useRef(new SchemaCollect<Schema, Context>())
 
-  const innerHandler = useMemo(() => {
-    const handler: SchemaProps<Schema, Context>['handler'] = {
-      getContext: collect.getContext,
-      setContext: collect.setContext,
-      getItem: (id) => {
-        return pick(collect.getItem(id), PickColumns)
-      },
-      getItemDependencyInfo: (id) => {
-        return collect.getItemDependencyInfo(id)?.map((i) => pick(i, PickColumns))
-      },
-      getAllItem: () => {
-        return collect.getAllItem().map((value) => pick(value, PickColumns))
-      },
-      updateItem: (id, params) => {
-        collect.updateItemPartialColumn(id, params)
-        return handler.getItem(id)
-      },
-    }
+    const innerHandler = useMemo(() => {
+      const handler: SchemaRef<Schema, Context> = {
+        getContext: collect.getContext,
+        setContext: collect.setContext,
+        getItem: (id) => {
+          return pick(collect.getItem(id), PickColumns)
+        },
+        getItemDependencyInfo: (id) => {
+          return collect.getItemDependencyInfo(id)?.map((i) => pick(i, PickColumns))
+        },
+        getAllItem: () => {
+          return collect.getAllItem().map((value) => pick(value, PickColumns))
+        },
+        updateItem: (id, params) => {
+          collect.updateItemPartialColumn(id, params)
+          return handler.getItem(id)
+        },
+      }
 
-    return handler
-  }, [])
+      return handler
+    }, [])
 
-  if (outerHandler) {
-    Object.assign(outerHandler, innerHandler)
-  }
+    useImperativeHandle(ref, () => innerHandler, [])
 
-  return (
-    // eslint-disable-next-line react/react-in-jsx-scope
-    <SchemaCollectContext.Provider value={{ collect, handler: innerHandler }}>{children}</SchemaCollectContext.Provider>
-  )
-}
+    return (
+      <SchemaCollectContext.Provider value={{ collect, handler: innerHandler }}>
+        {children}
+      </SchemaCollectContext.Provider>
+    )
+  },
+)
+export const Schema = forwardRef(InnerSchema) as typeof InnerSchema
 
-export function SchemaItem<Schema, Context>(props: SchemaItemProps<Schema, Context>) {
+export const SchemaItem = <Schema, Context>(props: SchemaItemProps<Schema, Context>) => {
   const { id, render, initDependency, initSchema } = props
   const { collect, handler } = useContext(SchemaCollectContext)
 
@@ -112,8 +121,4 @@ export function SchemaItem<Schema, Context>(props: SchemaItemProps<Schema, Conte
     },
     memoInfo.dependencyInfo,
   )
-}
-
-export function useSchemaHandler<Schema, Context>(): SchemaProps<Schema, Context>['handler'] {
-  return useRef({}).current as SchemaProps<Schema, Context>['handler']
 }
