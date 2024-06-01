@@ -1,16 +1,16 @@
 import { pick } from 'lodash-es'
-import { useMemo, useRef } from 'react'
+import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { Id } from '@/typing'
 
 import { SelectCollect } from '../select-collect'
 import { SelectSingleCollectContext } from './context'
-import { type SelectSingleProps } from './typing'
+import { type SelectSingleProps, SelectSingleRef } from './typing'
 
 const PickColumns = ['id', 'isChecked', 'value']
 
-export const SelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>) => {
-  const { children, handler: outerHandler } = props
+const InnerSelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>, ref: Ref<SelectSingleRef<ValueType>>) => {
+  const { children } = props
   const { current: collect } = useRef(new SelectCollect<ValueType>())
   const innerHandler = useMemo(() => {
     const handler: SelectSingleProps<ValueType>['handler'] = {
@@ -65,9 +65,7 @@ export const SelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>) =>
     return handler
   }, [])
 
-  if (outerHandler) {
-    Object.assign(outerHandler, innerHandler)
-  }
+  useImperativeHandle(ref, () => innerHandler, [])
 
   return (
     <SelectSingleCollectContext.Provider value={{ collect, handler: innerHandler }}>
@@ -76,6 +74,4 @@ export const SelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>) =>
   )
 }
 
-export const useSelectSingleHandler = <ValueType,>() => {
-  return useRef({}).current as unknown as SelectSingleProps<ValueType>['handler']
-}
+export const SelectSingle = forwardRef(InnerSelectSingle) as typeof InnerSelectSingle
