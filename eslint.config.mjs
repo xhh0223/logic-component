@@ -37,6 +37,7 @@ export default [
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       'no-useless-escape': 'off',
+      'react/display-name': 'off',
       'no-console': 'error',
       'simple-import-sort/imports': 'error',
     },
