@@ -1,3 +1,3 @@
-export { SelectMultiple, useSelectMultipleHandler } from './select-multiple'
+export { SelectMultiple } from './select-multiple'
 export { SelectMultipleItem } from './select-multiple-item'
-export type { SelectMultipleItemProps, SelectMultipleProps } from './typing'
+export type { SelectMultipleItemProps, SelectMultipleProps, SelectMultipleRef } from './typing'

@@ -1,15 +1,18 @@
 import { pick } from 'lodash-es'
-import { useMemo, useRef } from 'react'
+import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { Id } from '@/typing'
 
 import { SelectCollect } from '../select-collect'
 import { SelectMultipleCollectContext } from './context'
-import { type SelectMultipleProps } from './typing'
+import { type SelectMultipleProps, SelectMultipleRef } from './typing'
 
 const PickColumns = ['id', 'isChecked', 'value']
-export const SelectMultiple = <ValueType,>(props: SelectMultipleProps<ValueType>) => {
-  const { children, handler: outerHandler } = props
+const InnerSelectMultiple = <ValueType,>(
+  props: SelectMultipleProps<ValueType>,
+  ref: Ref<SelectMultipleRef<ValueType>>,
+) => {
+  const { children } = props
   const { current: collect } = useRef(new SelectCollect<ValueType>())
 
   const innerHandler = useMemo(() => {
@@ -74,9 +77,9 @@ export const SelectMultiple = <ValueType,>(props: SelectMultipleProps<ValueType>
     }
     return handler
   }, [])
-  if (outerHandler) {
-    Object.assign(outerHandler, innerHandler)
-  }
+
+  useImperativeHandle(ref, () => innerHandler, [ref])
+
   return (
     <SelectMultipleCollectContext.Provider value={{ collect, handler: innerHandler }}>
       {children}
@@ -84,6 +87,4 @@ export const SelectMultiple = <ValueType,>(props: SelectMultipleProps<ValueType>
   )
 }
 
-export const useSelectMultipleHandler = <ValueType,>() => {
-  return useRef({}).current as unknown as SelectMultipleProps<ValueType>['handler']
-}
+export const SelectMultiple = forwardRef(InnerSelectMultiple) as typeof InnerSelectMultiple
