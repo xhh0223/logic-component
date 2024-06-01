@@ -1,14 +1,17 @@
 import { pick } from 'lodash-es'
-import { useMemo, useRef } from 'react'
+import { Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { SelectCollect } from '../select-collect'
 import { TreeSelectSingleCollectContext } from './context'
-import { type TreeSelectSingleProps } from './typing'
+import { type TreeSelectSingleProps, TreeSelectSingleRef } from './typing'
 
 const PickColumns = ['id', 'isChecked', 'value', 'childrenIds', 'parentId']
 
-export const TreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps<ValueType>) => {
-  const { children, handler: outHandler } = props
+export const TreeSelectSingle = <ValueType,>(
+  props: TreeSelectSingleProps<ValueType>,
+  ref: Ref<TreeSelectSingleRef<ValueType>>,
+) => {
+  const { children } = props
   const { current: collect } = useRef(new SelectCollect<ValueType>())
   const innerHandler = useMemo(() => {
     const handler: TreeSelectSingleProps['handler'] = {
@@ -86,16 +89,11 @@ export const TreeSelectSingle = <ValueType,>(props: TreeSelectSingleProps<ValueT
     return handler
   }, [])
 
-  if (outHandler) {
-    Object.assign(outHandler, innerHandler)
-  }
+  useImperativeHandle(ref, () => innerHandler, [ref])
+
   return (
     <TreeSelectSingleCollectContext.Provider value={{ collect, handler: innerHandler }}>
       {children}
     </TreeSelectSingleCollectContext.Provider>
   )
-}
-
-export const useTreeSelectSingleHandler = <ValueType,>() => {
-  return useRef({}).current as unknown as TreeSelectSingleProps<ValueType>['handler']
 }
