@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
+import { forwardRef, Ref, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 
 export interface PropProxyRef<Props = any> {
   getProps: () => Props
@@ -7,18 +7,18 @@ export interface PropProxyRef<Props = any> {
 }
 
 export interface PropsProxyProps<Props> {
+  ref?: Ref<PropProxyRef<Props>>
   initProps: Props
   render: (params: Props, handler: PropProxyRef<Props>) => React.ReactNode
   onMounted?: () => void
 }
 
-// eslint-disable-next-line react/display-name
-export const PropsProxy = forwardRef((props: PropsProxyProps<any>, ref) => {
+const InnerPropsProxy = <Props,>(props: PropsProxyProps<Props>, ref: Ref<PropProxyRef<Props>>) => {
   const { initProps, render, onMounted } = props
   const [, update] = useState({})
   const cacheProps = useRef(initProps)
 
-  const handler: PropProxyRef<any> = useMemo(
+  const handler: PropProxyRef<Props> = useMemo(
     () => ({
       getProps: () => {
         return cacheProps.current
@@ -47,4 +47,6 @@ export const PropsProxy = forwardRef((props: PropsProxyProps<any>, ref) => {
   useImperativeHandle(ref, () => handler, [handler])
 
   return render(cacheProps.current, handler)
-}) as <Props>(props: PropsProxyProps<Props>, ref: PropProxyRef<Props>) => React.ReactNode
+}
+
+export const PropsProxy = forwardRef(InnerPropsProxy) as typeof InnerPropsProxy
