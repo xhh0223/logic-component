@@ -13,7 +13,7 @@ export interface PropsProxyProps<Props> {
   onMounted?: () => void
 }
 
-const InnerPropsProxy = <Props,>(props: PropsProxyProps<Props>, ref: Ref<PropProxyRef<Props>>) => {
+const InnerPropsProxy = <Props,>(props: PropsProxyProps<Props>, ref: PropsProxyProps<Props>['ref']) => {
   const { initProps, render, onMounted } = props
   const [, update] = useState({})
   const cacheProps = useRef(initProps)
@@ -44,7 +44,7 @@ const InnerPropsProxy = <Props,>(props: PropsProxyProps<Props>, ref: Ref<PropPro
     }
   }, [])
 
-  useImperativeHandle(ref, () => handler, [handler])
+  useImperativeHandle(ref, () => handler, [ref])
 
   return render(cacheProps.current, handler)
 }

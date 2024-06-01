@@ -13,7 +13,7 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>, ref:
   const { children } = props
   const { current: collect } = useRef(new SelectCollect<ValueType>())
   const innerHandler = useMemo(() => {
-    const handler: SelectSingleProps<ValueType>['handler'] = {
+    const handler: SelectSingleRef<ValueType> = {
       getItems: (ids: Id[]) => {
         const result = []
         ids.forEach((id) => {
@@ -65,7 +65,7 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>, ref:
     return handler
   }, [])
 
-  useImperativeHandle(ref, () => innerHandler, [])
+  useImperativeHandle(ref, () => innerHandler, [ref])
 
   return (
     <SelectSingleCollectContext.Provider value={{ collect, handler: innerHandler }}>

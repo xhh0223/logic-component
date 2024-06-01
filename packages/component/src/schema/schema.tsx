@@ -1,15 +1,5 @@
 import { omit, pick } from 'lodash-es'
-import {
-  createContext,
-  forwardRef,
-  Ref,
-  useContext,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { createContext, forwardRef, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 
 import { SchemaCollect } from './schema-collect'
 import { DependencyInfo, type ISchemaCollect, type SchemaItemProps, type SchemaProps, SchemaRef } from './typing'
@@ -21,42 +11,42 @@ const SchemaCollectContext = createContext<{
 
 const PickColumns = ['dependency', 'id', 'schema']
 
-const InnerSchema = forwardRef(
-  <Schema, Context>(props: SchemaProps<Schema, Context>, ref: Ref<SchemaRef<Schema, Context>>) => {
-    const { children } = props
-    const { current: collect } = useRef(new SchemaCollect<Schema, Context>())
+const InnerSchema = <Schema, Context>(
+  props: SchemaProps<Schema, Context>,
+  ref: SchemaProps<Schema, Context>['ref'],
+) => {
+  const { children } = props
+  const { current: collect } = useRef(new SchemaCollect<Schema, Context>())
 
-    const innerHandler = useMemo(() => {
-      const handler: SchemaRef<Schema, Context> = {
-        getContext: collect.getContext,
-        setContext: collect.setContext,
-        getItem: (id) => {
-          return pick(collect.getItem(id), PickColumns)
-        },
-        getItemDependencyInfo: (id) => {
-          return collect.getItemDependencyInfo(id)?.map((i) => pick(i, PickColumns))
-        },
-        getAllItem: () => {
-          return collect.getAllItem().map((value) => pick(value, PickColumns))
-        },
-        updateItem: (id, params) => {
-          collect.updateItemPartialColumn(id, params)
-          return handler.getItem(id)
-        },
-      }
+  const innerHandler = useMemo(() => {
+    const handler: SchemaRef<Schema, Context> = {
+      getContext: collect.getContext,
+      setContext: collect.setContext,
+      getItem: (id) => {
+        return pick(collect.getItem(id), PickColumns)
+      },
+      getItemDependencyInfo: (id) => {
+        return collect.getItemDependencyInfo(id)?.map((i) => pick(i, PickColumns))
+      },
+      getAllItem: () => {
+        return collect.getAllItem().map((value) => pick(value, PickColumns))
+      },
+      updateItem: (id, params) => {
+        collect.updateItemPartialColumn(id, params)
+        return handler.getItem(id)
+      },
+    }
 
-      return handler
-    }, [])
+    return handler
+  }, [])
 
-    useImperativeHandle(ref, () => innerHandler, [])
+  useImperativeHandle(ref, () => innerHandler, [ref])
 
-    return (
-      <SchemaCollectContext.Provider value={{ collect, handler: innerHandler }}>
-        {children}
-      </SchemaCollectContext.Provider>
-    )
-  },
-)
+  return (
+    <SchemaCollectContext.Provider value={{ collect, handler: innerHandler }}>{children}</SchemaCollectContext.Provider>
+  )
+}
+
 export const Schema = forwardRef(InnerSchema) as typeof InnerSchema
 
 export const SchemaItem = <Schema, Context>(props: SchemaItemProps<Schema, Context>) => {

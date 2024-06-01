@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { type ReactNode, Ref } from 'react'
 
 import { type Id } from '@/typing'
 
@@ -36,7 +36,7 @@ export type SchemaRef<Schema, Context> = Pick<ISchemaCollect<Schema, Context>, '
   updateItem: (id: Id, params: CanUpdateColumn<Schema>) => RequiredIScheItem<Schema>
 }
 export interface SchemaProps<Schema, Context> {
-  ref?: SchemaRef<Schema, Context>
+  ref?: Ref<SchemaRef<Schema, Context>>
   children: ReactNode
 }
 export interface SchemaItemProps<Schema, Context> {

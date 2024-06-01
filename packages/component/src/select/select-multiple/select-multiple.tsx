@@ -16,7 +16,7 @@ const InnerSelectMultiple = <ValueType,>(
   const { current: collect } = useRef(new SelectCollect<ValueType>())
 
   const innerHandler = useMemo(() => {
-    const handler: SelectMultipleProps<ValueType>['handler'] = {
+    const handler: SelectMultipleRef<ValueType> = {
       getItems: (ids: Id[]) => {
         const result = []
         ids.forEach((id) => {

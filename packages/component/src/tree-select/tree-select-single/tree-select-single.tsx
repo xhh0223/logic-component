@@ -1,5 +1,5 @@
 import { pick } from 'lodash-es'
-import { Ref, useImperativeHandle, useMemo, useRef } from 'react'
+import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { SelectCollect } from '../select-collect'
 import { TreeSelectSingleCollectContext } from './context'
@@ -7,14 +7,14 @@ import { type TreeSelectSingleProps, TreeSelectSingleRef } from './typing'
 
 const PickColumns = ['id', 'isChecked', 'value', 'childrenIds', 'parentId']
 
-export const TreeSelectSingle = <ValueType,>(
+const InnerTreeSelectSingle = <ValueType,>(
   props: TreeSelectSingleProps<ValueType>,
   ref: Ref<TreeSelectSingleRef<ValueType>>,
 ) => {
   const { children } = props
   const { current: collect } = useRef(new SelectCollect<ValueType>())
   const innerHandler = useMemo(() => {
-    const handler: TreeSelectSingleProps['handler'] = {
+    const handler: TreeSelectSingleRef<ValueType> = {
       getItems: (ids) => {
         const result = []
         ids?.forEach((id) => {
@@ -97,3 +97,5 @@ export const TreeSelectSingle = <ValueType,>(
     </TreeSelectSingleCollectContext.Provider>
   )
 }
+
+export const TreeSelectSingle = forwardRef(InnerTreeSelectSingle) as typeof InnerTreeSelectSingle

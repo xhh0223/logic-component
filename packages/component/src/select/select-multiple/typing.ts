@@ -1,3 +1,5 @@
+import { Ref } from 'react'
+
 import { Id } from '@/typing'
 
 import { CommonSelectItemProps, RequiredISelectItem } from '../typing'
@@ -11,12 +13,13 @@ export interface SelectMultipleRef<ValueType> {
 
 export interface SelectMultipleProps<ValueType = any> {
   children: React.ReactNode
-  handler?: SelectMultipleRef<ValueType>
+  ref?: Ref<SelectMultipleRef<ValueType>>
 }
+
 export type SelectMultipleItemProps<ValueType> = CommonSelectItemProps<ValueType> & {
   render: (
     params: RequiredISelectItem<ValueType> & {
-      handler: SelectMultipleProps['handler']
+      handler: SelectMultipleRef<ValueType>
     },
   ) => React.ReactNode
 }

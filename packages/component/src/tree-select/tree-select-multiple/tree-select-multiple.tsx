@@ -15,7 +15,7 @@ const InnerTreeSelectMultiple = <ValueType,>(
   const { current: collect } = useRef(new SelectCollect<ValueType>())
 
   const innerHandler = useMemo(() => {
-    const handler: TreeSelectMultipleProps<ValueType>['handler'] = {
+    const handler: TreeSelectMultipleRef<ValueType> = {
       getItems: (ids) => {
         const result = []
         ids?.forEach((id) => {

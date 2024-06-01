@@ -1,3 +1,5 @@
+import { Ref } from 'react'
+
 import { Id } from '@/typing'
 
 import { CommonTreeSelectItemProps, RequiredITreeSelectItem } from '../typing'
@@ -12,13 +14,13 @@ export interface TreeSelectMultipleRef<ValueType> {
 }
 export interface TreeSelectMultipleProps<ValueType = any> {
   children: React.ReactNode
-  handler?: TreeSelectMultipleRef<ValueType>
+  ref?: Ref<TreeSelectMultipleRef<ValueType>>
 }
 
 export type TreeSelectMultipleItemProps<ValueType> = CommonTreeSelectItemProps<ValueType> & {
   render: (
     params: RequiredITreeSelectItem<ValueType> & {
-      handler: TreeSelectMultipleProps<ValueType>['handler']
+      handler: TreeSelectMultipleRef<ValueType>
     },
   ) => React.ReactNode
 }

@@ -1,3 +1,5 @@
+import { Ref } from 'react'
+
 import { Id } from '@/typing'
 
 import { CommonSelectItemProps, RequiredISelectItem } from '../typing'
@@ -9,13 +11,13 @@ export interface SelectSingleRef<ValueType> {
 
 export interface SelectSingleProps<ValueType = any> {
   children: React.ReactNode
-  handler?: SelectSingleRef<ValueType>
+  ref?: Ref<SelectSingleRef<ValueType>>
 }
 
 export type SelectSingleItemProps<ValueType> = CommonSelectItemProps<ValueType> & {
   render: (
     params: RequiredISelectItem<ValueType> & {
-      handler: SelectSingleProps['handler']
+      handler: SelectSingleRef<ValueType>
     },
   ) => React.ReactNode
 }
