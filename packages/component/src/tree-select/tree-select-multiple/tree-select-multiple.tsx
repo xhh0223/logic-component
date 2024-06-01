@@ -1,14 +1,17 @@
 import { pick } from 'lodash-es'
-import { useMemo, useRef } from 'react'
+import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { SelectCollect } from '../select-collect'
 import { TreeSelectMultipleCollectContext } from './context'
-import { type TreeSelectMultipleProps } from './typing'
+import { type TreeSelectMultipleProps, TreeSelectMultipleRef } from './typing'
 
 const PickColumns = ['id', 'isChecked', 'value', 'childrenIds', 'parentId']
 
-export const TreeSelectMultiple = <ValueType,>(props: TreeSelectMultipleProps<ValueType>) => {
-  const { children, handler: outerHandler } = props
+const InnerTreeSelectMultiple = <ValueType,>(
+  props: TreeSelectMultipleProps<ValueType>,
+  ref: Ref<TreeSelectMultipleRef<ValueType>>,
+) => {
+  const { children } = props
   const { current: collect } = useRef(new SelectCollect<ValueType>())
 
   const innerHandler = useMemo(() => {
@@ -101,16 +104,13 @@ export const TreeSelectMultiple = <ValueType,>(props: TreeSelectMultipleProps<Va
     }
     return handler
   }, [])
-  if (outerHandler) {
-    Object.assign(outerHandler, innerHandler)
-  }
+
+  useImperativeHandle(ref, () => innerHandler, [ref])
+
   return (
     <TreeSelectMultipleCollectContext.Provider value={{ collect, handler: innerHandler }}>
       {children}
     </TreeSelectMultipleCollectContext.Provider>
   )
 }
-
-export const useTreeSelectMultipleHandler = <ValueType,>() => {
-  return useRef({}).current as TreeSelectMultipleProps<ValueType>['handler']
-}
+export const TreeSelectMultiple = forwardRef(InnerTreeSelectMultiple) as typeof InnerTreeSelectMultiple
