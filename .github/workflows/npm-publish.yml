@@ -5,7 +5,7 @@ on:
     branches:
       - feat
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
-          registry-url: https://registry.npmjs.org
+          registry-url: https://npm.pkg.github.com/
           cache: pnpm
 
       - name: install dependencies
@@ -33,3 +33,18 @@ jobs:
         uses: simenandre/publish-with-pnpm@v1
         with:
           npm-auth-token: ${{ secrets.NPM_TOKEN }}
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          registry-url: https://npm.pkg.github.com/
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
