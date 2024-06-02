@@ -1,10 +1,11 @@
 {
   "name": "react-logic-component",
-  "version": "1.0.1-alpha.4",
+  "version": "1.0.1-alpha.5",
   "type": "module",
   "types": "packages/component/dist/index.d.ts",
   "files": [
-    "packages"
+    "packages",
+    "packages/dist"
   ],
   "main": "packages/component/dist/lib/index.js",
   "module": "packages/component/dist/lib/index.js",
