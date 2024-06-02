@@ -4,7 +4,8 @@ name: deploy react-logic-component
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ['feat']
+    branches: 
+      - master
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

@@ -3,7 +3,7 @@ name: publish react-logic-component
 on:
   push:
     branches:
-      - feat
+      - master
 jobs:
   publish:
     runs-on: ubuntu-latest
