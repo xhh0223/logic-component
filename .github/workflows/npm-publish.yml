@@ -13,6 +13,8 @@ jobs:
 
       - name: use pnpm
         uses: pnpm/action-setup@v2
+        with:
+          version: 8
 
       - name: use node
         uses: actions/setup-node@v3
