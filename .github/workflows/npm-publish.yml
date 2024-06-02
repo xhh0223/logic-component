@@ -28,11 +28,6 @@ jobs:
 
       - name: build
         run: pnpm run build
-
-      - name: publish
-        uses: simenandre/publish-with-pnpm@v1
-        with:
-          npm-auth-token: ${{ secrets.NPM_TOKEN }}
   publish:
     needs: build
     runs-on: ubuntu-latest
