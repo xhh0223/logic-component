@@ -1,4 +1,3 @@
-import inject from '@rollup/plugin-inject'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { defineConfig } from 'vite'
@@ -7,12 +6,7 @@ const PageDir = path.resolve(__dirname, 'src')
 
 export default defineConfig({
   root: PageDir,
-  plugins: [
-    react(),
-    inject({
-      jQuery: 'jquery',
-    }),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       '@src': path.resolve(__dirname, 'src'),
