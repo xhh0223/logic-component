@@ -3,7 +3,7 @@ name: deploy react-logic-component
 run-name: ${{github.actor}}-${{github.actor_id}}-trigger
 on:
   # Runs on pushes targeting the default branch
-  pull_request:
+  push:
     branches:
       - master
 
