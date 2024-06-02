@@ -6,6 +6,7 @@ const PageDir = path.resolve(__dirname, 'src')
 
 export default defineConfig({
   root: PageDir,
+  base: '/logic-component/',
   plugins: [react()],
   resolve: {
     alias: {
