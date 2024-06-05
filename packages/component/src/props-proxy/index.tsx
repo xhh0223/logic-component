@@ -10,7 +10,7 @@ export interface PropsProxyProps<Props> {
   ref?: Ref<PropProxyRef<Props>>
   initProps: Props
   render: (params: Props, handler: PropProxyRef<Props>) => React.ReactNode
-  onMounted?: () => void
+  onMounted?: () => (() => void) | void
 }
 
 const InnerPropsProxy = <Props,>(props: PropsProxyProps<Props>, ref: PropsProxyProps<Props>['ref']) => {
@@ -39,8 +39,14 @@ const InnerPropsProxy = <Props,>(props: PropsProxyProps<Props>, ref: PropsProxyP
   )
 
   useEffect(() => {
+    let result
     if (onMounted && typeof onMounted === 'function') {
-      onMounted()
+      result = onMounted()
+    }
+    return () => {
+      if (typeof result === 'function') {
+        result()
+      }
     }
   }, [])
 
