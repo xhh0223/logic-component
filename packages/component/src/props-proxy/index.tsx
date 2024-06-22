@@ -9,14 +9,16 @@ export interface PropProxyRef<Props = any> {
 export interface PropsProxyProps<Props> {
   ref?: Ref<PropProxyRef<Props>>
   initProps: Props
-  render: (params: Props, handler: PropProxyRef<Props>) => React.ReactNode
-  onMounted?: () => (() => void) | void
+  render: (params: Props, options: { handler: PropProxyRef<Props>; renderJsxRef: Ref<any> }) => React.ReactNode
+  onMounted?: (params: { renderNodeRef: Ref<any>; handler: PropProxyRef<Props> }) => (() => void) | void
 }
 
 const InnerPropsProxy = <Props,>(props: PropsProxyProps<Props>, ref: PropsProxyProps<Props>['ref']) => {
   const { initProps, render, onMounted } = props
   const [, update] = useState({})
   const cacheProps = useRef(initProps)
+
+  const renderNodeRef = useRef<any>()
 
   const handler: PropProxyRef<Props> = useMemo(
     () => ({
@@ -41,7 +43,7 @@ const InnerPropsProxy = <Props,>(props: PropsProxyProps<Props>, ref: PropsProxyP
   useEffect(() => {
     let result
     if (onMounted && typeof onMounted === 'function') {
-      result = onMounted()
+      result = onMounted({ handler, renderNodeRef })
     }
     return () => {
       if (typeof result === 'function') {
@@ -52,7 +54,7 @@ const InnerPropsProxy = <Props,>(props: PropsProxyProps<Props>, ref: PropsProxyP
 
   useImperativeHandle(ref, () => handler, [ref])
 
-  return render(cacheProps.current, handler)
+  return render(cacheProps.current, { handler, renderNodeRef })
 }
 
 export const PropsProxy = forwardRef(InnerPropsProxy) as typeof InnerPropsProxy
