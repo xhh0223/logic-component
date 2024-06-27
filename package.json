@@ -4,8 +4,7 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "packages/component/"
+    "dist"
   ],
   "exports": {
     ".": {
