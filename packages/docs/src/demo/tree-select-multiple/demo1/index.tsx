@@ -1,6 +1,7 @@
-import { TreeSelectMultiple, TreeSelectMultipleItem } from '@logic-component/index'
 import { genTreeData } from '@src/utils'
 import { Checkbox, Flex } from 'antd'
+
+import { TreeSelectMultiple, TreeSelectMultipleItem } from '~logic-component/index'
 
 const Demo1 = () => {
   const treeList = (() => {

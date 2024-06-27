@@ -1,7 +1,8 @@
-import { TreeSelectMultiple, TreeSelectMultipleItem } from '@logic-component/index'
 import { genTreeData } from '@src/utils'
 import { Checkbox, Flex, Tag } from 'antd'
 import { useState } from 'react'
+
+import { TreeSelectMultiple, TreeSelectMultipleItem } from '~logic-component/index'
 
 const Demo2 = () => {
   const [everyLevelData, setEveryLevelData] = useState([genTreeData([3, 2, 2])])

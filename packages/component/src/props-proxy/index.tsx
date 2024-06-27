@@ -9,7 +9,7 @@ export interface PropProxyRef<Props = any> {
 export interface PropsProxyProps<Props> {
   ref?: Ref<PropProxyRef<Props>>
   initProps: Props
-  render: (params: Props, options: { handler: PropProxyRef<Props>; renderJsxRef: Ref<any> }) => React.ReactNode
+  render: (params: Props, options: { handler: PropProxyRef<Props>; renderNodeRef: Ref<any> }) => React.ReactNode
   onMounted?: (params: { renderNodeRef: Ref<any>; handler: PropProxyRef<Props> }) => (() => void) | void
 }
 

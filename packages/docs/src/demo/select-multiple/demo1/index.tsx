@@ -1,6 +1,7 @@
-import { SelectMultiple, SelectMultipleItem } from '@logic-component/select'
 import { Avatar, Card, Checkbox, Flex } from 'antd'
 import { useCallback, useMemo } from 'react'
+
+import { SelectMultiple, SelectMultipleItem } from '~logic-component/select'
 
 const Demo1 = () => {
   const CardWithCheck = useCallback((props: { isChecked: boolean; onClick: () => void }) => {

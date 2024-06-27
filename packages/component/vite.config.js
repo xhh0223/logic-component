@@ -1,16 +1,18 @@
 import react from '@vitejs/plugin-react'
 import path from 'path'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 
-export default defineConfig((command, mode, isSsrBuild, isPreview) => {
+export default defineConfig(() => {
   /** @type {import('vite').UserConfig} */
   const config = {
-    mode: 'production',
-    plugins: [react(), dts()],
-    define: {
-      __APP_ENV__: loadEnv(mode, __dirname, ''),
-    },
+    mode: 'dev',
+    plugins: [
+      react(),
+      dts({
+        outDir: path.resolve(__dirname, 'dist'),
+      }),
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),
@@ -22,20 +24,20 @@ export default defineConfig((command, mode, isSsrBuild, isPreview) => {
     },
     appType: 'custom',
     build: {
-      outDir: path.resolve(__dirname, 'dist', 'lib'),
       minify: false,
       lib: {
-        fileName: 'index',
         entry: path.resolve(__dirname, 'src', 'index.ts'),
         formats: ['es'],
       },
       rollupOptions: {
         external: ['react'],
-        // output: {
-        //   format: "es",
-        //   // preserveModules: true,
-        //   // entryFileNames: "[name].js",
-        // },
+        output: {
+          preserveModules: true,
+          preserveModulesRoot: 'src',
+          dir: path.resolve(__dirname, 'dist'),
+          exports: 'named',
+          entryFileNames: '[name].js',
+        },
       },
     },
   }
