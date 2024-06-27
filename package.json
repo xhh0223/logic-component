@@ -1,24 +1,21 @@
 {
   "name": "react-logic-component",
-  "version": "1.0.1-alpha.9",
+  "version": "1.0.1-alpha.10",
   "type": "module",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
     "packages/component/"
   ],
-  "main": "dist/lib/index.js",
-  "module": "dist/lib/index.js",
   "exports": {
     ".": {
-      "import": "./dist/lib/index.js",
-      "require": "./dist/lib/index.js"
+      "import": "./dist/index.js"
     }
   },
   "scripts": {
     "dev": "cd packages/docs && pnpm run dev",
-    "build:docs": "cd packages/docs && pnpm run build  && mv dist ../.. ",
-    "build": "cd packages/component && pnpm run build && mv dist ../.. ",
+    "build:docs": "cd packages/docs && pnpm run build  &&rm -rf ../../docs && mv   ./dist/ ../../docs/",
+    "build": "cd packages/component && pnpm run build &&rm -rf ../../dist && mv   ./dist/ ../../dist/",
     "prepare": "husky"
   },
   "devDependencies": {

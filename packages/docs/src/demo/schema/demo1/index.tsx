@@ -1,5 +1,6 @@
-import { Schema, SchemaItem } from '@logic-component/index'
 import { Flex } from 'antd'
+
+import { Schema, SchemaItem } from '~logic-component/index'
 
 const Demo1 = () => {
   return (

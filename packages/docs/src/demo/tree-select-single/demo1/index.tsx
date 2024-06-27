@@ -1,6 +1,7 @@
-import { TreeSelectSingle, TreeSelectSingleItem } from '@logic-component/index'
 import { genTreeData } from '@src/utils'
 import { Checkbox, Flex } from 'antd'
+
+import { TreeSelectSingle, TreeSelectSingleItem } from '~logic-component/index'
 
 const Demo1 = () => {
   const treeList = (() => {

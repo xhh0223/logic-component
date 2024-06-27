@@ -12,8 +12,7 @@ export default defineConfig({
     alias: {
       '@src': path.resolve(__dirname, 'src'),
       '@style': path.resolve(__dirname, 'src', 'style'),
-      '@logic-component': path.resolve(__dirname, '..', 'component', 'src'),
-      '@/utils': path.resolve(__dirname, '..', 'component', 'src', 'utils'),
+      '~logic-component': path.resolve(__dirname, '..', 'component', 'src'),
     },
   },
   build: {
