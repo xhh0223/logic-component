@@ -1,13 +1,11 @@
-import { pick } from 'lodash-es'
 import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { Id } from '@/typing'
 
 import { SelectCollect } from '../select-collect'
+import { RequiredISelectItem } from '../typing'
 import { SelectSingleCollectContext } from './context'
 import { type SelectSingleProps, SelectSingleRef } from './typing'
-
-const PickColumns = ['id', 'isChecked', 'value']
 
 const InnerSelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>, ref: Ref<SelectSingleRef<ValueType>>) => {
   const { children } = props
@@ -15,50 +13,49 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>, ref:
   const innerHandler = useMemo(() => {
     const handler: SelectSingleRef<ValueType> = {
       getItems: (ids: Id[]) => {
-        const result = []
-        ids.forEach((id) => {
+        const result: Array<RequiredISelectItem<ValueType>> = []
+
+        ids?.forEach((id) => {
           const item = collect.getItem(id)
           if (item) {
-            result.push(pick(item, PickColumns))
+            result.push({
+              id: item.id,
+              value: item.value,
+              isChecked: item.isChecked,
+            })
           }
         })
-        return result as any
+        return result
       },
-      trigger: (id) => {
+      select: (id, options = { allowRepeatSelect: false }) => {
         const item = collect.getItem(id)
-
         if (!item) {
           return
         }
         /** 允许重复点击一个 */
-        if (item.allowRepeatChecked) {
+        if (options?.allowRepeatSelect) {
           if (!item.isChecked) {
             collect.updateItemPartialColumn(id, { isChecked: true })
-            item.refresh()
-            collect.getAllItem().forEach((item) => {
-              if (item.id !== id && item.isChecked) {
-                collect.updateItemPartialColumn(item.id, {
-                  isChecked: false,
-                })
-                item.refresh()
-              }
-            })
           }
         } else {
           collect.updateItemPartialColumn(id, {
             isChecked: !item.isChecked,
           })
-          item.refresh()
-          collect.getAllItem().forEach((item) => {
-            if (item.id !== id && item.isChecked) {
-              collect.updateItemPartialColumn(item.id, {
-                isChecked: false,
-              })
-              item.refresh()
-            }
-          })
         }
-        return pick(collect.getItem(id), PickColumns)
+
+        collect.getAllItem().forEach((item) => {
+          if (item.id !== id && item.isChecked) {
+            collect.updateItemPartialColumn(item.id, {
+              isChecked: false,
+            })
+          }
+        })
+        const result: RequiredISelectItem<ValueType> = {
+          isChecked: item.isChecked,
+          value: item.value,
+          id: item.id,
+        }
+        return result
       },
     }
 

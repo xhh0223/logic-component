@@ -4,17 +4,17 @@ import { SelectSingleCollectContext } from './context'
 import { type SelectSingleItemProps } from './typing'
 
 export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) => {
-  const { id, value, render, allowRepeatChecked = false } = props
+  const { id, value, render } = props
   const { collect, handler } = useContext(SelectSingleCollectContext)
 
-  /** 记录第一次初始化的值 */
+  const [, update] = useState({})
+
   const memoInfo = useMemo(() => {
     /** 新增 */
-    collect.addItem({
+    collect.setItem({
       id,
       value,
       isChecked: false,
-      allowRepeatChecked,
       refresh() {
         update({})
       },
@@ -24,34 +24,29 @@ export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) =>
     }
   }, [])
 
-  const [, update] = useState({})
-
   /** 修改 */
   useMemo(() => {
     if (id !== memoInfo.id) {
       const beforeItem = collect.getItem(memoInfo.id)
-      collect.delItem(memoInfo.id)
-      memoInfo.id = id
-      collect.addItem({
+      collect.setItem({
         ...beforeItem,
         id,
         value,
-        allowRepeatChecked,
       })
+      memoInfo.id = id
     } else {
       collect.updateItemPartialColumn(memoInfo.id, {
         value,
-        allowRepeatChecked,
       })
     }
-  }, [id, memoInfo, collect, value, allowRepeatChecked])
+  }, [id, collect, value])
 
   /** 删除 */
   useEffect(() => {
     return () => {
-      collect.delItem(id)
+      collect.delItem(memoInfo.id)
     }
-  }, [collect, id])
+  }, [])
 
   const item = collect.getItem(id)
   return render({

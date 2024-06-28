@@ -1,5 +1,3 @@
-import { pick } from 'lodash-es'
-
 import { type Id } from '@/typing'
 
 import { type CanUpdateISelectItem, type ISelectCollect, type ISelectItem } from './typing'
@@ -11,8 +9,10 @@ export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType>
     if (params) {
       this.itemsCollect.set(id, {
         ...item,
-        ...pick(params, ['isChecked', 'allowRepeatChecked', 'value']),
+        isChecked: params.isChecked,
+        value: params.value,
       })
+      item?.refresh()
     }
   }
 
@@ -20,7 +20,7 @@ export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType>
     return this.itemsCollect.get(id)
   }
 
-  addItem = (item: ISelectItem<ValueType>) => {
+  setItem = (item: ISelectItem<ValueType>) => {
     this.itemsCollect.set(item.id, item)
   }
 
