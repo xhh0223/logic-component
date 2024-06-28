@@ -30,7 +30,7 @@ const Demo1 = () => {
       <SelectMultiple>
         <Flex wrap gap={16}>
           {Array.from({ length: 10 }).map((_, index) => (
-            <SelectMultipleItem
+            <SelectMultipleItem<string>
               key={index}
               id={Math.random()}
               render={({ handler, isChecked, id }) => {
@@ -38,7 +38,7 @@ const Demo1 = () => {
                   <CardWithCheck
                     isChecked={isChecked}
                     onClick={() => {
-                      handler.trigger([id])
+                      handler.select([[id, { allowRepeatSelect: false }]])
                     }}
                   />
                 )
