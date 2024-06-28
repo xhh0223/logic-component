@@ -38,11 +38,12 @@ const Demo1 = () => {
                   <CardWithCheck
                     isChecked={isChecked}
                     onClick={() => {
-                      handler.trigger(id)
+                      handler.select(id, { allowRepeatSelect: true })
                     }}
                   />
                 )
               }}
+              value={123}
             ></SelectSingleItem>
           ))}
         </Flex>

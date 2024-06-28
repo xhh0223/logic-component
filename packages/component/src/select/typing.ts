@@ -2,8 +2,8 @@ import { type Id } from '@/typing'
 
 export interface ISelectItem<ValueType = any> {
   id: Id
-  isChecked?: boolean
-  value?: ValueType
+  isChecked: boolean
+  value: ValueType
   refresh: () => void
 }
 
