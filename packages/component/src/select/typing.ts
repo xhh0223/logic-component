@@ -7,13 +7,11 @@ export interface ISelectItem<ValueType = any> {
   refresh: () => void
 }
 
-export type CanUpdateISelectItem<ValueType> = Pick<ISelectItem<ValueType>, 'isChecked' | 'value'>
-
 export interface ISelectCollect<ValueType> {
-  setItem(item: ISelectItem<ValueType>): void
+  setItem(id: Id, item: ISelectItem<ValueType>): void
   delItem(id: Id): void
   getItem(id: Id): ISelectItem<ValueType> | undefined
-  updateItemPartialColumn(id: Id, params: Partial<CanUpdateISelectItem<ValueType>>): void
+  updateItemColumn(id: Id, params: Partial<Pick<ISelectItem<ValueType>, 'isChecked' | 'value'>>): void
   getAllItem(): Array<ISelectItem<ValueType>>
 }
 

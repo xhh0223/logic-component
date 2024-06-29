@@ -1,17 +1,25 @@
+import { isNil, omitBy } from 'lodash-es'
+
 import { type Id } from '@/typing'
 
-import { type CanUpdateISelectItem, type ISelectCollect, type ISelectItem } from './typing'
+import { type ISelectCollect, type ISelectItem } from './typing'
 export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType> {
   private readonly itemsCollect = new Map<Id, ISelectItem<ValueType>>()
 
-  updateItemPartialColumn = (id: Id, params: Partial<CanUpdateISelectItem<ValueType>>) => {
+  updateItemColumn(id: Id, params: Partial<Pick<ISelectItem<ValueType>, 'isChecked' | 'value'>>) {
     const item = this.getItem(id)
     if (params) {
-      this.itemsCollect.set(id, {
-        ...item,
-        isChecked: params.isChecked,
-        value: params.value,
-      })
+      this.itemsCollect.set(
+        id,
+        omitBy(
+          {
+            ...item,
+            isChecked: params.isChecked,
+            value: params.value,
+          },
+          isNil,
+        ),
+      )
       item?.refresh()
     }
   }
@@ -20,8 +28,8 @@ export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType>
     return this.itemsCollect.get(id)
   }
 
-  setItem = (item: ISelectItem<ValueType>) => {
-    this.itemsCollect.set(item.id, item)
+  setItem = (id: Id, item: ISelectItem<ValueType>) => {
+    this.itemsCollect.set(id, item)
   }
 
   delItem = (id: Id) => {

@@ -40,10 +40,10 @@ const InnerSelectMultiple = <ValueType,>(
           /** 允许重复点击一个 */
           if (options?.allowRepeatSelect) {
             if (!item.isChecked) {
-              collect.updateItemPartialColumn(id, { isChecked: true })
+              collect.updateItemColumn(id, { isChecked: true })
             }
           } else {
-            collect.updateItemPartialColumn(id, {
+            collect.updateItemColumn(id, {
               isChecked: !item.isChecked,
             })
           }
@@ -60,7 +60,7 @@ const InnerSelectMultiple = <ValueType,>(
         ids?.forEach((id) => {
           const item = collect.getItem(id)
           if (item.isChecked) {
-            collect.updateItemPartialColumn(id, { isChecked: false })
+            collect.updateItemColumn(id, { isChecked: false })
           }
           result.push({
             id: item.id,

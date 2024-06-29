@@ -35,17 +35,17 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>, ref:
         /** 允许重复点击一个 */
         if (options?.allowRepeatSelect) {
           if (!item.isChecked) {
-            collect.updateItemPartialColumn(id, { isChecked: true })
+            collect.updateItemColumn(id, { isChecked: true })
           }
         } else {
-          collect.updateItemPartialColumn(id, {
+          collect.updateItemColumn(id, {
             isChecked: !item.isChecked,
           })
         }
 
         collect.getAllItem().forEach((item) => {
           if (item.id !== id && item.isChecked) {
-            collect.updateItemPartialColumn(item.id, {
+            collect.updateItemColumn(item.id, {
               isChecked: false,
             })
           }

@@ -11,7 +11,7 @@ export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) =>
 
   const memoInfo = useMemo(() => {
     /** 新增 */
-    collect.setItem({
+    collect.setItem(id, {
       id,
       value,
       isChecked: false,
@@ -27,15 +27,19 @@ export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) =>
   /** 修改 */
   useMemo(() => {
     if (id !== memoInfo.id) {
-      const beforeItem = collect.getItem(memoInfo.id)
-      collect.setItem({
-        ...beforeItem,
-        id,
-        value,
-      })
+      /** 1、删掉之前的 */
+      const beforeItem = collect.getItem(id)
+      collect.delItem(id)
+      /** 2、重新添加 */
       memoInfo.id = id
+      collect.setItem(memoInfo.id, {
+        id: memoInfo.id,
+        value,
+        isChecked: beforeItem.isChecked,
+        refresh: beforeItem.refresh,
+      })
     } else {
-      collect.updateItemPartialColumn(memoInfo.id, {
+      collect.updateItemColumn(memoInfo.id, {
         value,
       })
     }
