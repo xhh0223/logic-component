@@ -33,7 +33,7 @@ export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) =>
       memoInfo.id = id
       /** 2、重新添加 */
       collect.setItem(memoInfo.id, {
-        id: memoInfo.id,
+        id,
         value,
         isChecked: beforeItem.isChecked,
         refresh: beforeItem.refresh,
