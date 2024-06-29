@@ -1,5 +1,7 @@
 import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
+import { Id } from '@/typing'
+
 import { SelectCollect } from '../select-collect'
 import { RequiredITreeSelectItem } from '../typing'
 import { TreeSelectSingleCollectContext } from './context'
@@ -30,27 +32,29 @@ const InnerTreeSelectSingle = <ValueType,>(
         return result
       },
       getAncestorsIds: (id) => {
-        const getResult = (id, result = []) => {
-          const parentId = collect.getItem(id)?.parentId
-          if (parentId) {
-            result.push(parentId)
-            getResult(parentId)
+        const result: Array<Id> = []
+        let currentId = id
+        while (currentId) {
+          currentId = collect.getItem(currentId)?.parentId
+          if (currentId) {
+            result.push(currentId)
           }
-          return result
         }
-        return getResult(id)
+        return result
       },
       getDescendantsIds: (id) => {
-        const descendantsIds = collect.getItem(id)?.childrenIds ?? []
-        const list = (ids, result = []) => {
-          const items = ids?.map((i) => collect.getItem(i))?.filter(Boolean)
-          items?.forEach((item) => {
-            result.push(item.id)
-            list(item.childrenIds, result)
+        const result: Array<Id> = []
+        const queue = [id]
+        while (queue?.length) {
+          const currentId = queue.shift()
+          result.push(currentId)
+          const item = collect.getItem(currentId)
+          item.childrenIds?.forEach((id) => {
+            queue.push(id)
           })
-          return result
         }
-        return list(descendantsIds)
+        result.shift()
+        return result
       },
       select: (id, options) => {
         const item = collect.getItem(id)
