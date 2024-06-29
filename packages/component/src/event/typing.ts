@@ -6,7 +6,7 @@ export type IdsEntries<Params> = Array<[Id, Params?]>
 export interface IEventItem {
   id: Id
   dependency: Id[]
-  on(idsEntries: IdsEntries<any>): void
+  on(dependencyEntries: IdsEntries<any>): void
 }
 
 export interface IEventCollect<Context = any> {
@@ -20,6 +20,8 @@ export interface IEventCollect<Context = any> {
 
 export type EventRef<Context = any> = {
   emit: IEventCollect<Context>['emit']
+  on: <Params>(params: { id: Id; dependency: Id[]; callback: (dependencyEntries: IdsEntries<Params>) => void }) => void
+  off: (id: Id) => void
   getContext: IEventCollect<Context>['getContext']
   setContext: IEventCollect<Context>['setContext']
 }

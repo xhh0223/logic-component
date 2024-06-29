@@ -1,10 +1,23 @@
 import { Flex } from 'antd'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { Event, EventItem, EventRef } from '~logic-component/index'
 
 const Demo1 = () => {
   const ref = useRef<EventRef<any>>()
+  useEffect(() => {
+    ref.current.on({
+      id: 123,
+      dependency: [1],
+      callback() {
+        // console.log(params)
+      },
+    })
+    setTimeout(() => {
+      ref.current.emit([[1, 213]])
+    }, 2000)
+  }, [])
+
   return (
     <div>
       <Event ref={ref}>
