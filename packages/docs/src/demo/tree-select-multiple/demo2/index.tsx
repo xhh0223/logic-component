@@ -34,7 +34,7 @@ const Demo2 = () => {
                           ) : (
                             <Checkbox
                               onClick={() => {
-                                handler.trigger([id])
+                                handler.select([id])
                               }}
                               checked={isChecked}
                             >

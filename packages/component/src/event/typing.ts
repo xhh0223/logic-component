@@ -15,11 +15,11 @@ export interface IEventCollect<Context = any> {
   getItem: (id) => IEventItem | undefined
   setItem: (id, params: IEventItem) => void
   delItem: (id: Id) => void
-  trigger: <Params = any>(idsEntries: IdsEntries<Params>) => void
+  emit: <Params = any>(idsEntries: IdsEntries<Params>) => void
 }
 
 export type EventRef<Context = any> = {
-  trigger: IEventCollect<Context>['trigger']
+  emit: IEventCollect<Context>['emit']
   getContext: IEventCollect<Context>['getContext']
   setContext: IEventCollect<Context>['setContext']
 }

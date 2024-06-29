@@ -34,7 +34,7 @@ const Demo1 = () => {
                   <Checkbox
                     onClick={() => {
                       /** select current node */
-                      handler.trigger([id])
+                      handler.select([id])
 
                       /** select descend node */
                       ;(() => {
@@ -42,7 +42,7 @@ const Demo1 = () => {
                         if (!isChecked) {
                           handler.select(ids)
                         } else {
-                          handler.cancelSelected(ids)
+                          handler.cancel(ids)
                         }
                       })()
 

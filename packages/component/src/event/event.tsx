@@ -10,8 +10,8 @@ const InnerEvent = <Context,>(props: EventProps<Context>, ref: Ref<EventRef<Cont
 
   const innerHandler = useMemo(() => {
     const handler: EventRef<Context> = {
-      trigger: <Params = any,>(idsEntries: IdsEntries<Params>) => {
-        collect.trigger(idsEntries)
+      emit: <Params = any,>(idsEntries: IdsEntries<Params>) => {
+        collect.emit(idsEntries)
       },
       getContext: () => {
         return collect.getContext()

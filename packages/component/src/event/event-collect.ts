@@ -23,7 +23,7 @@ export class EventCollect<Context = any> implements IEventCollect<Context> {
   delItem = (id) => {
     this.collect.delete(id)
   }
-  trigger = <Params = any>(idsEntries: IdsEntries<Params>) => {
+  emit = <Params = any>(idsEntries: IdsEntries<Params>) => {
     const idsMap = new Map<Id, Params>(idsEntries as any)
 
     for (const item of this.collect.values()) {

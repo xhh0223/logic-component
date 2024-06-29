@@ -17,7 +17,7 @@ const Demo1 = () => {
                 <>
                   <div
                     onClick={() => {
-                      ref.current.trigger([[id, 123]])
+                      ref.current.emit([[id, 123]])
                     }}
                   >
                     test
@@ -33,7 +33,7 @@ const Demo1 = () => {
               return (
                 <div
                   onClick={() => {
-                    ref.current.trigger([
+                    ref.current.emit([
                       [id, 123],
                       [3, 3122],
                     ])
@@ -50,7 +50,7 @@ const Demo1 = () => {
               <>
                 <div
                   onClick={() => {
-                    handler.trigger([[id, 123]])
+                    handler.emit([[id, 123]])
                   }}
                 >
                   test
