@@ -12,8 +12,8 @@ const SideMenu = () => {
     treeSelect: 'tree-select',
     [`tree-select-single`]: '/tree-select-single',
     [`tree-select-multiple`]: '/tree-select-multiple',
-    schemaDemo: 'schemaDemo',
-    schema: '/schema',
+    eventDemo: 'eventDemo',
+    event: '/event',
   }
   const sideMenuData: MenuProps['items'] = [
     {
@@ -45,12 +45,12 @@ const SideMenu = () => {
       ],
     },
     {
-      key: MenuKey.schemaDemo,
-      label: MenuKey.schemaDemo,
+      key: MenuKey.eventDemo,
+      label: MenuKey.eventDemo,
       children: [
         {
-          key: MenuKey['schema'],
-          label: <Link to={MenuKey['schema']}>schema</Link>,
+          key: MenuKey['event'],
+          label: <Link to={MenuKey['event']}>event</Link>,
         },
       ],
     },
@@ -60,7 +60,7 @@ const SideMenu = () => {
     <Menu
       className="menu"
       defaultSelectedKeys={[pathname ?? MenuKey['select-single']]}
-      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect, MenuKey.schemaDemo]}
+      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect, MenuKey.eventDemo]}
       mode="inline"
       items={sideMenuData}
     />
