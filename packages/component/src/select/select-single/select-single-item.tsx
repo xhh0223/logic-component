@@ -28,10 +28,10 @@ export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) =>
   useMemo(() => {
     if (id !== memoInfo.id) {
       /** 1、删掉之前的 */
-      const beforeItem = collect.getItem(id)
-      collect.delItem(id)
-      /** 2、重新添加 */
+      const beforeItem = collect.getItem(memoInfo.id)
+      collect.delItem(memoInfo.id)
       memoInfo.id = id
+      /** 2、重新添加 */
       collect.setItem(memoInfo.id, {
         id: memoInfo.id,
         value,
@@ -43,7 +43,7 @@ export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) =>
         value,
       })
     }
-  }, [id, collect, value])
+  }, [id, value])
 
   /** 删除 */
   useEffect(() => {
@@ -57,6 +57,6 @@ export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) =>
     handler,
     id,
     value: item.value,
-    isChecked: !!item.isChecked,
+    isChecked: item.isChecked,
   })
 }

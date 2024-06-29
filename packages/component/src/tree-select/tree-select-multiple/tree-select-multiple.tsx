@@ -1,11 +1,9 @@
-import { pick } from 'lodash-es'
 import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { SelectCollect } from '../select-collect'
+import { RequiredITreeSelectItem } from '../typing'
 import { TreeSelectMultipleCollectContext } from './context'
 import { type TreeSelectMultipleProps, TreeSelectMultipleRef } from './typing'
-
-const PickColumns = ['id', 'isChecked', 'value', 'childrenIds', 'parentId']
 
 const InnerTreeSelectMultiple = <ValueType,>(
   props: TreeSelectMultipleProps<ValueType>,
@@ -17,11 +15,17 @@ const InnerTreeSelectMultiple = <ValueType,>(
   const innerHandler = useMemo(() => {
     const handler: TreeSelectMultipleRef<ValueType> = {
       getItems: (ids) => {
-        const result = []
+        const result: Array<RequiredITreeSelectItem<ValueType>> = []
         ids?.forEach((id) => {
           const item = collect.getItem(id)
           if (item) {
-            result.push(pick(item, PickColumns))
+            result.push({
+              id: item.id,
+              isChecked: item.isChecked,
+              value: item.value,
+              childrenIds: item.childrenIds,
+              parentId: item.parentId,
+            })
           }
         })
         return result
@@ -50,54 +54,52 @@ const InnerTreeSelectMultiple = <ValueType,>(
         }
         return list(descendantsIds)
       },
-      select: (ids) => {
-        const result = []
+      cancel: (ids) => {
+        const result: Array<RequiredITreeSelectItem<ValueType>> = []
         ids?.forEach((id) => {
           const item = collect.getItem(id)
-          if (item) {
-            if (!item.isChecked) {
-              collect.updateItemPartialColumn(id, { isChecked: true })
-              item.refresh()
-            }
-            result.push(pick(collect.getItem(id), PickColumns))
+          if (!item) {
+            return
           }
+          if (item.isChecked) {
+            collect.updateItemColumn(id, { isChecked: false })
+            item.refresh()
+          }
+          result.push({
+            id: item.id,
+            isChecked: collect.getItem(id).isChecked,
+            value: item.value,
+            childrenIds: item.childrenIds,
+            parentId: item.parentId,
+          })
         })
         return result
       },
-      cancelSelected: (ids) => {
-        const result = []
-        ids?.forEach((id) => {
-          const item = collect.getItem(id)
-          if (item) {
-            if (item.isChecked) {
-              collect.updateItemPartialColumn(id, { isChecked: false })
-              item.refresh()
-            }
-            result.push(pick(collect.getItem(id), PickColumns))
-          }
-        })
-        return result
-      },
-      trigger: (ids) => {
-        const result: any = []
-        ids.forEach((id) => {
+      select: (idsEntries) => {
+        const result: Array<RequiredITreeSelectItem<ValueType>> = []
+        idsEntries.forEach(([id, options]) => {
           const item = collect.getItem(id)
           if (!item) {
             return
           }
           /** 允许重复点击一个 */
-          if (item.allowRepeatChecked) {
+          if (options?.allowRepeatSelect) {
             if (!item.isChecked) {
-              collect.updateItemPartialColumn(id, { isChecked: true })
-              item.refresh()
+              collect.updateItemColumn(id, { isChecked: true })
             }
           } else {
-            collect.updateItemPartialColumn(id, {
+            collect.updateItemColumn(id, {
               isChecked: !item.isChecked,
             })
-            item.refresh()
           }
-          result.push(pick(collect.getItem(id), PickColumns))
+
+          result.push({
+            id: item.id,
+            childrenIds: item.childrenIds,
+            isChecked: collect.getItem(id).isChecked,
+            value: item.value,
+            parentId: item.parentId,
+          })
         })
         return result
       },

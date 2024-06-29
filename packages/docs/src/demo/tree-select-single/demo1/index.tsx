@@ -33,7 +33,7 @@ const Demo1 = () => {
                 <Flex>
                   <Checkbox
                     onClick={() => {
-                      handler.trigger(id)
+                      handler.select(id)
                     }}
                     checked={isChecked}
                   >

@@ -27,12 +27,12 @@ export const SelectMultipleItem = <Value,>(props: SelectMultipleItemProps<Value>
   useMemo(() => {
     if (id !== memoInfo.id) {
       /** 1、删掉之前的 */
-      const beforeItem = collect.getItem(id)
-      collect.delItem(id)
-      /** 2、重新添加 */
+      const beforeItem = collect.getItem(memoInfo.id)
+      collect.delItem(memoInfo.id)
       memoInfo.id = id
-      collect.setItem(memoInfo.id, {
-        id: memoInfo.id,
+      /** 2、重新添加 */
+      collect.setItem(id, {
+        id,
         value,
         isChecked: beforeItem.isChecked,
         refresh: beforeItem.refresh,
@@ -42,7 +42,7 @@ export const SelectMultipleItem = <Value,>(props: SelectMultipleItemProps<Value>
         value,
       })
     }
-  }, [id, collect, value])
+  }, [id, value])
 
   /** 删除 */
   useEffect(() => {
@@ -56,6 +56,6 @@ export const SelectMultipleItem = <Value,>(props: SelectMultipleItemProps<Value>
     handler,
     id,
     value: item.value,
-    isChecked: !!item.isChecked,
+    isChecked: item.isChecked,
   })
 }
