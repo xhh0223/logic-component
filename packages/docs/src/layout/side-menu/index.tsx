@@ -1,10 +1,11 @@
 import { RouterPath } from '@src/router'
 import { Menu, MenuProps } from 'antd'
-import { useMemo } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useMemo } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 export const SideMenu = () => {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   const MenuKey = {
     select: 'select',
@@ -13,18 +14,27 @@ export const SideMenu = () => {
   }
 
   const defaultActiveMenuKey = useMemo(() => {
+    let res
     switch (pathname) {
       case RouterPath.selectSingle:
       case RouterPath.selectMultiple:
-        return [MenuKey.select, pathname]
+        res = [MenuKey.select, pathname]
+        break
       case RouterPath.treeSelectSingle:
       case RouterPath.treeSelectMultiple:
-        return [MenuKey.treeSelect, pathname]
+        res = [MenuKey.treeSelect, pathname]
+        break
       case RouterPath.event:
-        return [MenuKey.event, pathname]
+        res = [MenuKey.event, pathname]
+        break
       default:
-        return [MenuKey.select, pathname]
+        res = [MenuKey.select, RouterPath.selectSingle]
     }
+    return res
+  }, [])
+
+  useEffect(() => {
+    navigate(defaultActiveMenuKey[1])
   }, [])
 
   const sideMenuData: MenuProps['items'] = [
