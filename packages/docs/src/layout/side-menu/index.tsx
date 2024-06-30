@@ -10,7 +10,7 @@ export const SideMenu = () => {
   const MenuKey = {
     select: 'select',
     treeSelect: 'tree-select',
-    event: 'event-demo',
+    eventBus: 'event-bus',
   }
 
   const defaultActiveMenuKey = useMemo(() => {
@@ -24,8 +24,8 @@ export const SideMenu = () => {
       case RouterPath.treeSelectMultiple:
         res = [MenuKey.treeSelect, pathname]
         break
-      case RouterPath.event:
-        res = [MenuKey.event, pathname]
+      case RouterPath.eventBus:
+        res = [MenuKey.eventBus, pathname]
         break
       default:
         res = [MenuKey.select, RouterPath.selectSingle]
@@ -67,14 +67,8 @@ export const SideMenu = () => {
       ],
     },
     {
-      key: MenuKey.event,
-      label: MenuKey.event,
-      children: [
-        {
-          key: RouterPath.event,
-          label: <Link to={RouterPath.event}>event</Link>,
-        },
-      ],
+      key: MenuKey.eventBus,
+      label: <Link to={RouterPath.eventBus}>event-bus</Link>,
     },
   ]
 
@@ -82,7 +76,7 @@ export const SideMenu = () => {
     <Menu
       style={{ maxWidth: 200 }}
       defaultSelectedKeys={defaultActiveMenuKey}
-      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect, MenuKey.event]}
+      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect, MenuKey.eventBus]}
       mode="inline"
       items={sideMenuData}
     />

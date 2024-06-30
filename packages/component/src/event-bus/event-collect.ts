@@ -2,9 +2,9 @@ import { cloneDeep } from 'lodash-es'
 
 import { Id, IdsEntries } from '@/typing'
 
-import { IEventCollect, IEventItem } from './typing'
-export class EventCollect<Context = any> implements IEventCollect<Context> {
-  private collect = new Map<Id, IEventItem>()
+import { IEventBusCollect, IEventBusItem } from './typing'
+export class EventBusCollect<Context = any> implements IEventBusCollect<Context> {
+  private collect = new Map<Id, IEventBusItem>()
   private context: any
   getContext = () => {
     return this.context
@@ -17,7 +17,7 @@ export class EventCollect<Context = any> implements IEventCollect<Context> {
     return this.collect.get(id)
   }
 
-  setItem = (id: any, params: IEventItem) => {
+  setItem = (id: any, params: IEventBusItem) => {
     this.collect.set(id, params)
   }
   delItem = (id) => {

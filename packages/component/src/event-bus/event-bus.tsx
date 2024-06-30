@@ -2,16 +2,16 @@ import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { Id, IdsEntries } from '@/typing'
 
-import { EventCollectContext } from './context'
-import { EventCollect } from './event-collect'
-import { EventProps, EventRef } from './typing'
+import { EventBusCollectContext } from './context'
+import { EventBusCollect } from './event-collect'
+import { EventBusProps, EventBusRef } from './typing'
 
-const InnerEvent = <Context,>(props: EventProps<Context>, ref: Ref<EventRef<Context>>) => {
+const InnerEventBus = <Context,>(props: EventBusProps<Context>, ref: Ref<EventBusRef<Context>>) => {
   const { children } = props
-  const { current: collect } = useRef(new EventCollect<Context>())
+  const { current: collect } = useRef(new EventBusCollect<Context>())
 
   const innerHandler = useMemo(() => {
-    const handler: EventRef<Context> = {
+    const handler: EventBusRef<Context> = {
       emit: <Params = any,>(idsEntries: IdsEntries<Params>) => {
         collect.emit(idsEntries)
       },
@@ -46,8 +46,10 @@ const InnerEvent = <Context,>(props: EventProps<Context>, ref: Ref<EventRef<Cont
   useImperativeHandle(ref, () => innerHandler, [ref])
 
   return (
-    <EventCollectContext.Provider value={{ collect, handler: innerHandler }}>{children}</EventCollectContext.Provider>
+    <EventBusCollectContext.Provider value={{ collect, handler: innerHandler }}>
+      {children}
+    </EventBusCollectContext.Provider>
   )
 }
 
-export const Event = forwardRef(InnerEvent) as typeof InnerEvent
+export const EventBus = forwardRef(InnerEventBus) as typeof InnerEventBus
