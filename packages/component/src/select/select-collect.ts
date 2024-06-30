@@ -1,5 +1,3 @@
-import { isNil, omitBy } from 'lodash-es'
-
 import { type Id } from '@/typing'
 
 import { type ISelectCollect, type ISelectItem } from './typing'
@@ -9,17 +7,12 @@ export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType>
   updateItemColumn(id: Id, params: Partial<Pick<ISelectItem<ValueType>, 'isChecked' | 'value'>>) {
     const item = this.getItem(id)
     if (params) {
-      this.itemsCollect.set(
+      this.itemsCollect.set(id, {
         id,
-        omitBy(
-          {
-            ...item,
-            isChecked: params.isChecked,
-            value: params.value,
-          },
-          isNil,
-        ),
-      )
+        isChecked: params.isChecked ?? item.isChecked,
+        value: params.value ?? item.value,
+        refresh: item.refresh,
+      })
       item?.refresh()
     }
   }

@@ -1,5 +1,3 @@
-import { isNil, omitBy } from 'lodash-es'
-
 import { type Id } from '@/typing'
 
 import { type CanUpdateITreeSelectItem, type ISelectCollect, type ITreeSelectItem } from './typing'
@@ -9,19 +7,13 @@ export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType>
   updateItemColumn = (id: Id, params: Partial<CanUpdateITreeSelectItem<ValueType>>) => {
     const item = this.getItem(id)
     if (params) {
-      this.itemsCollect.set(
+      this.itemsCollect.set(id, {
         id,
-        omitBy(
-          {
-            ...item,
-            parentId: item.parentId,
-            childrenIds: item.childrenIds,
-            isChecked: params.isChecked,
-            value: item.value,
-          },
-          isNil,
-        ),
-      )
+        isChecked: params.isChecked ?? item.isChecked,
+        refresh: item.refresh,
+        parentId: params.parentId ?? item.parentId,
+        childrenIds: params.childrenIds ?? item.childrenIds,
+      })
       item?.refresh()
     }
   }
