@@ -1,4 +1,5 @@
 export * from './select'
-export * from './schema'
+export * from './event'
 export * from './tree-select'
 export * from './props-proxy'
+export type { Id, IdsEntries } from './typing/index.ts'

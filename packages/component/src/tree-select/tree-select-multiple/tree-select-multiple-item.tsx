@@ -4,18 +4,16 @@ import { TreeSelectMultipleCollectContext } from './context'
 import { type TreeSelectMultipleItemProps } from './typing'
 
 export const TreeSelectMultipleItem = <Value = any,>(props: TreeSelectMultipleItemProps<Value>) => {
-  const { id, value, render, allowRepeatChecked = false, childrenIds, parentId } = props
+  const { id, value, render, childrenIds, parentId } = props
   const { collect, handler } = useContext(TreeSelectMultipleCollectContext)
 
-  /** 记录第一次初始化的值 */
   const memoInfo = useMemo(() => {
     /** 新增 */
-    collect.addItem({
+    collect.setItem(id, {
       parentId,
       id,
       value,
       isChecked: false,
-      allowRepeatChecked,
       childrenIds,
       refresh() {
         update({})
@@ -31,40 +29,41 @@ export const TreeSelectMultipleItem = <Value = any,>(props: TreeSelectMultipleIt
   /** 修改 */
   useMemo(() => {
     if (id !== memoInfo.id) {
+      /** 删除 */
       const beforeItem = collect.getItem(memoInfo.id)
       collect.delItem(memoInfo.id)
       memoInfo.id = id
-      collect.addItem({
-        ...beforeItem,
+      /** 新增 */
+      collect.setItem(id, {
         id,
         parentId,
         childrenIds,
         value,
-        allowRepeatChecked,
+        isChecked: beforeItem.isChecked,
+        refresh: beforeItem.refresh,
       })
     } else {
-      collect.updateItemPartialColumn(memoInfo.id, {
+      collect.updateItemColumn(id, {
         parentId,
         childrenIds,
         value,
-        allowRepeatChecked,
       })
     }
-  }, [id, memoInfo, collect, value, allowRepeatChecked, parentId, childrenIds])
+  }, [id, value, parentId, childrenIds])
 
   /** 删除 */
   useEffect(() => {
     return () => {
-      collect.delItem(id)
+      collect.delItem(memoInfo.id)
     }
-  }, [collect, id])
+  }, [])
 
   const item = collect.getItem(id)
   return render({
     handler,
     id,
     value: item.value,
-    isChecked: !!item.isChecked,
+    isChecked: item.isChecked,
     childrenIds: item.childrenIds,
     parentId: item.parentId,
   })

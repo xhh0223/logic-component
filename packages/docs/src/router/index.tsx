@@ -11,26 +11,39 @@ const wrapLoading = (importComponent) => {
   )
 }
 
-// @ts-ignore
-const demoInfo = Object.entries(import.meta.glob('@src/demo/*/index.tsx')).map(([path, importComponent]) => {
-  // eslint-disable-next-line no-useless-escape
-  const routePath = path.split(/[/\/]/).at(-2)
-  return {
-    path: routePath,
-    // @ts-ignore
-    element: wrapLoading(importComponent),
-  }
-})
+export enum RouterPath {
+  selectSingle = '/select-single',
+  selectMultiple = '/select-multiple',
+  event = '/event',
+  treeSelectSingle = '/tree-select-single',
+  treeSelectMultiple = '/tree-select-multiple',
+}
 
 export const Router = createRouter([
   {
     path: '/',
     element: wrapLoading(() => import('@src/page/index')),
     children: [
-      ...demoInfo.map((i) => ({
-        path: i.path,
-        element: i.element,
-      })),
+      {
+        path: RouterPath.selectSingle,
+        element: wrapLoading(() => import('@src/page/select-single')),
+      },
+      {
+        path: RouterPath.selectMultiple,
+        element: wrapLoading(() => import('@src/page/select-multiple')),
+      },
+      {
+        path: RouterPath.treeSelectSingle,
+        element: wrapLoading(() => import('@src/page/tree-select-single')),
+      },
+      {
+        path: RouterPath.treeSelectMultiple,
+        element: wrapLoading(() => import('@src/page/tree-select-multiple')),
+      },
+      {
+        path: RouterPath.event,
+        element: wrapLoading(() => import('@src/page/event')),
+      },
     ],
   },
 ])

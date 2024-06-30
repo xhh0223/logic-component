@@ -2,11 +2,12 @@ import { Ref } from 'react'
 
 import { Id } from '@/typing'
 
-import { CommonSelectItemProps, RequiredISelectItem } from '../typing'
+import { RequiredISelectItem } from '../typing'
 
 export interface SelectSingleRef<ValueType = any> {
-  trigger: (id: Id) => RequiredISelectItem<ValueType> | undefined
+  select: (id: Id, options?: { allowRepeatSelect?: boolean }) => RequiredISelectItem<ValueType> | undefined
   getItems: (id: Id[]) => Array<RequiredISelectItem<ValueType>>
+  getAllItems: () => Array<RequiredISelectItem<ValueType>>
 }
 
 export interface SelectSingleProps<ValueType = any> {
@@ -14,7 +15,9 @@ export interface SelectSingleProps<ValueType = any> {
   ref?: Ref<SelectSingleRef<ValueType>>
 }
 
-export type SelectSingleItemProps<ValueType> = CommonSelectItemProps<ValueType> & {
+export type SelectSingleItemProps<ValueType> = {
+  id: Id
+  value?: ValueType
   render: (
     params: RequiredISelectItem<ValueType> & {
       handler: SelectSingleRef<ValueType>

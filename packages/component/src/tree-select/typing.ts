@@ -2,8 +2,7 @@ import { type Id } from '@/typing'
 
 export interface ITreeSelectItem<ValueType> {
   id: Id
-  isChecked?: boolean
-  allowRepeatChecked?: boolean
+  isChecked: boolean
   value?: ValueType
   refresh: () => void
   parentId: Id
@@ -12,14 +11,15 @@ export interface ITreeSelectItem<ValueType> {
 
 export type CanUpdateITreeSelectItem<ValueType> = Pick<
   ITreeSelectItem<ValueType>,
-  'isChecked' | 'allowRepeatChecked' | 'childrenIds' | 'parentId' | 'value'
+  'isChecked' | 'childrenIds' | 'parentId' | 'value'
 >
 
 export interface ISelectCollect<ValueType> {
-  addItem: (item: ITreeSelectItem<ValueType>) => void
-  delItem: (id: Id) => void
-  getItem: (id: Id) => ITreeSelectItem<ValueType> | undefined
-  updateItemPartialColumn: (id: Id, params: Partial<ITreeSelectItem<ValueType>>) => void
+  updateItemColumn(id: Id, params: CanUpdateITreeSelectItem<ValueType>): void
+  setItem(id, item: ITreeSelectItem<ValueType>): void
+  delItem(id: Id): void
+  getItem(id: Id): ITreeSelectItem<ValueType> | undefined
+  updateItemColumn(id: Id, params: Partial<ITreeSelectItem<ValueType>>): void
   getAllItem: () => Array<ITreeSelectItem<ValueType>>
 }
 
@@ -32,5 +32,4 @@ export interface CommonTreeSelectItemProps<ValueType> {
   parentId: ITreeSelectItem<ValueType>['parentId']
   childrenIds?: ITreeSelectItem<ValueType>['childrenIds']
   value?: ITreeSelectItem<ValueType>['value']
-  allowRepeatChecked?: ITreeSelectItem<ValueType>['allowRepeatChecked']
 }

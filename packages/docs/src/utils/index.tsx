@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 
-export { genTreeData } from './tree-mock-data'
+export { genTreeData, transformTreeDataToList } from './tree-mock-data'
 
 export const mergeClass = (...args: string[]) => {
   return args.reduce((pre, cur) => {

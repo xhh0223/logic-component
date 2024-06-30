@@ -5,8 +5,9 @@ import { Id } from '@/typing'
 import { CommonTreeSelectItemProps, RequiredITreeSelectItem } from '../typing'
 
 export interface TreeSelectSingleRef<ValueType = any> {
-  trigger: (id: Id) => RequiredITreeSelectItem<ValueType> | undefined
+  select: (id: Id, options?: { allowRepeatSelect?: boolean }) => RequiredITreeSelectItem<ValueType> | undefined
   getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>
+  getAllItems: () => Array<RequiredITreeSelectItem<ValueType>>
   getDescendantsIds: (id: Id) => Id[]
   getAncestorsIds: (id: Id) => Id[]
 }

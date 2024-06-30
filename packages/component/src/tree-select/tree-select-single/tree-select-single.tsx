@@ -1,11 +1,11 @@
-import { pick } from 'lodash-es'
 import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
+import { Id } from '@/typing'
+
 import { SelectCollect } from '../select-collect'
+import { RequiredITreeSelectItem } from '../typing'
 import { TreeSelectSingleCollectContext } from './context'
 import { type TreeSelectSingleProps, TreeSelectSingleRef } from './typing'
-
-const PickColumns = ['id', 'isChecked', 'value', 'childrenIds', 'parentId']
 
 const InnerTreeSelectSingle = <ValueType,>(
   props: TreeSelectSingleProps<ValueType>,
@@ -16,73 +16,87 @@ const InnerTreeSelectSingle = <ValueType,>(
   const innerHandler = useMemo(() => {
     const handler: TreeSelectSingleRef<ValueType> = {
       getItems: (ids) => {
-        const result = []
+        const result: Array<RequiredITreeSelectItem<ValueType>> = []
         ids?.forEach((id) => {
           const item = collect.getItem(id)
           if (item) {
-            result.push(pick(item, PickColumns))
+            result.push({
+              id: item.id,
+              parentId: item.parentId,
+              childrenIds: item.childrenIds,
+              isChecked: item.isChecked,
+              value: item.value,
+            })
           }
         })
         return result
       },
+      getAllItems() {
+        return collect.getAllItem()?.map((i) => ({
+          id: i.id,
+          parentId: i.parentId,
+          childrenIds: i.childrenIds,
+          value: i.value,
+          isChecked: i.isChecked,
+        }))
+      },
       getAncestorsIds: (id) => {
-        const getResult = (id, result = []) => {
-          const parentId = collect.getItem(id)?.parentId
-          if (parentId) {
-            result.push(parentId)
-            getResult(parentId)
+        const result: Array<Id> = []
+        let currentId = id
+        while (currentId) {
+          currentId = collect.getItem(currentId)?.parentId
+          if (currentId) {
+            result.push(currentId)
           }
-          return result
         }
-
-        return getResult(id)
+        return result
       },
       getDescendantsIds: (id) => {
-        const descendantsIds = collect.getItem(id)?.childrenIds ?? []
-        const list = (ids, result = []) => {
-          const items = ids?.map((i) => collect.getItem(i))?.filter(Boolean)
-          items?.forEach((item) => {
-            result.push(item.id)
-            list(item.childrenIds, result)
+        const result: Array<Id> = []
+        const queue = [id]
+        while (queue?.length) {
+          const currentId = queue.shift()
+          result.push(currentId)
+          const item = collect.getItem(currentId)
+          item?.childrenIds?.forEach((id) => {
+            queue.push(id)
           })
-          return result
         }
-        return list(descendantsIds)
+        result.shift()
+        return result
       },
-      trigger: (id) => {
+      select: (id, options) => {
         const item = collect.getItem(id)
         if (!item) {
           return
         }
         /** 允许重复点击一个 */
-        if (item.allowRepeatChecked) {
+        if (options?.allowRepeatSelect) {
           if (!item.isChecked) {
-            collect.updateItemPartialColumn(id, { isChecked: true })
-            item.refresh()
-            collect.getAllItem().forEach((item) => {
-              if (item.id !== id && item.isChecked) {
-                collect.updateItemPartialColumn(item.id, {
-                  isChecked: false,
-                })
-                item.refresh()
-              }
-            })
+            collect.updateItemColumn(id, { isChecked: true })
           }
         } else {
-          collect.updateItemPartialColumn(id, {
+          collect.updateItemColumn(id, {
             isChecked: !item.isChecked,
           })
-          item.refresh()
-          collect.getAllItem().forEach((item) => {
-            if (item.id !== id && item.isChecked) {
-              collect.updateItemPartialColumn(item.id, {
-                isChecked: false,
-              })
-              item.refresh()
-            }
-          })
         }
-        return pick(collect.getItem(id), PickColumns)
+
+        collect.getAllItem().forEach((item) => {
+          if (item.id !== id && item.isChecked) {
+            collect.updateItemColumn(item.id, {
+              isChecked: false,
+            })
+          }
+        })
+
+        const res: RequiredITreeSelectItem<ValueType> = {
+          id: item.id,
+          isChecked: item.isChecked,
+          value: item.value,
+          childrenIds: item.childrenIds,
+          parentId: item.parentId,
+        }
+        return res
       },
     }
 

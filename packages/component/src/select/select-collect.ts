@@ -1,18 +1,19 @@
-import { pick } from 'lodash-es'
-
 import { type Id } from '@/typing'
 
-import { type CanUpdateISelectItem, type ISelectCollect, type ISelectItem } from './typing'
+import { type ISelectCollect, type ISelectItem } from './typing'
 export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType> {
   private readonly itemsCollect = new Map<Id, ISelectItem<ValueType>>()
 
-  updateItemPartialColumn = (id: Id, params: Partial<CanUpdateISelectItem<ValueType>>) => {
+  updateItemColumn(id: Id, params: Partial<Pick<ISelectItem<ValueType>, 'isChecked' | 'value'>>) {
     const item = this.getItem(id)
     if (params) {
       this.itemsCollect.set(id, {
-        ...item,
-        ...pick(params, ['isChecked', 'allowRepeatChecked', 'value']),
+        id,
+        isChecked: params.isChecked ?? item.isChecked,
+        value: params.value ?? item.value,
+        refresh: item.refresh,
       })
+      item?.refresh()
     }
   }
 
@@ -20,8 +21,8 @@ export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType>
     return this.itemsCollect.get(id)
   }
 
-  addItem = (item: ISelectItem<ValueType>) => {
-    this.itemsCollect.set(item.id, item)
+  setItem = (id: Id, item: ISelectItem<ValueType>) => {
+    this.itemsCollect.set(id, item)
   }
 
   delItem = (id: Id) => {
@@ -29,6 +30,6 @@ export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType>
   }
 
   getAllItem = () => {
-    return [...this.itemsCollect.entries()].map(([, value]) => value) as any
+    return [...this.itemsCollect.entries()].map(([, value]) => value)
   }
 }
