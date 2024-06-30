@@ -9,6 +9,7 @@ export interface SelectMultipleRef<ValueType = any> {
   select(idsEntries: IdsEntries): Array<RequiredISelectItem<ValueType>>
   cancel(id: Id[]): Array<RequiredISelectItem<ValueType>>
   getItems(id: Id[]): Array<RequiredISelectItem<ValueType>>
+  getAllItems(): Array<RequiredISelectItem<ValueType>>
 }
 
 export interface SelectMultipleProps<ValueType = any> {

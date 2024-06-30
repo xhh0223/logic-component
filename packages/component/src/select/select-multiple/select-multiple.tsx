@@ -30,6 +30,9 @@ const InnerSelectMultiple = <ValueType,>(
         })
         return result
       },
+      getAllItems() {
+        return collect.getAllItem().map((i) => ({ id: i.id, isChecked: i.isChecked, value: i.value }))
+      },
       select: (idsEntries) => {
         const result: Array<RequiredISelectItem<ValueType>> = []
         idsEntries.forEach(([id, options]) => {
