@@ -7,6 +7,7 @@ import { RequiredISelectItem } from '../typing'
 export interface SelectSingleRef<ValueType = any> {
   select: (id: Id, options?: { allowRepeatSelect?: boolean }) => RequiredISelectItem<ValueType> | undefined
   getItems: (id: Id[]) => Array<RequiredISelectItem<ValueType>>
+  getAllItems: () => Array<RequiredISelectItem<ValueType>>
 }
 
 export interface SelectSingleProps<ValueType = any> {

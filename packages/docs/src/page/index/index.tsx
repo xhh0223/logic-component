@@ -4,15 +4,17 @@ import { Outlet } from 'react-router-dom'
 
 const Index = () => {
   return (
-    <>
+    <div style={{ height: '100%' }}>
       <Nav />
-      <Flex>
-        <SideMenu />
-        <div>
-          <Outlet />
-        </div>
-      </Flex>
-    </>
+      <div style={{ height: 'calc(100% - 64px)' }}>
+        <Flex style={{ height: '100%' }}>
+          <SideMenu />
+          <div style={{ height: '100%', overflow: 'auto', boxSizing: 'border-box', paddingBottom: 100 }}>
+            <Outlet />
+          </div>
+        </Flex>
+      </div>
+    </div>
   )
 }
 

@@ -1,5 +1,3 @@
-import './index.scss'
-
 import { RouterPath } from '@src/router'
 import { Menu, MenuProps } from 'antd'
 import { useMemo } from 'react'
@@ -72,7 +70,7 @@ export const SideMenu = () => {
 
   return (
     <Menu
-      className="menu"
+      style={{ maxWidth: 200 }}
       defaultSelectedKeys={defaultActiveMenuKey}
       defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect, MenuKey.event]}
       mode="inline"

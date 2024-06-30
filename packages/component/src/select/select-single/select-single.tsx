@@ -27,6 +27,13 @@ const InnerSelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>, ref:
         })
         return result
       },
+      getAllItems() {
+        return collect.getAllItem()?.map((i) => ({
+          id: i.id,
+          isChecked: i.isChecked,
+          value: i.value,
+        }))
+      },
       select: (id, options = { allowRepeatSelect: false }) => {
         const item = collect.getItem(id)
         if (!item) {
