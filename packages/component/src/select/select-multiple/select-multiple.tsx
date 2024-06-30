@@ -35,7 +35,11 @@ const InnerSelectMultiple = <ValueType,>(
       },
       select: (idsEntries) => {
         const result: Array<RequiredISelectItem<ValueType>> = []
-        idsEntries.forEach(([id, options]) => {
+        idsEntries.forEach((i) => {
+          const [id, options] = i
+          if (!Array.isArray(i)) {
+            throw '传入值必须是Array<[id:Id,any]>类型'
+          }
           const item = collect.getItem(id)
           if (!item) {
             return

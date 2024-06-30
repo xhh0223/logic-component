@@ -1,7 +1,9 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 
+import { IdsEntries } from '@/typing'
+
 import { EventCollectContext } from './context'
-import { EventItemProps, IdsEntries } from './typing'
+import { EventItemProps } from './typing'
 
 export const EventItem = <Value,>(props: EventItemProps<Value>) => {
   const { id, dependency, render } = props

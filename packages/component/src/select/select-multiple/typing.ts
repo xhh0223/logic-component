@@ -1,12 +1,11 @@
 import { Ref } from 'react'
 
-import { Id } from '@/typing'
+import { Id, IdsEntries } from '@/typing'
 
 import { RequiredISelectItem } from '../typing'
 
-type IdsEntries = Array<[Id, { allowRepeatSelect: boolean }?]>
 export interface SelectMultipleRef<ValueType = any> {
-  select(idsEntries: IdsEntries): Array<RequiredISelectItem<ValueType>>
+  select(idsEntries: IdsEntries<{ allowRepeatSelect: boolean }>): Array<RequiredISelectItem<ValueType>>
   cancel(id: Id[]): Array<RequiredISelectItem<ValueType>>
   getItems(id: Id[]): Array<RequiredISelectItem<ValueType>>
   getAllItems(): Array<RequiredISelectItem<ValueType>>

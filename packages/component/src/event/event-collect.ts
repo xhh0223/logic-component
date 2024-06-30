@@ -1,8 +1,8 @@
 import { cloneDeep } from 'lodash-es'
 
-import { Id } from '@/typing'
+import { Id, IdsEntries } from '@/typing'
 
-import { IdsEntries, IEventCollect, IEventItem } from './typing'
+import { IEventCollect, IEventItem } from './typing'
 export class EventCollect<Context = any> implements IEventCollect<Context> {
   private collect = new Map<Id, IEventItem>()
   private context: any

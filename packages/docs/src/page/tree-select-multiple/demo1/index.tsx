@@ -29,12 +29,53 @@ const Demo1 = () => {
               id={i.id}
               parentId={i.parentId}
               childrenIds={i.children?.map((i) => i.id)}
-              render={({ handler, id, isChecked }) => {
+              render={({ handler, id, isChecked, parentId }) => {
                 return (
                   <Flex>
                     <Checkbox
                       onClick={() => {
+                        /** 1、选择当前节点 */
                         handler.select([[id]])
+
+                        /** 2、选择后代节点 */
+                        ;(() => {
+                          const ids = handler.getDescendantsIds(id)
+                          if (!isChecked) {
+                            // eslint-disable-next-line no-unsafe-optional-chaining
+                            handler.select([...ids?.map((id) => [id, { allowRepeatSelect: true }])])
+                          } else {
+                            handler.cancel(ids)
+                          }
+                        })()
+
+                        /**
+                         * 3、如果当前父节点下后代节点未被选中，取消所有祖先节点的选中
+                         *    如果当前父节点下后代节点全被选中，更新所有祖先节点的状态
+                         */
+                        ;(() => {
+                          if (parentId !== 'root') {
+                            const descendantsIds = handler.getDescendantsIds(parentId)
+                            const selectedDescendantsIds = handler.getItems(descendantsIds).filter((i) => i.isChecked)
+                            const ancestorsIds = handler.getAncestorsIds(id)
+
+                            if (descendantsIds.length !== selectedDescendantsIds.length) {
+                              handler.cancel(ancestorsIds)
+                            } else {
+                              ancestorsIds.filter((id) => {
+                                const descendantsIds = handler.getDescendantsIds(id)
+                                const selectedDescendantsIds = handler
+                                  .getItems(descendantsIds)
+                                  .filter((i) => i.isChecked)
+
+                                if (descendantsIds?.length === selectedDescendantsIds.length) {
+                                  handler.select([[id, { allowRepeatSelect: true }]])
+                                } else {
+                                  handler.cancel([id])
+                                }
+                              })
+                            }
+                          }
+                        })()
                         setState({ currentValue: handler.getAllItems() })
                       }}
                       checked={isChecked}

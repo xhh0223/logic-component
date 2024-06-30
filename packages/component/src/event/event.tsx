@@ -1,10 +1,10 @@
 import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
-import { Id } from '@/typing'
+import { Id, IdsEntries } from '@/typing'
 
 import { EventCollectContext } from './context'
 import { EventCollect } from './event-collect'
-import { EventProps, EventRef, IdsEntries } from './typing'
+import { EventProps, EventRef } from './typing'
 
 const InnerEvent = <Context,>(props: EventProps<Context>, ref: Ref<EventRef<Context>>) => {
   const { children } = props

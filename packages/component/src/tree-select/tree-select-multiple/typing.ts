@@ -1,12 +1,11 @@
 import { Ref } from 'react'
 
-import { Id } from '@/typing'
+import { Id, IdsEntries } from '@/typing'
 
 import { CommonTreeSelectItemProps, RequiredITreeSelectItem } from '../typing'
-type IdsEntries = Array<[Id, { allowRepeatSelect: boolean }?]>
 
 export interface TreeSelectMultipleRef<ValueType = any> {
-  select: (idsEntries: IdsEntries) => Array<RequiredITreeSelectItem<ValueType>>
+  select: (idsEntries: IdsEntries<{ allowRepeatSelect: boolean }>) => Array<RequiredITreeSelectItem<ValueType>>
   cancel: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>
   getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>
   getAllItems: () => Array<RequiredITreeSelectItem<ValueType>>

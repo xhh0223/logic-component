@@ -1,7 +1,6 @@
 import { Ref } from 'react'
 
-import { type Id } from '@/typing'
-export type IdsEntries<Params> = Array<[Id, Params?]>
+import { type Id, IdsEntries } from '@/typing'
 
 export interface IEventItem {
   id: Id

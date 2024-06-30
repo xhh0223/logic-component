@@ -58,7 +58,7 @@ const InnerTreeSelectSingle = <ValueType,>(
           const currentId = queue.shift()
           result.push(currentId)
           const item = collect.getItem(currentId)
-          item.childrenIds?.forEach((id) => {
+          item?.childrenIds?.forEach((id) => {
             queue.push(id)
           })
         }
