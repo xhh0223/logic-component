@@ -50,29 +50,20 @@ const Demo1 = () => {
 
                         /**
                          * 3、如果当前父节点下后代节点未被选中，取消所有祖先节点的选中
-                         *    如果当前父节点下后代节点全被选中，更新所有祖先节点的状态
+                         *    每个祖先节点的后代节点全被选中，更新所有祖先节点的状态
                          */
                         ;(() => {
                           if (parentId !== 'root') {
-                            const descendantsIds = handler.getDescendantsIds(parentId)
-                            const selectedDescendantsIds = handler.getItems(descendantsIds).filter((i) => i.isChecked)
                             const ancestorsIds = handler.getAncestorsIds(id)
+                            for (const id of ancestorsIds) {
+                              const descendantsIds = handler.getDescendantsIds(id)
+                              const selectedDescendantsIds = handler.getItems(descendantsIds).filter((i) => i.isChecked)
 
-                            if (descendantsIds.length !== selectedDescendantsIds.length) {
-                              handler.cancel(ancestorsIds)
-                            } else {
-                              ancestorsIds.filter((id) => {
-                                const descendantsIds = handler.getDescendantsIds(id)
-                                const selectedDescendantsIds = handler
-                                  .getItems(descendantsIds)
-                                  .filter((i) => i.isChecked)
-
-                                if (descendantsIds?.length === selectedDescendantsIds.length) {
-                                  handler.select([[id, { allowRepeatSelect: true }]])
-                                } else {
-                                  handler.cancel([id])
-                                }
-                              })
+                              if (descendantsIds?.length === selectedDescendantsIds.length) {
+                                handler.select([[id, { allowRepeatSelect: true }]])
+                              } else {
+                                handler.cancel([id])
+                              }
                             }
                           }
                         })()
