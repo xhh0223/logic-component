@@ -32,6 +32,15 @@ const InnerTreeSelectMultiple = <ValueType,>(
         })
         return result
       },
+      getAllItems() {
+        return collect.getAllItem()?.map((i) => ({
+          id: i.id,
+          parentId: i.parentId,
+          childrenIds: i.childrenIds,
+          value: i.value,
+          isChecked: i.isChecked,
+        }))
+      },
       getAncestorsIds: (id) => {
         const result: Array<Id> = []
         let currentId = id

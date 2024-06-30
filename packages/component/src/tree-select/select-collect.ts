@@ -31,6 +31,6 @@ export class SelectCollect<ValueType = any> implements ISelectCollect<ValueType>
   }
 
   getAllItem = () => {
-    return [...this.itemsCollect.entries()].map(([, value]) => value) as any
+    return [...this.itemsCollect.entries()].map(([, value]) => value)
   }
 }

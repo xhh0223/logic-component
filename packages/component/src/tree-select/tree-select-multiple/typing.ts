@@ -9,6 +9,7 @@ export interface TreeSelectMultipleRef<ValueType = any> {
   select: (idsEntries: IdsEntries) => Array<RequiredITreeSelectItem<ValueType>>
   cancel: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>
   getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>
+  getAllItems: () => Array<RequiredITreeSelectItem<ValueType>>
   getDescendantsIds: (id: Id) => Id[]
   getAncestorsIds: (id: Id) => Id[]
 }

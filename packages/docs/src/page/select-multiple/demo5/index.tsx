@@ -48,7 +48,11 @@ const Demo6 = () => {
         </SelectMultiple>
         <Flex vertical gap={8}>
           <div>选项状态：</div>
-          <div>{state.currentValue?.map((i, index) => <div key={index}>{JSON.stringify(i)}</div>)}</div>
+          <div>
+            {state.currentValue
+              ?.filter((i) => i.isChecked)
+              ?.map((i, index) => <div key={index}>{JSON.stringify(i)}</div>)}
+          </div>
         </Flex>
       </Flex>
     </Flex>

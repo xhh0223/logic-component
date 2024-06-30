@@ -52,3 +52,13 @@ export function genTreeData(args) {
   }
   return tree
 }
+
+export const transformTreeDataToList = (tree, list = []) => {
+  tree.forEach((i) => {
+    list.push(i)
+    if (i?.children?.length) {
+      transformTreeDataToList(i.children, list)
+    }
+  })
+  return list
+}
