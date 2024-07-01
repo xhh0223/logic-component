@@ -1,17 +1,13 @@
 import { Card, Flex } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { SelectSingle, SelectSingleItem, SelectSingleRef } from '~logic-component/index'
 const Demo6 = () => {
   const [state, setState] = useState({
-    currentValue: [],
+    currentValue: undefined,
   })
 
   const ref = useRef<SelectSingleRef>()
-
-  useEffect(() => {
-    setState({ currentValue: ref.current.getAllItems() })
-  }, [])
 
   return (
     <Flex component={'article'} vertical>
@@ -28,8 +24,8 @@ const Demo6 = () => {
                   render={({ id, isChecked, value, handler }) => (
                     <Flex
                       onClick={() => {
-                        handler.select(id)
-                        setState({ currentValue: handler.getAllItems() })
+                        const value = handler.select(id)
+                        setState({ currentValue: value })
                       }}
                     >
                       <Card
@@ -48,7 +44,7 @@ const Demo6 = () => {
         </SelectSingle>
         <Flex vertical gap={8}>
           <div>选项状态：</div>
-          <div>{state.currentValue?.map((i, index) => <div key={index}>{JSON.stringify(i)}</div>)}</div>
+          <div>{JSON.stringify(state.currentValue)}</div>
         </Flex>
       </Flex>
     </Flex>

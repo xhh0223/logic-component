@@ -1,16 +1,12 @@
 import { Flex } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { SelectSingle, SelectSingleItem, SelectSingleRef } from '~logic-component/index'
 const Demo3 = () => {
   const [state, setState] = useState({
-    currentValue: [],
+    currentValue: undefined,
   })
   const ref = useRef<SelectSingleRef>()
-
-  useEffect(() => {
-    setState({ currentValue: ref.current.getAllItems() })
-  }, [])
 
   return (
     <Flex component={'article'} vertical>
@@ -21,8 +17,8 @@ const Demo3 = () => {
             name="select"
             onChange={(v) => {
               const id = Number(v.currentTarget.value)
-              ref.current.select(id)
-              setState({ currentValue: ref.current.getAllItems() })
+              const values = ref.current.select(id)
+              setState({ currentValue: values })
             }}
           >
             {Array.from({ length: 10 }).map((_, index) => {
@@ -39,7 +35,7 @@ const Demo3 = () => {
         </SelectSingle>
         <Flex vertical gap={8}>
           <div>选项状态：</div>
-          <div>{state.currentValue?.map((i, index) => <div key={index}>{JSON.stringify(i)}</div>)}</div>
+          <div>{JSON.stringify(state.currentValue)}</div>
         </Flex>
       </Flex>
     </Flex>
