@@ -1,11 +1,17 @@
-import { Spin } from 'antd'
+import { Flex, Spin } from 'antd'
 import { lazy, Suspense } from 'react'
 import { createHashRouter as createRouter } from 'react-router-dom'
 
 const wrapLoading = (importComponent) => {
   const LazyComponent = lazy(importComponent)
   return (
-    <Suspense fallback={<Spin style={{ width: '100vh', height: '100vh' }} />}>
+    <Suspense
+      fallback={
+        <Flex align="center" justify="center">
+          <Spin />
+        </Flex>
+      }
+    >
       <LazyComponent />
     </Suspense>
   )
@@ -14,9 +20,10 @@ const wrapLoading = (importComponent) => {
 export enum RouterPath {
   selectSingle = '/select-single',
   selectMultiple = '/select-multiple',
-  event = '/event',
   treeSelectSingle = '/tree-select-single',
   treeSelectMultiple = '/tree-select-multiple',
+  eventBus = '/event-bus',
+  propsProxy = '/props-proxy',
 }
 
 export const Router = createRouter([
@@ -41,8 +48,12 @@ export const Router = createRouter([
         element: wrapLoading(() => import('@src/page/tree-select-multiple')),
       },
       {
-        path: RouterPath.event,
-        element: wrapLoading(() => import('@src/page/event')),
+        path: RouterPath.eventBus,
+        element: wrapLoading(() => import('@src/page/event-bus')),
+      },
+      {
+        path: RouterPath.propsProxy,
+        element: wrapLoading(() => import('@src/page/props-proxy')),
       },
     ],
   },

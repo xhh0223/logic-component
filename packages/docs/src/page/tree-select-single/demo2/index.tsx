@@ -6,15 +6,17 @@ import { TreeSelectSingle, TreeSelectSingleItem, TreeSelectSingleRef } from '~lo
 
 const Demo2 = () => {
   const [state, setState] = useState({
-    currentValue: [],
+    currentValue: undefined,
   })
   const [everyLevelData, setEveryLevelData] = useState([genTreeData([5, 3, 3])])
 
   const ref = useRef<TreeSelectSingleRef>()
 
   useEffect(() => {
-    setState({ currentValue: ref.current.getAllItems() })
-  }, [])
+    if (state.currentValue?.isChecked) {
+      ref.current.select(state.currentValue.id, { allowRepeatSelect: true })
+    }
+  }, [everyLevelData])
 
   return (
     <Flex component={'article'} vertical>
@@ -45,9 +47,9 @@ const Demo2 = () => {
                             ) : (
                               <Checkbox
                                 onClick={() => {
-                                  handler.select(id)
+                                  const value = handler.select(id)
                                   setState({
-                                    currentValue: handler.getAllItems(),
+                                    currentValue: value,
                                   })
                                 }}
                                 checked={isChecked}
@@ -70,9 +72,7 @@ const Demo2 = () => {
         <Flex vertical gap={8}>
           <div>选项状态：</div>
           <div>
-            {state.currentValue
-              ?.filter((i) => i.isChecked)
-              ?.map((i, index) => <div key={index}>{JSON.stringify(i)}</div>)}
+            <div>{JSON.stringify(state.currentValue)}</div>
           </div>
         </Flex>
       </Flex>

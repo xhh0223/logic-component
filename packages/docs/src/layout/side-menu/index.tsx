@@ -1,30 +1,44 @@
 import { RouterPath } from '@src/router'
 import { Menu, MenuProps } from 'antd'
-import { useMemo } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useMemo } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 export const SideMenu = () => {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
 
   const MenuKey = {
     select: 'select',
     treeSelect: 'tree-select',
-    event: 'event-demo',
+    eventBus: 'event-bus',
+    propsProxy: 'props-proxy',
   }
 
   const defaultActiveMenuKey = useMemo(() => {
+    let res
     switch (pathname) {
       case RouterPath.selectSingle:
       case RouterPath.selectMultiple:
-        return [MenuKey.select, pathname]
+        res = [MenuKey.select, pathname]
+        break
       case RouterPath.treeSelectSingle:
       case RouterPath.treeSelectMultiple:
-        return [MenuKey.treeSelect, pathname]
-      case RouterPath.event:
-        return [MenuKey.event, pathname]
+        res = [MenuKey.treeSelect, pathname]
+        break
+      case RouterPath.eventBus:
+        res = [MenuKey.eventBus, pathname]
+        break
+      case RouterPath.propsProxy:
+        res = [MenuKey.propsProxy, pathname]
+        break
       default:
-        return [MenuKey.select, pathname]
+        res = [MenuKey.select, RouterPath.selectSingle]
     }
+    return res
+  }, [])
+
+  useEffect(() => {
+    navigate(defaultActiveMenuKey[1])
   }, [])
 
   const sideMenuData: MenuProps['items'] = [
@@ -57,14 +71,12 @@ export const SideMenu = () => {
       ],
     },
     {
-      key: MenuKey.event,
-      label: MenuKey.event,
-      children: [
-        {
-          key: RouterPath.event,
-          label: <Link to={RouterPath.event}>event</Link>,
-        },
-      ],
+      key: MenuKey.eventBus,
+      label: <Link to={RouterPath.eventBus}>event-bus</Link>,
+    },
+    {
+      key: MenuKey.propsProxy,
+      label: <Link to={RouterPath.propsProxy}>props-proxy</Link>,
     },
   ]
 
@@ -72,7 +84,7 @@ export const SideMenu = () => {
     <Menu
       style={{ maxWidth: 200 }}
       defaultSelectedKeys={defaultActiveMenuKey}
-      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect, MenuKey.event]}
+      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect]}
       mode="inline"
       items={sideMenuData}
     />

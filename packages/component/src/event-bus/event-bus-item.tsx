@@ -2,12 +2,12 @@ import { useContext, useEffect, useMemo, useState } from 'react'
 
 import { IdsEntries } from '@/typing'
 
-import { EventCollectContext } from './context'
-import { EventItemProps } from './typing'
+import { EventBusCollectContext } from './context'
+import { EventBusItemProps } from './typing'
 
-export const EventItem = <Value,>(props: EventItemProps<Value>) => {
+export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
   const { id, dependency, render } = props
-  const { collect, handler } = useContext(EventCollectContext)
+  const { collect, handler } = useContext(EventBusCollectContext)
 
   const [, update] = useState({})
   const memoInfo = useMemo(() => {
@@ -61,5 +61,6 @@ export const EventItem = <Value,>(props: EventItemProps<Value>) => {
     id,
     dependencyEntries: memoInfo.params,
     handler,
+    context: collect.getContext(),
   })
 }
