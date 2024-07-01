@@ -16,9 +16,6 @@ const Demo1 = () => {
         update({})
       },
     })
-    return () => {
-      ref.current.off(EventTable)
-    }
   }, [])
 
   return (

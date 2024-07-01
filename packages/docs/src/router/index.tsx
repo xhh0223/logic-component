@@ -23,6 +23,7 @@ export enum RouterPath {
   treeSelectSingle = '/tree-select-single',
   treeSelectMultiple = '/tree-select-multiple',
   eventBus = '/event-bus',
+  propsProxy = '/props-proxy',
 }
 
 export const Router = createRouter([
@@ -49,6 +50,10 @@ export const Router = createRouter([
       {
         path: RouterPath.eventBus,
         element: wrapLoading(() => import('@src/page/event-bus')),
+      },
+      {
+        path: RouterPath.propsProxy,
+        element: wrapLoading(() => import('@src/page/props-proxy')),
       },
     ],
   },

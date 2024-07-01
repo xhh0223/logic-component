@@ -11,6 +11,7 @@ export const SideMenu = () => {
     select: 'select',
     treeSelect: 'tree-select',
     eventBus: 'event-bus',
+    propsProxy: 'props-proxy',
   }
 
   const defaultActiveMenuKey = useMemo(() => {
@@ -26,6 +27,9 @@ export const SideMenu = () => {
         break
       case RouterPath.eventBus:
         res = [MenuKey.eventBus, pathname]
+        break
+      case RouterPath.propsProxy:
+        res = [MenuKey.propsProxy, pathname]
         break
       default:
         res = [MenuKey.select, RouterPath.selectSingle]
@@ -70,13 +74,17 @@ export const SideMenu = () => {
       key: MenuKey.eventBus,
       label: <Link to={RouterPath.eventBus}>event-bus</Link>,
     },
+    {
+      key: MenuKey.propsProxy,
+      label: <Link to={RouterPath.propsProxy}>props-proxy</Link>,
+    },
   ]
 
   return (
     <Menu
       style={{ maxWidth: 200 }}
       defaultSelectedKeys={defaultActiveMenuKey}
-      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect, MenuKey.eventBus]}
+      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect]}
       mode="inline"
       items={sideMenuData}
     />
