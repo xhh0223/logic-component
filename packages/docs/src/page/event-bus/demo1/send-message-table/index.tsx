@@ -17,7 +17,6 @@ const SendMessageTable = () => {
             {!data?.length && (
               <tr>
                 <td>
-                  {' '}
                   <Empty />
                 </td>
               </tr>
