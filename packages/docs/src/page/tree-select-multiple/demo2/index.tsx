@@ -1,32 +1,33 @@
 import { genTreeData } from '@src/utils'
 import { Checkbox, Flex, Tag } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { TreeSelectSingle, TreeSelectSingleItem, TreeSelectSingleRef } from '~logic-component/index'
+import { TreeSelectMultiple, TreeSelectMultipleItem, TreeSelectMultipleRef } from '~logic-component/index'
 
 const Demo2 = () => {
-  const [state, setState] = useState({
-    currentValue: [],
-  })
+  const [isUpdate, update] = useState({})
+  const map = useMemo(() => new Map(), [])
+
   const [everyLevelData, setEveryLevelData] = useState([genTreeData([5, 3, 3])])
 
-  const ref = useRef<TreeSelectSingleRef>()
+  const ref = useRef<TreeSelectMultipleRef>()
 
   useEffect(() => {
-    setState({ currentValue: ref.current.getAllItems() })
-  }, [])
+    const ids = [...map.values()]?.filter((i) => i.isChecked)?.map((i) => i.id)
+    ref.current.select([...ids.map((i) => [i, { allowRepeatSelect: true }])])
+  }, [isUpdate])
 
   return (
     <Flex component={'article'} vertical>
       <h2>级联</h2>
       <Flex component={'section'} vertical gap={12}>
-        <TreeSelectSingle ref={ref}>
+        <TreeSelectMultiple ref={ref}>
           <Flex>
             {everyLevelData.map((levelData, level) => {
               return (
                 <div key={level}>
                   {levelData?.map((i) => (
-                    <TreeSelectSingleItem
+                    <TreeSelectMultipleItem
                       key={i.id}
                       id={i.id}
                       render={({ handler, isChecked, childrenIds, id }) => {
@@ -38,6 +39,7 @@ const Demo2 = () => {
                                   everyLevelData.splice(level + 1, everyLevelData.length - (level + 1))
                                   everyLevelData[level + 1] = i.children
                                   setEveryLevelData([...everyLevelData])
+                                  update({})
                                 }}
                               >
                                 {id}
@@ -45,7 +47,9 @@ const Demo2 = () => {
                             ) : (
                               <Checkbox
                                 onClick={() => {
-                                  handler.select(id)
+                                  const values = handler.select([[id]])[0]
+                                  map.set(values.id, values)
+                                  update({})
                                 }}
                                 checked={isChecked}
                               >
@@ -63,10 +67,14 @@ const Demo2 = () => {
               )
             })}
           </Flex>
-        </TreeSelectSingle>
+        </TreeSelectMultiple>
         <Flex vertical gap={8}>
           <div>选项状态：</div>
-          <div>{state.currentValue?.map((i, index) => <div key={index}>{JSON.stringify(i)}</div>)}</div>
+          <div>
+            {[...map.values()]
+              ?.filter((i) => i.isChecked)
+              ?.map((i, index) => <div key={index}>{JSON.stringify(i)}</div>)}
+          </div>
         </Flex>
       </Flex>
     </Flex>
