@@ -1,6 +1,6 @@
 import { genTreeData, transformTreeDataToList } from '@src/utils'
 import { Checkbox, Flex } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { TreeSelectSingle, TreeSelectSingleItem, TreeSelectSingleRef } from '~logic-component/index'
 
@@ -9,14 +9,10 @@ const list = transformTreeDataToList(treeData, [])
 
 const Demo1 = () => {
   const [state, setState] = useState({
-    currentValue: [],
+    currentValue: undefined,
   })
 
   const ref = useRef<TreeSelectSingleRef>()
-
-  useEffect(() => {
-    setState({ currentValue: ref.current.getAllItems() })
-  }, [])
 
   return (
     <Flex component={'article'} vertical>
@@ -34,8 +30,9 @@ const Demo1 = () => {
                   <Flex>
                     <Checkbox
                       onClick={() => {
-                        handler.select(id)
-                        setState({ currentValue: handler.getAllItems() })
+                        const value = handler.select(id)
+
+                        setState({ currentValue: value })
                       }}
                       checked={isChecked}
                     >
@@ -49,11 +46,7 @@ const Demo1 = () => {
         </TreeSelectSingle>
         <Flex vertical gap={8}>
           <div>选项状态：</div>
-          <div>
-            {state.currentValue
-              ?.filter((i) => i.isChecked)
-              .map((i, index) => <div key={index}>{JSON.stringify(i)}</div>)}
-          </div>
+          <div>{JSON.stringify(state.currentValue)}</div>
         </Flex>
       </Flex>
     </Flex>
