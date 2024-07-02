@@ -20,7 +20,7 @@ const Demo2 = () => {
 
   return (
     <Flex component={'article'} vertical>
-      <h2>级联</h2>
+      <h3>级联</h3>
       <Flex component={'section'} vertical gap={12}>
         <TreeSelectSingle ref={ref}>
           <Flex>

@@ -2,10 +2,10 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import { defineConfig } from 'vite'
 
-const PageDir = path.resolve(__dirname, 'src')
-
+const PageDir = path.resolve(__dirname)
 export default defineConfig({
-  root: PageDir,
+  root: path.resolve(PageDir, 'src'),
+  publicDir: path.resolve(PageDir, 'public'),
   base: '/logic-component/',
   plugins: [react()],
   resolve: {

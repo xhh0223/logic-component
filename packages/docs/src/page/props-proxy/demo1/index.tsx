@@ -5,7 +5,7 @@ import { PropsProxy } from '~logic-component/index'
 const Demo1 = () => {
   return (
     <Flex component={'article'} vertical gap={12}>
-      <h2>loading场景</h2>
+      <h3>loading场景</h3>
       <Flex component={'section'} gap={12} wrap>
         <PropsProxy
           initProps={{ loading: false }}

@@ -14,7 +14,7 @@ const Demo2 = () => {
 
   return (
     <Flex component={'article'} vertical>
-      <h2>radio(重复点击不可取消)</h2>
+      <h3>radio(重复点击不可取消)</h3>
       <Flex component={'section'} vertical gap={12}>
         <SelectMultiple ref={ref}>
           <Flex vertical>
