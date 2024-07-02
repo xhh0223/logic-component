@@ -4,13 +4,11 @@
 [![NPM downloads](http://img.shields.io/npm/dm/logic-component.svg?style=flat)](https://npmjs.org/package/react-logic-component)
 
 
-
-
 ## Development
 
 ```bash
 # install dependencies
-$ pnpm install
+$ npm install react-logic-component
 
 # develop library by docs demo
 $ pnpm run dev
