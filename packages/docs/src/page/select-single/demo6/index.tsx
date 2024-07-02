@@ -11,7 +11,7 @@ const Demo6 = () => {
 
   return (
     <Flex component={'article'} vertical>
-      <h2>可勾选卡片</h2>
+      <h3>可勾选卡片</h3>
       <Flex component={'section'} vertical gap={12}>
         <SelectSingle ref={ref}>
           <Flex gap={12} wrap style={{ width: 924 }}>

@@ -21,7 +21,7 @@ const Demo1 = () => {
   return (
     <EventBus ref={ref}>
       <Flex component={'article'} vertical gap={12}>
-        <h2>组件间通信</h2>
+        <h3>组件间通信</h3>
         <SendMessageTable />
 
         <Flex component={'section'} gap={12} wrap>

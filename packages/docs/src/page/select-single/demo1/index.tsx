@@ -11,7 +11,7 @@ const Demo1 = () => {
 
   return (
     <Flex component={'article'} vertical>
-      <h2>radio</h2>
+      <h3>radio</h3>
       <Flex component={'section'} vertical gap={12}>
         <SelectSingle ref={ref}>
           <Flex vertical>
