@@ -1,5 +1,7 @@
 import { Flex } from 'antd'
 
+import { MobileMenu } from '../mobile-menu'
+
 export const Nav = () => {
   return (
     <Flex align="center" style={{ height: 40 }}>
@@ -12,6 +14,7 @@ export const Nav = () => {
           Github
         </a>
       </h3>
+      <MobileMenu />
     </Flex>
   )
 }
