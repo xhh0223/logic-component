@@ -21,18 +21,14 @@ const InnerEventBus = <Context,>(props: EventBusProps<Context>, ref: Ref<EventBu
       setContext: (context: Context) => {
         return collect.setContext(context)
       },
-      on: <Params,>(params: {
-        id: Id
-        dependency: Id[]
-        callback: (dependencyEntries: IdsEntries<Params>) => void
-      }) => {
-        const { id, dependency, callback } = params
+      on: <Params,>(params: { id: Id; onIds: Id[]; callback: (onIdsEntries: IdsEntries<Params>) => void }) => {
+        const { id, onIds, callback } = params
 
         collect.setItem(id, {
           id,
-          dependency,
-          on(dependencyEntries: IdsEntries<Params>): void {
-            callback(dependencyEntries)
+          onIds,
+          on(onIdsEntries: IdsEntries<Params>): void {
+            callback(onIdsEntries)
           },
         })
       },

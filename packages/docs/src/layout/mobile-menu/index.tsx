@@ -1,10 +1,11 @@
 import './index.scss'
 
 import { RouterPath } from '@src/router'
-import { Menu, MenuProps } from 'antd'
+import { Dropdown, MenuProps } from 'antd'
 import { useEffect, useMemo } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-export const SideMenu = () => {
+
+export const MobileMenu = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
@@ -42,7 +43,7 @@ export const SideMenu = () => {
     navigate(defaultActiveMenuKey[1])
   }, [])
 
-  const sideMenuData: MenuProps['items'] = [
+  const menuData: MenuProps['items'] = [
     {
       key: MenuKey.select,
       label: MenuKey.select,
@@ -82,12 +83,8 @@ export const SideMenu = () => {
   ]
 
   return (
-    <Menu
-      className="side-menu"
-      defaultSelectedKeys={defaultActiveMenuKey}
-      defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect]}
-      mode="inline"
-      items={sideMenuData}
-    />
+    <Dropdown className="mobile-menu" menu={{ items: menuData }}>
+      <img width={14} height={14} src="/logic-component/menu.svg" />
+    </Dropdown>
   )
 }
