@@ -27,8 +27,8 @@ export class EventBusCollect<Context = any> implements IEventBusCollect<Context>
     const idsMap = new Map<Id, Params>(idsEntries as any)
 
     for (const item of this.collect.values()) {
-      const dependencySet = new Set(item.dependency)
-      if (idsMap.has(item.id) || item.dependency?.some((id) => idsMap.has(id))) {
+      const dependencySet = new Set(item.onIds)
+      if (item.onIds?.some((id) => idsMap.has(id))) {
         item.on(cloneDeep(idsEntries.filter(([id]) => dependencySet.has(id))))
       }
     }

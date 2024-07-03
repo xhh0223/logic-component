@@ -6,7 +6,7 @@ import { EventBusCollectContext } from './context'
 import { EventBusItemProps } from './typing'
 
 export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
-  const { id, dependency, render } = props
+  const { id, onIds, render } = props
   const { collect, handler } = useContext(EventBusCollectContext)
 
   const [, update] = useState({})
@@ -15,9 +15,9 @@ export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
     /** 新增 */
     collect.setItem(id, {
       id,
-      dependency,
-      on: (idsEntries: IdsEntries<any>) => {
-        memoInfo.params = idsEntries
+      onIds,
+      on: (onIdsEntries: IdsEntries<any>) => {
+        memoInfo.params = onIdsEntries
         update({})
       },
     })
@@ -37,18 +37,18 @@ export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
       /** 2、重新添加 */
       collect.setItem(id, {
         id,
-        dependency,
+        onIds,
         on: beforeItem.on,
       })
     } else {
       const item = collect.getItem(id)
       collect.setItem(id, {
         id,
-        dependency,
+        onIds,
         on: item.on,
       })
     }
-  }, [id, dependency])
+  }, [id, onIds])
 
   /** 删除 */
   useEffect(() => {
@@ -59,7 +59,7 @@ export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
 
   return render({
     id,
-    dependencyEntries: memoInfo.params,
+    onIdsEntries: memoInfo.params,
     handler,
     context: collect.getContext(),
   })

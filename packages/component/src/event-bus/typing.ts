@@ -4,8 +4,8 @@ import { type Id, IdsEntries } from '@/typing'
 
 export interface IEventBusItem {
   id: Id
-  dependency: Id[]
-  on(dependencyEntries: IdsEntries<any>): void
+  onIds: Id[]
+  on(onIdsEntries: IdsEntries<any>): void
 }
 
 export interface IEventBusCollect<Context = any> {
@@ -19,7 +19,7 @@ export interface IEventBusCollect<Context = any> {
 
 export type EventBusRef<Context = any> = {
   emit: IEventBusCollect<Context>['emit']
-  on: <Params>(params: { id: Id; dependency: Id[]; callback: (dependencyEntries: IdsEntries<Params>) => void }) => void
+  on: <Params>(params: { id: Id; onIds: Id[]; callback: (onIdsEntries: IdsEntries<Params>) => void }) => void
   off: (id: Id) => void
   getContext: IEventBusCollect<Context>['getContext']
   setContext: IEventBusCollect<Context>['setContext']
@@ -30,10 +30,10 @@ export interface EventBusProps<Context> {
 }
 export interface EventBusItemProps<Params = any, Context = any> {
   id: Id
-  dependency?: Id[]
+  onIds?: Id[]
   render: (params: {
     id: Id
-    dependencyEntries: IdsEntries<Params>
+    onIdsEntries: IdsEntries<Params>
     handler: EventBusRef<Context>
     context: Context
   }) => React.ReactNode
