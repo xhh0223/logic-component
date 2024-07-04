@@ -6,4 +6,8 @@ html {
   padding: 0;
   height: 100vh;
   overflow-y: hidden;
+
+  @media screen and (width <= 375px) {
+    min-width: 300px;
+  }
 }

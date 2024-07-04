@@ -1,7 +1,7 @@
 .side-menu {
   max-width: 200px;
 
-  @media (width <= 375px) {
+  @media screen and (width <= 375px) {
     display: none;
   }
 }

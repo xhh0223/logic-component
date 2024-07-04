@@ -1,0 +1,21 @@
+.nav {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 0 1em;
+
+  &-github {
+    margin-left: auto;
+  }
+
+  @media screen and (width <= 375px) {
+    width: 100%;
+
+    &-github {
+      display: none;
+    }
+
+    &-title {
+      font-size: 14px;
+    }
+  }
+}

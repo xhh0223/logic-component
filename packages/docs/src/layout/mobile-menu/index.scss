@@ -1,5 +1,5 @@
 .mobile-menu {
-  @media (width >= 375px) {
+  @media screen and (width > 375px) {
     display: none;
   }
 }
