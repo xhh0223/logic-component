@@ -1,5 +1,7 @@
 .nav {
+  box-sizing: border-box;
   height: 40px;
+  padding: 0 1em;
 
   &-github {
     margin-left: auto;
@@ -10,6 +12,10 @@
 
     &-github {
       display: none;
+    }
+
+    &-title {
+      font-size: 14px;
     }
   }
 }
