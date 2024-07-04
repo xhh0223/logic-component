@@ -1,0 +1,15 @@
+.nav {
+  height: 40px;
+
+  &-github {
+    margin-left: auto;
+  }
+
+  @media screen and (width <= 375px) {
+    width: 100%;
+
+    &-github {
+      display: none;
+    }
+  }
+}
