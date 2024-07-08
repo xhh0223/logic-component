@@ -6,21 +6,27 @@ import { EventBusCollectContext } from './context'
 import { EventBusItemProps } from './typing'
 
 export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
-  const { id, onIds, render } = props
+  const { id, onIds, render, initCallback } = props
   const { collect, handler } = useContext(EventBusCollectContext)
 
   const [, update] = useState({})
+
   const memoInfo = useMemo(() => {
-    let params: IdsEntries<any>
+    const params = new Map()
     /** 新增 */
     collect.setItem(id, {
       id,
       onIds,
       on: (onIdsEntries: IdsEntries<any>) => {
-        memoInfo.params = onIdsEntries
+        onIdsEntries.forEach(([id, value]) => {
+          params.set(id, value)
+        })
         update({})
       },
     })
+    if (typeof initCallback === 'function') {
+      initCallback({ handler: { setContext: handler.setContext, getContext: handler.getContext } })
+    }
     return {
       id,
       params,
@@ -59,7 +65,7 @@ export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
 
   return render({
     id,
-    onIdsEntries: memoInfo.params,
+    onIdsEntries: [...memoInfo.params.entries()],
     handler,
     context: collect.getContext(),
   })

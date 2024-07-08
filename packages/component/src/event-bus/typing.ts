@@ -30,6 +30,7 @@ export interface EventBusProps<Context> {
 }
 export interface EventBusItemProps<Params = any, Context = any> {
   id: Id
+  initCallback?: (params: { handler: Pick<EventBusRef<Context>, 'getContext' | 'setContext'> }) => void
   onIds?: Id[]
   render: (params: {
     id: Id
