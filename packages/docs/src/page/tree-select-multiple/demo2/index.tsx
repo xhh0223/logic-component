@@ -1,6 +1,6 @@
 import { genTreeData } from '@src/utils'
 import { Checkbox, Flex, Tag } from 'antd'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { TreeSelectMultiple, TreeSelectMultipleItem, TreeSelectMultipleRef } from '~logic-component/index'
 
@@ -12,7 +12,7 @@ const Demo2 = () => {
 
   const ref = useRef<TreeSelectMultipleRef>()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ids = [...map.values()]?.filter((i) => i.isChecked)?.map((i) => i.id)
     ref.current.select([...ids.map((i) => [i, { allowRepeatSelect: true }])])
   }, [isUpdate])
