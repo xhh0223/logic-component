@@ -28,6 +28,7 @@ export type RequiredITreeSelectItem<ValueType> = Required<
 >
 
 export interface CommonTreeSelectItemProps<ValueType> {
+  key: Id
   id: ITreeSelectItem<ValueType>['id']
   parentId: ITreeSelectItem<ValueType>['parentId']
   childrenIds?: ITreeSelectItem<ValueType>['childrenIds']

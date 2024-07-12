@@ -18,6 +18,7 @@ export interface SelectMultipleProps<ValueType = any> {
 
 export type SelectMultipleItemProps<ValueType> = {
   id: Id
+  key: Id
   value?: ValueType
   render: (
     params: RequiredISelectItem<ValueType> & {

@@ -16,6 +16,7 @@ export interface SelectSingleProps<ValueType = any> {
 }
 
 export type SelectSingleItemProps<ValueType> = {
+  key: Id
   id: Id
   value?: ValueType
   render: (
