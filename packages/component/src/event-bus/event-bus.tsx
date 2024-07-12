@@ -7,7 +7,7 @@ import { EventBusCollect } from './event-collect'
 import { EventBusProps, EventBusRef } from './typing'
 
 const InnerEventBus = <Context,>(props: EventBusProps<Context>, ref: Ref<EventBusRef<Context>>) => {
-  const { children } = props
+  const { children, initCallback } = props
   const { current: collect } = useRef(new EventBusCollect<Context>())
 
   const innerHandler = useMemo(() => {
@@ -35,6 +35,9 @@ const InnerEventBus = <Context,>(props: EventBusProps<Context>, ref: Ref<EventBu
       off: (id: Id) => {
         collect.delItem(id)
       },
+    }
+    if (typeof initCallback === 'function') {
+      initCallback({ handler })
     }
     return handler
   }, [])

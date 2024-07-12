@@ -9,6 +9,9 @@ export const TreeSelectSingleItem = <Value = any,>(props: TreeSelectSingleItemPr
 
   /** 记录第一次初始化的值 */
   const memoInfo = useMemo(() => {
+    const refresh = () => {
+      update({})
+    }
     /** 新增 */
     collect.setItem(id, {
       id,
@@ -16,12 +19,11 @@ export const TreeSelectSingleItem = <Value = any,>(props: TreeSelectSingleItemPr
       childrenIds,
       value,
       isChecked: false,
-      refresh() {
-        update({})
-      },
+      refresh,
     })
     return {
       id,
+      refresh,
     }
   }, [])
 
@@ -40,8 +42,8 @@ export const TreeSelectSingleItem = <Value = any,>(props: TreeSelectSingleItemPr
         parentId,
         childrenIds,
         value,
-        isChecked: beforeItem.isChecked,
-        refresh: beforeItem.refresh,
+        isChecked: beforeItem?.isChecked ?? false,
+        refresh: memoInfo.refresh,
       })
     } else {
       collect.updateItemColumn(memoInfo.id, {

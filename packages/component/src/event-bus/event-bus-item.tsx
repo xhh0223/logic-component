@@ -13,23 +13,25 @@ export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
 
   const memoInfo = useMemo(() => {
     const params = new Map()
+    const on = (onIdsEntries: IdsEntries<any>) => {
+      onIdsEntries.forEach(([id, value]) => {
+        params.set(id, value)
+      })
+      update({})
+    }
     /** 新增 */
     collect.setItem(id, {
       id,
       onIds,
-      on: (onIdsEntries: IdsEntries<any>) => {
-        onIdsEntries.forEach(([id, value]) => {
-          params.set(id, value)
-        })
-        update({})
-      },
+      on,
     })
     if (typeof initCallback === 'function') {
-      initCallback({ handler: { setContext: handler.setContext, getContext: handler.getContext } })
+      initCallback({ handler })
     }
     return {
       id,
       params,
+      on,
     }
   }, [])
 
@@ -37,21 +39,19 @@ export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
   useMemo(() => {
     if (id !== memoInfo.id) {
       /** 1、删掉之前的 */
-      const beforeItem = collect.getItem(memoInfo.id)
       collect.delItem(memoInfo.id)
       memoInfo.id = id
       /** 2、重新添加 */
       collect.setItem(id, {
         id,
         onIds,
-        on: beforeItem.on,
+        on: memoInfo.on,
       })
     } else {
-      const item = collect.getItem(id)
       collect.setItem(id, {
         id,
         onIds,
-        on: item.on,
+        on: memoInfo.on,
       })
     }
   }, [id, onIds])

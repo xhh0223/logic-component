@@ -10,17 +10,19 @@ export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) =>
   const [, update] = useState({})
 
   const memoInfo = useMemo(() => {
+    const refresh = () => {
+      update({})
+    }
     /** 新增 */
     collect.setItem(id, {
       id,
       value,
       isChecked: false,
-      refresh() {
-        update({})
-      },
+      refresh,
     })
     return {
       id,
+      refresh,
     }
   }, [])
 
@@ -35,8 +37,8 @@ export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) =>
       collect.setItem(memoInfo.id, {
         id,
         value,
-        isChecked: beforeItem.isChecked,
-        refresh: beforeItem.refresh,
+        isChecked: beforeItem?.isChecked ?? false,
+        refresh: memoInfo.refresh,
       })
     } else {
       collect.updateItemColumn(memoInfo.id, {
