@@ -41,7 +41,7 @@ export const SelectSingleItem = <Value,>(props: SelectSingleItemProps<Value>) =>
         refresh: memoInfo.refresh,
       })
     } else {
-      collect.updateItemColumn(memoInfo.id, {
+      collect.updateItemColumn(id, {
         value,
       })
     }

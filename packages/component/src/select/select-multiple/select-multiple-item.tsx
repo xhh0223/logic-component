@@ -40,7 +40,7 @@ export const SelectMultipleItem = <Value,>(props: SelectMultipleItemProps<Value>
         refresh: memoInfo.refresh,
       })
     } else {
-      collect.updateItemColumn(memoInfo.id, {
+      collect.updateItemColumn(id, {
         value,
       })
     }

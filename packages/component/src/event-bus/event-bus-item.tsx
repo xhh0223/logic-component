@@ -41,19 +41,13 @@ export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
       /** 1、删掉之前的 */
       collect.delItem(memoInfo.id)
       memoInfo.id = id
-      /** 2、重新添加 */
-      collect.setItem(id, {
-        id,
-        onIds,
-        on: memoInfo.on,
-      })
-    } else {
-      collect.setItem(id, {
-        id,
-        onIds,
-        on: memoInfo.on,
-      })
     }
+    /** 2、重新添加 */
+    collect.setItem(id, {
+      id,
+      onIds,
+      on: memoInfo.on,
+    })
   }, [id, onIds])
 
   /** 删除 */
