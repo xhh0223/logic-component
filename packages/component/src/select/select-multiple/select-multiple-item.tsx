@@ -9,17 +9,19 @@ export const SelectMultipleItem = <Value,>(props: SelectMultipleItemProps<Value>
 
   const [, update] = useState({})
   const memoInfo = useMemo(() => {
+    const refresh = () => {
+      update({})
+    }
     /** 新增 */
     collect.setItem(id, {
       id,
       value,
       isChecked: false,
-      refresh() {
-        update({})
-      },
+      refresh,
     })
     return {
       id,
+      refresh,
     }
   }, [])
 
@@ -34,11 +36,11 @@ export const SelectMultipleItem = <Value,>(props: SelectMultipleItemProps<Value>
       collect.setItem(id, {
         id,
         value,
-        isChecked: beforeItem.isChecked,
-        refresh: beforeItem.refresh,
+        isChecked: beforeItem?.isChecked ?? false,
+        refresh: memoInfo.refresh,
       })
     } else {
-      collect.updateItemColumn(memoInfo.id, {
+      collect.updateItemColumn(id, {
         value,
       })
     }

@@ -8,6 +8,9 @@ export const TreeSelectMultipleItem = <Value = any,>(props: TreeSelectMultipleIt
   const { collect, handler } = useContext(TreeSelectMultipleCollectContext)
 
   const memoInfo = useMemo(() => {
+    const refresh = () => {
+      update({})
+    }
     /** 新增 */
     collect.setItem(id, {
       parentId,
@@ -15,12 +18,11 @@ export const TreeSelectMultipleItem = <Value = any,>(props: TreeSelectMultipleIt
       value,
       isChecked: false,
       childrenIds,
-      refresh() {
-        update({})
-      },
+      refresh,
     })
     return {
       id,
+      refresh,
     }
   }, [])
 
@@ -39,8 +41,8 @@ export const TreeSelectMultipleItem = <Value = any,>(props: TreeSelectMultipleIt
         parentId,
         childrenIds,
         value,
-        isChecked: beforeItem.isChecked,
-        refresh: beforeItem.refresh,
+        isChecked: beforeItem?.isChecked ?? false,
+        refresh: memoInfo.refresh,
       })
     } else {
       collect.updateItemColumn(id, {

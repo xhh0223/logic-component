@@ -25,13 +25,15 @@ export type EventBusRef<Context = any> = {
   setContext: IEventBusCollect<Context>['setContext']
 }
 export interface EventBusProps<Context> {
+  initCallback?: (params: { handler: EventBusRef<Context> }) => void
   children: React.ReactNode
   ref?: Ref<EventBusRef<Context>>
 }
 export interface EventBusItemProps<Params = any, Context = any> {
+  key: Id
   id: Id
-  initCallback?: (params: { handler: Pick<EventBusRef<Context>, 'getContext' | 'setContext'> }) => void
   onIds?: Id[]
+  initCallback?: (params: { handler: EventBusRef<Context> }) => void
   render: (params: {
     id: Id
     onIdsEntries: IdsEntries<Params>

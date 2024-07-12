@@ -1,6 +1,6 @@
 import { genTreeData } from '@src/utils'
 import { Checkbox, Flex, Tag } from 'antd'
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
 import { TreeSelectSingle, TreeSelectSingleItem, TreeSelectSingleRef } from '~logic-component/index'
 
@@ -12,7 +12,7 @@ const Demo2 = () => {
 
   const ref = useRef<TreeSelectSingleRef>()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (state.currentValue?.isChecked) {
       ref.current.select(state.currentValue.id, { allowRepeatSelect: true })
     }
