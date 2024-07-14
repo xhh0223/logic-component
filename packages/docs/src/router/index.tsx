@@ -7,7 +7,7 @@ const wrapLoading = (importComponent) => {
   return (
     <Suspense
       fallback={
-        <Flex align="center" justify="center">
+        <Flex style={{ height: '100%', width: '100%' }} align="center" justify="center">
           <Spin />
         </Flex>
       }
@@ -18,34 +18,53 @@ const wrapLoading = (importComponent) => {
 }
 
 export enum RouterPath {
-  selectSingle = '/select-single',
-  selectMultiple = '/select-multiple',
-  treeSelectSingle = '/tree-select-single',
-  treeSelectMultiple = '/tree-select-multiple',
-  eventBus = '/event-bus',
-  propsProxy = '/props-proxy',
+  root = '/',
+  component = '/component',
+  selectSingle = '/component/select-single',
+  selectMultiple = '/component/select-multiple',
+  treeSelectSingle = '/component/tree-select-single',
+  treeSelectMultiple = '/component/tree-select-multiple',
+  eventBus = '/component/event-bus',
+  propsProxy = '/component/props-proxy',
+  document = '/document',
+  introduce = '/document/introduce',
 }
 
 export const Router = createRouter([
   {
     path: '/',
     element: wrapLoading(() => import('@src/page/index')),
+    children: [],
+  },
+  {
+    path: RouterPath.document,
+    element: wrapLoading(() => import('@src/page/document')),
+    children: [
+      {
+        path: RouterPath.introduce,
+        element: wrapLoading(() => import('@src/page/document/introduce')),
+      },
+    ],
+  },
+  {
+    path: RouterPath.component,
+    element: wrapLoading(() => import('@src/page/component')),
     children: [
       {
         path: RouterPath.selectSingle,
-        element: wrapLoading(() => import('@src/page/select-single')),
+        element: wrapLoading(() => import('@src/page/component/select-single')),
       },
       {
         path: RouterPath.selectMultiple,
-        element: wrapLoading(() => import('@src/page/select-multiple')),
+        element: wrapLoading(() => import('@src/page/component/select-multiple')),
       },
       {
         path: RouterPath.treeSelectSingle,
-        element: wrapLoading(() => import('@src/page/tree-select-single')),
+        element: wrapLoading(() => import('@src/page/component/tree-select-single')),
       },
       {
         path: RouterPath.treeSelectMultiple,
-        element: wrapLoading(() => import('@src/page/tree-select-multiple')),
+        element: wrapLoading(() => import('@src/page/component/tree-select-multiple')),
       },
       {
         path: RouterPath.eventBus,
@@ -53,7 +72,7 @@ export const Router = createRouter([
       },
       {
         path: RouterPath.propsProxy,
-        element: wrapLoading(() => import('@src/page/props-proxy')),
+        element: wrapLoading(() => import('@src/page/component/props-proxy')),
       },
     ],
   },

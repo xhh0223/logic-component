@@ -7,6 +7,10 @@
     margin-left: auto;
   }
 
+  &-content {
+    margin-left: 100px;
+  }
+
   @media screen and (width <= 375px) {
     width: 100%;
 

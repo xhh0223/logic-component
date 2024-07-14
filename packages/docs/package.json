@@ -12,7 +12,9 @@
     "antd": "^5.17.0",
     "jquery": "^3.7.1",
     "normalize.css": "^8.0.1",
-    "react-router-dom": "^6.6.1"
+    "react-markdown": "^9.0.1",
+    "react-router-dom": "^6.6.1",
+    "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-inject": "^5.0.5",

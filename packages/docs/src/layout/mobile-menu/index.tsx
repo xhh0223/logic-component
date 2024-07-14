@@ -34,7 +34,11 @@ export const MobileMenu = () => {
         res = [MenuKey.propsProxy, pathname]
         break
       default:
-        res = [MenuKey.select, RouterPath.selectSingle]
+        if (![RouterPath.root, RouterPath.document, RouterPath.component]?.includes(pathname as RouterPath)) {
+          res = [MenuKey.select, RouterPath.selectSingle]
+        } else {
+          res = []
+        }
     }
     return res
   }, [])
