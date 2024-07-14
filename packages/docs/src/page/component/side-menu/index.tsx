@@ -1,5 +1,3 @@
-import './index.scss'
-
 import { RouterPath } from '@src/router'
 import { Menu, MenuProps } from 'antd'
 import { useEffect, useMemo } from 'react'

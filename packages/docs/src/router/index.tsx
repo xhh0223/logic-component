@@ -28,6 +28,7 @@ export enum RouterPath {
   propsProxy = '/component/props-proxy',
   document = '/document',
   introduce = '/document/introduce',
+  installation = '/document/installation',
 }
 
 export const Router = createRouter([
@@ -43,6 +44,10 @@ export const Router = createRouter([
       {
         path: RouterPath.introduce,
         element: wrapLoading(() => import('@src/page/document/introduce')),
+      },
+      {
+        path: RouterPath.installation,
+        element: wrapLoading(() => import('@src/page/document/installation')),
       },
     ],
   },

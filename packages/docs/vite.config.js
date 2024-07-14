@@ -16,6 +16,9 @@ export default defineConfig({
     },
   },
   build: {
+    rollupOptions: {
+      external: ['react-router-dom', 'remark-gfm'],
+    },
     outDir: path.resolve(__dirname, 'dist'),
   },
 })

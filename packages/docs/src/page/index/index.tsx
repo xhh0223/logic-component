@@ -1,5 +1,3 @@
-import './index.scss'
-
 import { Nav } from '@src/layout'
 import { Flex } from 'antd'
 

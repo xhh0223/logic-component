@@ -10,7 +10,16 @@ const index = () => {
       <Nav />
       <Flex className="container-content">
         <SideMenu />
-        <div style={{ height: '100%', overflow: 'auto', boxSizing: 'border-box', paddingBottom: 100, width: '100%' }}>
+        <div
+          style={{
+            height: '100%',
+            overflow: 'auto',
+            marginLeft: 16,
+            boxSizing: 'border-box',
+            paddingBottom: 100,
+            width: '80%',
+          }}
+        >
           <Outlet />
         </div>
       </Flex>

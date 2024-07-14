@@ -11,3 +11,19 @@ html {
     min-width: 300px;
   }
 }
+
+.container {
+  height: 100%;
+
+  &-content {
+    height: calc(100% - 40px);
+  }
+}
+
+.side-menu {
+  max-width: 200px;
+
+  @media screen and (width <= 375px) {
+    display: none;
+  }
+}

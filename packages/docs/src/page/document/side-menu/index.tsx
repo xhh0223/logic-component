@@ -1,5 +1,3 @@
-import './index.scss'
-
 import { RouterPath } from '@src/router'
 import { Menu, MenuProps } from 'antd'
 import { useEffect, useMemo } from 'react'
@@ -10,16 +8,21 @@ export const SideMenu = () => {
 
   const MenuKey = {
     introduce: 'introduce',
+    setup: 'setup',
+    installation: 'installation',
   }
 
   const defaultActiveMenuKey = useMemo(() => {
     let res
     switch (pathname) {
       case RouterPath.introduce:
-        res = [MenuKey.introduce, pathname]
+        res = [MenuKey.introduce, RouterPath.introduce]
+        break
+      case RouterPath.installation:
+        res = [MenuKey.installation, RouterPath.installation]
         break
       default:
-        res = []
+        res = [MenuKey.introduce, RouterPath.introduce]
     }
     return res
   }, [])
@@ -31,25 +34,25 @@ export const SideMenu = () => {
   const sideMenuData: MenuProps['items'] = [
     {
       key: MenuKey.introduce,
-      label: '介绍',
+      label: <Link to={RouterPath.introduce}>介绍</Link>,
+    },
+    {
+      key: MenuKey.setup,
+      label: '起步',
       children: [
         {
-          key: RouterPath.introduce,
-          label: <Link to={RouterPath.introduce}>logic-component</Link>,
+          key: MenuKey.installation,
+          label: <Link to={RouterPath.installation}>安装</Link>,
         },
       ],
     },
-    /*  {
-      key: MenuKey.propsProxy,
-      label: <Link to={RouterPath.propsProxy}>props-proxy</Link>,
-    }, */
   ]
 
   return (
     <Menu
       className="side-menu"
       defaultSelectedKeys={defaultActiveMenuKey}
-      defaultOpenKeys={[MenuKey.introduce]}
+      defaultOpenKeys={[MenuKey.introduce, MenuKey.setup, MenuKey.installation]}
       mode="inline"
       items={sideMenuData}
     />

@@ -14,11 +14,11 @@
     "normalize.css": "^8.0.1",
     "react-markdown": "^9.0.1",
     "react-router-dom": "^6.6.1",
+    "react-syntax-highlighter": "^15.5.0",
     "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-inject": "^5.0.5",
-    "modern-css-reset": "^1.4.0",
     "sass": "^1.75.0"
   }
 }

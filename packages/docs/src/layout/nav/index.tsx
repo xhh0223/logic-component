@@ -14,7 +14,7 @@ export const Nav = () => {
       </Flex>
       <Flex className="nav-content" align="center" justify="space-between" gap={20}>
         <h3>
-          <NavLink to={RouterPath.document}>文档</NavLink>
+          <NavLink to={RouterPath.introduce}>文档</NavLink>
         </h3>
         <h3>
           <NavLink to={RouterPath.selectSingle}>组件</NavLink>
