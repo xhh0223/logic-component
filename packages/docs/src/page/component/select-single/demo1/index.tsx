@@ -45,4 +45,5 @@ const Demo1 = () => {
   )
 }
 
+export const name = 'demo1'
 export default Demo1

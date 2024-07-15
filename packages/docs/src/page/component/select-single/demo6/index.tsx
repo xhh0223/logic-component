@@ -50,5 +50,6 @@ const Demo6 = () => {
     </Flex>
   )
 }
+export const name = 'demo6'
 
 export default Demo6
