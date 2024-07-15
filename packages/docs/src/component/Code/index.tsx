@@ -3,7 +3,7 @@ import { okaidia } from '@uiw/codemirror-theme-okaidia'
 import { useCodeMirror } from '@uiw/react-codemirror'
 import { Card, Flex, message, Tooltip } from 'antd'
 import cls from 'classnames'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import style from './index.module.scss'
@@ -13,17 +13,24 @@ export const Code = (props: { code: string; title: React.ReactNode; demo: React.
   const [state, setState] = useState({
     visible: false,
   })
+
   const editor = useRef()
-  const { setContainer } = useCodeMirror({
+  const { setContainer, setState: setCodeState } = useCodeMirror({
     container: editor.current,
     theme: okaidia,
     extensions: [javascript({ jsx: true })],
     value: code,
     basicSetup: {
-      lineNumbers: false,
+      lineNumbers: true,
+      highlightActiveLineGutter: true,
     },
-    editable: false,
+    maxHeight: '500px',
+    onChange() {
+      // @ts-ignore
+      setCodeState((s) => ({ ...s }))
+    },
   })
+  useLayoutEffect(() => {}, [])
 
   useEffect(() => {
     if (state.visible) {
@@ -77,7 +84,7 @@ export const Code = (props: { code: string; title: React.ReactNode; demo: React.
             body: cls(state.visible && style[`code`]),
           }}
         >
-          <div style={{ maxHeight: 500, overflowY: 'auto' }} ref={editor} />{' '}
+          <div ref={editor} />
         </Card>
       )}
     </div>
