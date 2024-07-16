@@ -27,7 +27,7 @@ const Demo1 = () => {
                   render={({ id, isChecked, value, handler }) => (
                     <Flex
                       onClick={() => {
-                        handler.select([[id]])
+                        handler.select([{ id }])
                         setState({ currentValue: handler.getAllItems() })
                       }}
                     >

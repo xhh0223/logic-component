@@ -97,11 +97,14 @@ const SendMessageTable = () => {
                   })
                   const values = flatten(
                     [...map.values()].map((i) => {
-                      return i[0].map((item) => [item, i[1]])
+                      return i[0].map((item) => ({
+                        id: item,
+                        params: i[1],
+                      }))
                     }),
                   )
 
-                  handler.emit([...values])
+                  handler.emit(values)
                 }}
               >
                 传递表格values

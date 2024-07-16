@@ -34,14 +34,13 @@ const Demo1 = () => {
                     <Checkbox
                       onClick={() => {
                         /** 1、选择当前节点 */
-                        handler.select([[id]])
+                        handler.select([{ id }])
 
                         /** 2、选择后代节点 */
                         ;(() => {
                           const ids = handler.getDescendantsIds(id)
                           if (!isChecked) {
-                            // eslint-disable-next-line no-unsafe-optional-chaining
-                            handler.select([...ids?.map((id) => [id, { allowRepeatSelect: true }])])
+                            handler.select(ids?.map((id) => ({ id, options: { allowRepeatSelect: true } })))
                           } else {
                             handler.cancel(ids)
                           }
@@ -59,7 +58,7 @@ const Demo1 = () => {
                               const selectedDescendantsIds = handler.getItems(descendantsIds).filter((i) => i.isChecked)
 
                               if (descendantsIds?.length === selectedDescendantsIds.length) {
-                                handler.select([[id, { allowRepeatSelect: true }]])
+                                handler.select([{ id, options: { allowRepeatSelect: true } }])
                               } else {
                                 handler.cancel([id])
                               }
