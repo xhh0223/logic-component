@@ -1,9 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 
-import { IdsEntries } from '@/typing'
-
 import { EventBusCollectContext } from './context'
-import { EventBusItemProps } from './typing'
+import { EventBusItemProps, MultipleParams } from './typing'
 
 export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
   const { id, onIds, render, initCallback } = props
@@ -13,9 +11,9 @@ export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
 
   const memoInfo = useMemo(() => {
     const params = new Map()
-    const on = (onIdsEntries: IdsEntries<any>) => {
-      onIdsEntries.forEach(([id, value]) => {
-        params.set(id, value)
+    const on = (onIdsParams: MultipleParams<any>) => {
+      onIdsParams.forEach((item) => {
+        params.set(item.id, item.params)
       })
       update({})
     }
@@ -59,7 +57,7 @@ export const EventBusItem = <Value,>(props: EventBusItemProps<Value>) => {
 
   return render({
     id,
-    onIdsEntries: [...memoInfo.params.entries()],
+    onIdsParams: [...memoInfo.params.entries()].map(([id, params]) => ({ id, params })),
     handler,
     context: collect.getContext(),
   })

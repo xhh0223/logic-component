@@ -87,11 +87,11 @@ const InnerTreeSelectMultiple = <ValueType,>(
         })
         return result
       },
-      select: (idsEntries) => {
+      select: (multipleOptions) => {
         const result: Array<RequiredITreeSelectItem<ValueType>> = []
 
-        idsEntries.forEach((i) => {
-          const [id, options] = i
+        multipleOptions.forEach((i) => {
+          const { id, options } = i
           if (!Array.isArray(i)) {
             throw '传入值必须是Array<[id:Id,any]>类型'
           }

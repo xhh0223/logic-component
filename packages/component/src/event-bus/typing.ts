@@ -1,11 +1,16 @@
 import { Ref } from 'react'
 
-import { type Id, IdsEntries } from '@/typing'
+import { type Id } from '@/typing'
+
+export type MultipleParams<Param> = Array<{
+  id: Id
+  params: Param
+}>
 
 export interface IEventBusItem {
   id: Id
   onIds: Id[]
-  on(onIdsEntries: IdsEntries<any>): void
+  on(onIdsParams: MultipleParams<any>): void
 }
 
 export interface IEventBusCollect<Context = any> {
@@ -14,12 +19,12 @@ export interface IEventBusCollect<Context = any> {
   getItem: (id) => IEventBusItem | undefined
   setItem: (id, params: IEventBusItem) => void
   delItem: (id: Id) => void
-  emit: <Params = any>(idsEntries: IdsEntries<Params>) => void
+  emit: <Params = any>(multipleParams: MultipleParams<Params>) => void
 }
 
 export type EventBusRef<Context = any> = {
   emit: IEventBusCollect<Context>['emit']
-  on: <Params>(params: { id: Id; onIds: Id[]; callback: (onIdsEntries: IdsEntries<Params>) => void }) => void
+  on: <Params>(params: { id: Id; onIds: Id[]; callback: (multipleParams: MultipleParams<Params>) => void }) => void
   off: (id: Id) => void
   getContext: IEventBusCollect<Context>['getContext']
   setContext: IEventBusCollect<Context>['setContext']
@@ -36,7 +41,7 @@ export interface EventBusItemProps<Params = any, Context = any> {
   initCallback?: (params: { handler: EventBusRef<Context> }) => void
   render: (params: {
     id: Id
-    onIdsEntries: IdsEntries<Params>
+    onIdsParams: MultipleParams<Params>
     handler: EventBusRef<Context>
     context: Context
   }) => React.ReactNode

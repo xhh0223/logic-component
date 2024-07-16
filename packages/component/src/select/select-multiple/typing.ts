@@ -1,11 +1,11 @@
 import { Ref } from 'react'
 
-import { Id, IdsEntries } from '@/typing'
+import { Id } from '@/typing'
 
-import { RequiredISelectItem } from '../typing'
+import { MultipleOptions, RequiredISelectItem } from '../typing'
 
 export interface SelectMultipleRef<ValueType = any> {
-  select(idsEntries: IdsEntries<{ allowRepeatSelect: boolean }>): Array<RequiredISelectItem<ValueType>>
+  select(multipleParams: MultipleOptions): Array<RequiredISelectItem<ValueType>>
   cancel(id: Id[]): Array<RequiredISelectItem<ValueType>>
   getItems(id: Id[]): Array<RequiredISelectItem<ValueType>>
   getAllItems(): Array<RequiredISelectItem<ValueType>>
