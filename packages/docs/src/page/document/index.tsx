@@ -2,11 +2,14 @@ import { Nav } from '@src/layout'
 import { RouterPath } from '@src/router'
 import { Flex } from 'antd'
 import { useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
-const Index = () => {
+import { SideMenu } from './side-menu'
+
+const index = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
+
   useEffect(() => {
     if ([RouterPath.component, RouterPath.root, RouterPath.document].includes(pathname as RouterPath)) {
       return navigate(RouterPath.introduce)
@@ -18,12 +21,22 @@ const Index = () => {
     <div className="container">
       <Nav />
       <Flex className="container-content">
+        <SideMenu />
         <div
-          style={{ height: '100%', overflow: 'auto', boxSizing: 'border-box', paddingBottom: 100, width: '100%' }}
-        ></div>
+          style={{
+            height: '100%',
+            overflow: 'auto',
+            marginLeft: 16,
+            boxSizing: 'border-box',
+            paddingBottom: 100,
+            width: '80%',
+          }}
+        >
+          <Outlet />
+        </div>
       </Flex>
     </div>
   )
 }
 
-export default Index
+export default index

@@ -1,0 +1,23 @@
+.container {
+  width: calc((100% - 16px) / 2);
+  min-width: 343px;
+}
+
+.large-container {
+  width: calc((100% - 32px) / 3);
+  min-width: 343px;
+}
+
+.mini-container {
+  width: 100%;
+  min-width: 343px;
+}
+
+.code {
+  padding: 0 !important;
+}
+
+.content {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}

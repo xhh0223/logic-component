@@ -8,15 +8,23 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.7",
-    "@types/jquery": "^3.5.29",
+    "@codemirror/lang-javascript": "^6.2.2",
+    "@uiw/codemirror-theme-okaidia": "^4.23.0",
+    "@uiw/codemirror-theme-vscode": "^4.23.0",
+    "@uiw/react-codemirror": "^4.23.0",
     "antd": "^5.17.0",
-    "jquery": "^3.7.1",
-    "normalize.css": "^8.0.1",
-    "react-router-dom": "^6.6.1"
+    "classnames": "^2.3.2",
+    "codemirror": "^6.0.1",
+    "react-copy-to-clipboard": "^5.1.0",
+    "react-logic-component": "1.0.1-alpha.19",
+    "react-markdown": "^9.0.1",
+    "react-responsive": "^10.0.0",
+    "react-router-dom": "^6.6.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-inject": "^5.0.5",
-    "modern-css-reset": "^1.4.0",
     "sass": "^1.75.0"
   }
 }
