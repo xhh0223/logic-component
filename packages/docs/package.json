@@ -18,6 +18,7 @@
     "react-copy-to-clipboard": "^5.1.0",
     "react-logic-component": "1.0.1-alpha.19",
     "react-markdown": "^9.0.1",
+    "react-responsive": "^10.0.0",
     "react-router-dom": "^6.6.1",
     "react-syntax-highlighter": "^15.5.0",
     "remark-gfm": "^4.0.0"

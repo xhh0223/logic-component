@@ -18,8 +18,8 @@ const Demo1 = () => {
   }, [])
 
   return (
-    <Flex component={'article'} vertical>
-      <h3>tree</h3>
+    <Flex component={'article'} vertical gap={12}>
+      <div className="is-bold">tree</div>
       <Flex component={'section'} vertical gap={12}>
         <TreeSelectMultiple ref={ref}>
           {list.map((i) => (

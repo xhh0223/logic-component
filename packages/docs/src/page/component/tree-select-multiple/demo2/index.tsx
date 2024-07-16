@@ -17,8 +17,8 @@ const Demo2 = () => {
   }, [isUpdate])
 
   return (
-    <Flex component={'article'} vertical>
-      <h3>级联</h3>
+    <Flex component={'article'} vertical gap={12}>
+      <div className="is-bold">级联</div>
       <Flex component={'section'} vertical gap={12}>
         <TreeSelectMultiple ref={ref}>
           <Flex>

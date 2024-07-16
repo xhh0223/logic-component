@@ -8,8 +8,9 @@ const Demo3 = () => {
   const ref = useRef<SelectSingleRef>()
 
   return (
-    <Flex component={'article'} vertical>
-      <h3>select</h3>
+    <Flex component={'article'} vertical gap={12}>
+      <div className="is-bold">select</div>
+
       <Flex component={'section'} vertical gap={12}>
         <SelectSingle ref={ref}>
           <select
@@ -40,6 +41,5 @@ const Demo3 = () => {
     </Flex>
   )
 }
-export const name = 'demo3'
 
 export default Demo3

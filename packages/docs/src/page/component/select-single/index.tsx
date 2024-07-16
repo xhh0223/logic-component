@@ -16,19 +16,14 @@ const index = () => {
         // @ts-ignore
         const Component = module.default
         return (
-          <div className="demo-code-container" key={path}>
-            <Code
-              title={
-                // @ts-ignore
-                module.name
-              }
-              demo={<Component />}
-              code={
-                // @ts-ignore
-                ComponentsRawMap.get(path).default
-              }
-            />
-          </div>
+          <Code
+            key={path}
+            demo={<Component />}
+            code={
+              // @ts-ignore
+              ComponentsRawMap.get(path).default
+            }
+          />
         )
       })}
     </Flex>

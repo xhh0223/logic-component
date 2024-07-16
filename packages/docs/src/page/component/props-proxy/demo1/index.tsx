@@ -4,7 +4,7 @@ import { PropsProxy } from 'react-logic-component'
 const Demo1 = () => {
   return (
     <Flex component={'article'} vertical gap={12}>
-      <h3>loading场景</h3>
+      <div className="is-bold">loading场景</div>
       <Flex component={'section'} gap={12} wrap>
         <PropsProxy
           initProps={{ loading: false }}

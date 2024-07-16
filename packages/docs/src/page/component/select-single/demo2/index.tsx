@@ -8,8 +8,8 @@ const Demo2 = () => {
   const ref = useRef<SelectSingleRef>()
 
   return (
-    <Flex component={'article'} vertical>
-      <h3>radio(重复点击不可取消)</h3>
+    <Flex component={'article'} vertical gap={12}>
+      <div className="is-bold">radio(重复点击不可取消)</div>
       <Flex component={'section'} vertical gap={12}>
         <SelectSingle ref={ref}>
           <Flex vertical>
@@ -43,6 +43,5 @@ const Demo2 = () => {
     </Flex>
   )
 }
-export const name = 'demo2'
 
 export default Demo2

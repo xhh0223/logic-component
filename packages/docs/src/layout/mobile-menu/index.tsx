@@ -1,10 +1,9 @@
-import './index.scss'
-
+import { useScreen0_480 } from '@src/hooks/media'
 import { RouterPath } from '@src/router'
 import { Dropdown, MenuProps } from 'antd'
+import classNames from 'classnames'
 import { useEffect, useMemo } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-
 export const MobileMenu = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -79,9 +78,9 @@ export const MobileMenu = () => {
       label: <Link to={RouterPath.propsProxy}>props-proxy</Link>,
     },
   ]
-
+  const isMobile = useScreen0_480()
   return (
-    <Dropdown className="mobile-menu" menu={{ items: menuData }}>
+    <Dropdown className={classNames(!isMobile && 'is-hidden')} menu={{ items: menuData }}>
       <img width={14} height={14} src="/logic-component/menu.svg" />
     </Dropdown>
   )

@@ -13,8 +13,8 @@ const Demo4 = () => {
   }, [])
 
   return (
-    <Flex component={'article'} vertical>
-      <h3>checkbox(重复点击不可取消)</h3>
+    <Flex component={'article'} vertical gap={12}>
+      <div className="is-bold">checkbox(重复点击不可取消)</div>
       <Flex component={'section'} vertical gap={12}>
         <SelectMultiple ref={ref}>
           <Flex vertical>

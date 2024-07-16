@@ -13,8 +13,8 @@ const Demo1 = () => {
   }, [])
 
   return (
-    <Flex component={'article'} vertical>
-      <h3>radio</h3>
+    <Flex component={'article'} vertical gap={12}>
+      <div className="is-bold">radio</div>
       <Flex component={'section'} vertical gap={12}>
         <SelectMultiple ref={ref}>
           <Flex vertical>

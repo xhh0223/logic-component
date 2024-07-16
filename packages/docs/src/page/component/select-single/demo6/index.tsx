@@ -9,8 +9,8 @@ const Demo6 = () => {
   const ref = useRef<SelectSingleRef>()
 
   return (
-    <Flex component={'article'} vertical>
-      <h3>可勾选卡片</h3>
+    <Flex component={'article'} vertical gap={12}>
+      <div className="is-bold">可勾选卡片</div>
       <Flex component={'section'} vertical gap={12}>
         <SelectSingle ref={ref}>
           <Flex gap={12} wrap>
@@ -49,6 +49,5 @@ const Demo6 = () => {
     </Flex>
   )
 }
-export const name = 'demo6'
 
 export default Demo6

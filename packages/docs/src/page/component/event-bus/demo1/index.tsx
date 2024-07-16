@@ -10,7 +10,7 @@ const Demo1 = () => {
   return (
     <EventBus ref={ref}>
       <Flex component={'article'} vertical gap={12}>
-        <h3>组件间通信</h3>
+        <div className="is-bold">组件间通信</div>
         <SendMessageTable />
 
         <Flex component={'section'} gap={12} wrap>

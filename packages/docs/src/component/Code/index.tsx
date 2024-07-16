@@ -1,4 +1,5 @@
 import { javascript } from '@codemirror/lang-javascript'
+import { useScreen_max1600, useScreen992_1600 } from '@src/hooks/media'
 import { okaidia } from '@uiw/codemirror-theme-okaidia'
 import { useCodeMirror } from '@uiw/react-codemirror'
 import { Card, Flex, message, Tooltip } from 'antd'
@@ -8,13 +9,14 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import style from './index.module.scss'
 
-export const Code = (props: { code: string; title: React.ReactNode; demo: React.ReactNode }) => {
-  const { title, demo, code } = props
+export const Code = (props: { className?: string; code: string; demo: React.ReactNode }) => {
+  const { demo, code, className } = props
   const [state, setState] = useState({
     visible: false,
   })
 
   const editor = useRef()
+
   const { setContainer, setState: setCodeState } = useCodeMirror({
     container: editor.current,
     theme: okaidia,
@@ -36,14 +38,23 @@ export const Code = (props: { code: string; title: React.ReactNode; demo: React.
     }
   }, [state.visible])
 
+  const isMediumScreen = useScreen992_1600()
+  const isLargeScreen = useScreen_max1600()
+
   return (
-    <div>
+    <div
+      className={cls(
+        isMediumScreen && style['container'],
+        isLargeScreen && style['large-container'],
+        !isMediumScreen && !isLargeScreen && style['mini-container'],
+        className,
+      )}
+    >
       <Card
         className={cls(state.visible && style[`content`])}
         classNames={{
           body: cls(state.visible && style[`content`]),
         }}
-        title={title}
       >
         {demo}
         <Flex align="flex-end" justify="flex-end" gap={16}>

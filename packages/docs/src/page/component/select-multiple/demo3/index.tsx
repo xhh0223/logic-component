@@ -13,8 +13,8 @@ const Demo3 = () => {
   }, [])
 
   return (
-    <Flex component={'article'} vertical>
-      <h3>checkbox</h3>
+    <Flex component={'article'} vertical gap={12}>
+      <div className="is-bold">checkbox</div>
       <Flex component={'section'} vertical gap={12}>
         <SelectMultiple ref={ref}>
           <Flex vertical>
