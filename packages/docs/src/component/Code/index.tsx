@@ -97,5 +97,3 @@ export const Code = (props: { className?: string; code: string; demo: React.Reac
     </div>
   )
 }
-
-export default Code
