@@ -1,7 +1,6 @@
 import { Flex } from 'antd'
 import { useEffect, useRef, useState } from 'react'
-
-import { SelectMultiple, SelectMultipleItem, SelectMultipleRef } from '~logic-component/index'
+import { SelectMultiple, SelectMultipleItem, SelectMultipleRef } from 'react-logic-component'
 const Demo3 = () => {
   const [state, setState] = useState({
     currentValue: [],

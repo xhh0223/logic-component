@@ -24,7 +24,6 @@ export const Code = (props: { code: string; title: React.ReactNode; demo: React.
       lineNumbers: true,
       highlightActiveLineGutter: true,
     },
-    maxHeight: '500px',
     onChange() {
       // @ts-ignore
       setCodeState((s) => ({ ...s }))

@@ -1,6 +1,5 @@
 import { Flex, Spin } from 'antd'
-
-import { PropsProxy } from '~logic-component/index'
+import { PropsProxy } from 'react-logic-component'
 
 const Demo1 = () => {
   return (

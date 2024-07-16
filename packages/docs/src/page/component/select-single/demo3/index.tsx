@@ -1,7 +1,6 @@
 import { Flex } from 'antd'
 import { useRef, useState } from 'react'
-
-import { SelectSingle, SelectSingleItem, SelectSingleRef } from '~logic-component/index'
+import { SelectSingle, SelectSingleItem, SelectSingleRef } from 'react-logic-component'
 const Demo3 = () => {
   const [state, setState] = useState({
     currentValue: undefined,

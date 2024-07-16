@@ -1,8 +1,7 @@
 import { genTreeData, transformTreeDataToList } from '@src/utils'
 import { Checkbox, Flex } from 'antd'
 import { useEffect, useRef, useState } from 'react'
-
-import { TreeSelectMultiple, TreeSelectMultipleItem, TreeSelectMultipleRef } from '~logic-component/index'
+import { TreeSelectMultiple, TreeSelectMultipleItem, TreeSelectMultipleRef } from 'react-logic-component'
 
 const treeData = genTreeData([2, 3, 3])
 const list = transformTreeDataToList(treeData, [])
