@@ -17,7 +17,7 @@ export const MobileMenu = () => {
   }
 
   const defaultActiveMenuKey = useMemo(() => {
-    let res
+    let res = []
     switch (pathname) {
       case RouterPath.selectSingle:
       case RouterPath.selectMultiple:
@@ -33,12 +33,6 @@ export const MobileMenu = () => {
       case RouterPath.propsProxy:
         res = [MenuKey.propsProxy, pathname]
         break
-      default:
-        if (![RouterPath.root, RouterPath.document, RouterPath.component]?.includes(pathname as RouterPath)) {
-          res = [MenuKey.select, RouterPath.selectSingle]
-        } else {
-          res = []
-        }
     }
     return res
   }, [])

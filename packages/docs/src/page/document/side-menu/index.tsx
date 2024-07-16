@@ -13,7 +13,7 @@ export const SideMenu = () => {
   }
 
   const defaultActiveMenuKey = useMemo(() => {
-    let res
+    let res = []
     switch (pathname) {
       case RouterPath.introduce:
         res = [MenuKey.introduce, RouterPath.introduce]
@@ -21,8 +21,6 @@ export const SideMenu = () => {
       case RouterPath.installation:
         res = [MenuKey.installation, RouterPath.installation]
         break
-      default:
-        res = [MenuKey.introduce, RouterPath.introduce]
     }
     return res
   }, [])

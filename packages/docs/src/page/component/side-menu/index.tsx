@@ -14,7 +14,7 @@ export const SideMenu = () => {
   }
 
   const defaultActiveMenuKey = useMemo(() => {
-    let res
+    let res = []
     switch (pathname) {
       case RouterPath.selectSingle:
       case RouterPath.selectMultiple:
@@ -30,8 +30,6 @@ export const SideMenu = () => {
       case RouterPath.propsProxy:
         res = [MenuKey.propsProxy, pathname]
         break
-      default:
-        res = [MenuKey.select, RouterPath.selectSingle]
     }
     return res
   }, [])
