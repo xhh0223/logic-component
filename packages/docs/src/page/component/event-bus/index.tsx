@@ -18,10 +18,6 @@ const index = () => {
         return (
           <Code
             key={path}
-            title={
-              // @ts-ignore
-              module.name
-            }
             demo={<Component />}
             code={
               // @ts-ignore

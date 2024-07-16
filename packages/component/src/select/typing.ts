@@ -16,3 +16,10 @@ export interface ISelectCollect<ValueType> {
 }
 
 export type RequiredISelectItem<ValueType> = Required<Pick<ISelectItem<ValueType>, 'id' | 'isChecked' | 'value'>>
+
+export type MultipleOptions = Array<{
+  id: Id
+  options?: {
+    allowRepeatSelect?: boolean
+  }
+}>

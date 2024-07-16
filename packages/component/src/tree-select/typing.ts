@@ -34,3 +34,10 @@ export interface CommonTreeSelectItemProps<ValueType> {
   childrenIds?: ITreeSelectItem<ValueType>['childrenIds']
   value?: ITreeSelectItem<ValueType>['value']
 }
+
+export type MultipleOptions = Array<{
+  id: Id
+  options?: {
+    allowRepeatSelect?: boolean
+  }
+}>

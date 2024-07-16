@@ -1,10 +1,10 @@
 import { forwardRef, Ref, useImperativeHandle, useMemo, useRef } from 'react'
 
-import { Id, IdsEntries } from '@/typing'
+import { Id } from '@/typing'
 
 import { EventBusCollectContext } from './context'
 import { EventBusCollect } from './event-collect'
-import { EventBusProps, EventBusRef } from './typing'
+import { EventBusProps, EventBusRef, MultipleParams } from './typing'
 
 const InnerEventBus = <Context,>(props: EventBusProps<Context>, ref: Ref<EventBusRef<Context>>) => {
   const { children, initCallback } = props
@@ -12,8 +12,8 @@ const InnerEventBus = <Context,>(props: EventBusProps<Context>, ref: Ref<EventBu
 
   const innerHandler = useMemo(() => {
     const handler: EventBusRef<Context> = {
-      emit: <Params = any,>(idsEntries: IdsEntries<Params>) => {
-        collect.emit(idsEntries)
+      emit: <Params = any,>(multipleParams: MultipleParams<Params>) => {
+        collect.emit(multipleParams)
       },
       getContext: () => {
         return collect.getContext()
@@ -21,14 +21,14 @@ const InnerEventBus = <Context,>(props: EventBusProps<Context>, ref: Ref<EventBu
       setContext: (context: Context) => {
         return collect.setContext(context)
       },
-      on: <Params,>(params: { id: Id; onIds: Id[]; callback: (onIdsEntries: IdsEntries<Params>) => void }) => {
+      on: <Params,>(params: { id: Id; onIds: Id[]; callback: (onMultipleParams: MultipleParams<Params>) => void }) => {
         const { id, onIds, callback } = params
 
         collect.setItem(id, {
           id,
           onIds,
-          on(onIdsEntries: IdsEntries<Params>): void {
-            callback(onIdsEntries)
+          on(onMultipleParams: MultipleParams<Params>): void {
+            callback(onMultipleParams)
           },
         })
       },
