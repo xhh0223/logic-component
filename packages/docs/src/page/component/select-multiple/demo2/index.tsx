@@ -26,7 +26,7 @@ const Demo2 = () => {
                   render={({ id, isChecked, value, handler }) => (
                     <Flex
                       onClick={() => {
-                        handler.select([[id, { allowRepeatSelect: true }]])
+                        handler.select([{ id, options: { allowRepeatSelect: true } }])
                         setState({ currentValue: handler.getAllItems() })
                       }}
                     >

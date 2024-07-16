@@ -13,7 +13,8 @@ const Demo2 = () => {
 
   useLayoutEffect(() => {
     const ids = [...map.values()]?.filter((i) => i.isChecked)?.map((i) => i.id)
-    ref.current.select([...ids.map((i) => [i, { allowRepeatSelect: true }])])
+
+    ref.current.select(ids.map((i) => ({ id: i, options: { allowRepeatSelect: true } })))
   }, [isUpdate])
 
   return (
@@ -46,7 +47,7 @@ const Demo2 = () => {
                             ) : (
                               <Checkbox
                                 onClick={() => {
-                                  const values = handler.select([[id]])[0]
+                                  const values = handler.select([{ id }])[0]
                                   map.set(values.id, values)
                                   update({})
                                 }}
