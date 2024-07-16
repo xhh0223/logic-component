@@ -12,6 +12,7 @@ const Index = () => {
         <div
           style={{
             height: '100%',
+            width: '100%',
             overflow: 'auto',
             boxSizing: 'border-box',
             padding: '0 16px 100px 16px',

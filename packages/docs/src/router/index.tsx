@@ -73,7 +73,7 @@ export const Router = createRouter([
       },
       {
         path: RouterPath.eventBus,
-        element: wrapLoading(() => import('@src/page/event-bus')),
+        element: wrapLoading(() => import('@src/page/component/event-bus')),
       },
       {
         path: RouterPath.propsProxy,

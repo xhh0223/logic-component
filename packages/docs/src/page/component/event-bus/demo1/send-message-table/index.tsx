@@ -1,8 +1,7 @@
 import { Button, Empty, Flex, Form, Input, Select } from 'antd'
 import { flatten } from 'lodash-es'
 import { useState } from 'react'
-
-import { EventBusItem } from '~logic-component/event-bus'
+import { EventBusItem } from 'react-logic-component'
 
 import { EventTable, EventType } from '../../const'
 
@@ -72,6 +71,7 @@ const SendMessageTable = () => {
           添加一行
         </Button>
         <EventBusItem
+          key={EventTable}
           id={EventTable}
           render={({ handler }) => {
             return (

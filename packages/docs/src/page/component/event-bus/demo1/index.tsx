@@ -15,6 +15,7 @@ const Demo1 = () => {
 
         <Flex component={'section'} gap={12} wrap>
           <EventBusItem
+            key={EventType.ancestor1}
             id={EventType.ancestor1}
             onIds={[EventType.ancestor2, EventType.ancestor3]}
             render={({ onIdsEntries }) => {
@@ -27,6 +28,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.ancestor2}
             id={EventType.ancestor2}
             onIds={[EventType.ancestor1, EventType.ancestor3]}
             render={({ onIdsEntries }) => {
@@ -39,6 +41,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.ancestor3}
             id={EventType.ancestor3}
             onIds={[EventType.ancestor1, EventType.ancestor2]}
             render={({ onIdsEntries }) => {
@@ -51,6 +54,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.child1}
             id={EventType.child1}
             onIds={[
               EventType.ancestor1,
@@ -80,6 +84,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.child2}
             id={EventType.child2}
             onIds={[EventType.ancestor3, EventType.sibling3, EventType.child2]}
             render={({ onIdsEntries }) => {
@@ -95,6 +100,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.child3}
             id={EventType.child3}
             onIds={[EventType.ancestor2, EventType.sibling1, EventType.child1]}
             render={({ onIdsEntries }) => {
@@ -107,6 +113,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.sibling1}
             id={EventType.sibling1}
             onIds={[EventType.sibling2, EventType.sibling3]}
             render={({ onIdsEntries }) => {
@@ -119,6 +126,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.sibling2}
             id={EventType.sibling2}
             onIds={[EventType.ancestor1, EventType.sibling1, EventType.child1, EventType.descendant2]}
             render={({ onIdsEntries }) => {
@@ -134,6 +142,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.sibling3}
             id={EventType.sibling3}
             onIds={[EventType.ancestor3, EventType.descendant2, EventType.sibling2]}
             render={({ onIdsEntries }) => {
@@ -146,6 +155,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.descendant1}
             id={EventType.descendant1}
             onIds={[EventType.descendant2, EventType.descendant3]}
             render={({ onIdsEntries }) => {
@@ -158,6 +168,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.descendant2}
             id={EventType.descendant2}
             onIds={[EventType.sibling2, EventType.descendant2, EventType.descendant3]}
             render={({ onIdsEntries }) => {
@@ -170,6 +181,7 @@ const Demo1 = () => {
             }}
           />
           <EventBusItem
+            key={EventType.descendant3}
             id={EventType.descendant3}
             onIds={[EventType.ancestor1, EventType.ancestor2, EventType.sibling2, EventType.child3]}
             render={({ onIdsEntries }) => {

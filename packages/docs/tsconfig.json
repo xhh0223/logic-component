@@ -26,7 +26,7 @@
       "@src/*": [
         "src/*"
       ],
-      "~logic-component/*": [
+      "~react-logic-component/*": [
         "../component/src/*"
       ],
       "@style/*": [

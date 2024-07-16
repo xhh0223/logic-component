@@ -12,7 +12,7 @@ export default defineConfig({
     alias: {
       '@src': path.resolve(__dirname, 'src'),
       '@style': path.resolve(__dirname, 'src', 'style'),
-      '~logic-component': path.resolve(__dirname, '..', 'component', 'src'),
+      '~react-logic-component': path.resolve(__dirname, '..', 'component', 'src'),
     },
   },
   build: {

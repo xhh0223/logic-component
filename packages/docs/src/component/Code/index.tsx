@@ -21,8 +21,7 @@ export const Code = (props: { code: string; title: React.ReactNode; demo: React.
     extensions: [javascript({ jsx: true })],
     value: code,
     basicSetup: {
-      lineNumbers: true,
-      highlightActiveLineGutter: true,
+      lineNumbers: false,
     },
     onChange() {
       // @ts-ignore
@@ -54,10 +53,8 @@ export const Code = (props: { code: string; title: React.ReactNode; demo: React.
               setState({ visible: !state.visible })
             }}
           >
-            <Tooltip title={'展开代码'}>
+            <Tooltip title={!state.visible ? '展开代码' : '收起代码'}>
               <img style={{ display: state.visible ? 'none' : null }} height={14} src="/logic-component/unexpand.svg" />
-            </Tooltip>
-            <Tooltip title={'收起代码'}>
               <img style={{ display: !state.visible ? 'none' : null }} height={14} src="/logic-component/expand.svg" />
             </Tooltip>
           </div>

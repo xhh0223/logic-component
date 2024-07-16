@@ -29,23 +29,21 @@ html {
   }
 }
 
+.demo-container {
+  width: 100%;
+}
+
 .demo-code-container {
   flex: 1 1 unset;
 
   @media screen and (width >= 0) and (width <= 800px) {
-    flex-basis: 100%;
     min-width: 343px;
     width: 100%;
   }
 
-  @media screen and (width >= 800px) and (width <= 1440px) {
+  @media screen and (width >= 800px) {
     width: calc((100% - 16px) / 2);
-    min-width: calc((100% - 16px) / 2);
-  }
-
-  @media screen and (width >= 1440px) {
-    width: calc((100% - 32px) / 3);
-    min-width: calc((100% - 32px) / 3);
+    min-width: 343px;
   }
 }
 
