@@ -6,8 +6,8 @@ import { Flex } from 'antd'
 import classNames from 'classnames'
 import { NavLink } from 'react-router-dom'
 
-import { MobileMenu } from '../mobile-menu'
-export const Nav = () => {
+export const Nav = (props: { mobileMenu: React.ReactNode }) => {
+  const { mobileMenu } = props
   const isMobile = useScreen0_480()
 
   return (
@@ -28,13 +28,19 @@ export const Nav = () => {
         <h3>
           <NavLink to={RouterPath.selectSingle}>组件</NavLink>
         </h3>
+        <h3 className="nav-github">
+          <a
+            style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+            target="_blank"
+            href="https://github.com/xhh0223/logic-component"
+            rel="noreferrer"
+          >
+            <img style={{ width: 20, height: 20 }} src={'/logic-component/github.svg'} />
+            Github
+          </a>
+        </h3>
       </Flex>
-      <h3 className="nav-github">
-        <a target="_blank" href="https://github.com/xhh0223/logic-component" rel="noreferrer">
-          Github
-        </a>
-      </h3>
-      <MobileMenu />
+      {mobileMenu}
     </Flex>
   )
 }
