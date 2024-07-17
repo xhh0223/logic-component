@@ -2,8 +2,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build --emptyOutDir"
   },
   "license": "MIT"
 }

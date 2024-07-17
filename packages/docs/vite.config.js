@@ -10,8 +10,7 @@ export default defineConfig({
   plugins: [
     react(),
     visualizer({
-      // 打包完成后自动打开浏览器，显示产物体积报告
-      open: true,
+      open: false,
     }),
   ],
   resolve: {
