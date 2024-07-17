@@ -1,6 +1,7 @@
 import { Card, Flex } from 'antd'
 import { useRef } from 'react'
-import { EventBus, EventBusItem, EventBusRef } from 'react-logic-component'
+
+import { EventBus, EventBusItem, EventBusRef } from '~react-logic-component'
 
 import { EventType } from '../const'
 import SendMessageTable from './send-message-table'
