@@ -22,17 +22,17 @@ export default defineConfig({
   },
   build: {
     outDir: path.resolve(__dirname, 'dist'),
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (/node_modules/.test(id)) {
-            if (id.includes('refractor@3.6.0/node_modules/refractor')) {
-              return 'refractor@3.6.0'
-            }
-            return 'vendor'
-          }
-        },
-      },
-    },
+    // rollupOptions: {
+    //   output: {
+    //     manualChunks(id) {
+    //       if (/node_modules/.test(id)) {
+    //         if (id.includes('refractor@3.6.0/node_modules/refractor')) {
+    //           return 'refractor@3.6.0'
+    //         }
+    //         return 'vendor'
+    //       }
+    //     },
+    //   },
+    // },
   },
 })
