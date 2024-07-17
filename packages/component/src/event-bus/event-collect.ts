@@ -1,5 +1,3 @@
-import { cloneDeep } from 'lodash-es'
-
 import { Id } from '@/typing'
 
 import { IEventBusCollect, IEventBusItem, MultipleParams } from './typing'
@@ -29,7 +27,7 @@ export class EventBusCollect<Context = any> implements IEventBusCollect<Context>
     for (const item of this.collect.values()) {
       const dependencySet = new Set(item.onIds)
       if (item.onIds?.some((id) => idsMap.has(id))) {
-        item.on(cloneDeep(multipleParams.filter((item) => dependencySet.has(item.id))))
+        item.on(multipleParams.filter((item) => dependencySet.has(item.id)))
       }
     }
   }

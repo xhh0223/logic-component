@@ -13,7 +13,6 @@
     "@uiw/codemirror-theme-vscode": "^4.23.0",
     "@uiw/react-codemirror": "^4.23.0",
     "antd": "^5.17.0",
-    "classnames": "^2.3.2",
     "codemirror": "^6.0.1",
     "react-copy-to-clipboard": "^5.1.0",
     "react-logic-component": "1.0.2-alpha.2",
