@@ -9,6 +9,10 @@ html {
   min-width: 360px;
 }
 
+a {
+  color: #000;
+}
+
 .container {
   height: 100%;
 
@@ -19,11 +23,8 @@ html {
 }
 
 .side-menu {
-  max-width: 200px;
-
-  @media screen and (width <= 375px) {
-    display: none;
-  }
+  max-width: 20%;
+  min-width: 15em;
 }
 
 .cursor {
@@ -34,6 +35,6 @@ html {
   display: none;
 }
 
-.is-bold{
+.is-bold {
   font-weight: bold;
 }

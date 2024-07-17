@@ -1,10 +1,10 @@
 import { useScreen0_480 } from '@src/hooks/media'
 import { RouterPath } from '@src/router'
-import { Menu, MenuProps } from 'antd'
+import { Dropdown, MenuProps } from 'antd'
 import classNames from 'classnames'
 import { useEffect, useMemo } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-export const SideMenu = () => {
+export const MobileMenu = () => {
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
@@ -31,7 +31,7 @@ export const SideMenu = () => {
     navigate(defaultActiveMenuKey[1])
   }, [])
 
-  const sideMenuData: MenuProps['items'] = [
+  const menuData: MenuProps['items'] = [
     {
       key: MenuKey.introduce,
       label: <Link to={RouterPath.introduce}>介绍</Link>,
@@ -48,14 +48,9 @@ export const SideMenu = () => {
     },
   ]
   const isMobile = useScreen0_480()
-
   return (
-    <Menu
-      className={classNames(isMobile && 'is-hidden', !isMobile && 'side-menu')}
-      defaultSelectedKeys={defaultActiveMenuKey}
-      defaultOpenKeys={[MenuKey.introduce, MenuKey.setup, MenuKey.installation]}
-      mode="inline"
-      items={sideMenuData}
-    />
+    <Dropdown className={classNames(!isMobile && 'is-hidden')} menu={{ items: menuData }}>
+      <img width={14} height={14} src="/logic-component/menu.svg" />
+    </Dropdown>
   )
 }

@@ -1,5 +1,7 @@
+import { useScreen0_480 } from '@src/hooks/media'
 import { RouterPath } from '@src/router'
 import { Menu, MenuProps } from 'antd'
+import classNames from 'classnames'
 import { useEffect, useMemo } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 export const SideMenu = () => {
@@ -77,9 +79,10 @@ export const SideMenu = () => {
     },
   ]
 
+  const isMobile = useScreen0_480()
   return (
     <Menu
-      className="side-menu"
+      className={classNames(isMobile && 'is-hidden', !isMobile && 'side-menu')}
       defaultSelectedKeys={defaultActiveMenuKey}
       defaultOpenKeys={[MenuKey.select, MenuKey.treeSelect]}
       mode="inline"

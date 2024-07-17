@@ -1,5 +1,4 @@
 import { javascript } from '@codemirror/lang-javascript'
-import { useScreen_max1600, useScreen992_1600 } from '@src/hooks/media'
 import { okaidia } from '@uiw/codemirror-theme-okaidia'
 import { useCodeMirror } from '@uiw/react-codemirror'
 import { Card, Flex, message, Tooltip } from 'antd'
@@ -38,18 +37,8 @@ export const Code = (props: { className?: string; code: string; demo: React.Reac
     }
   }, [state.visible])
 
-  const isMediumScreen = useScreen992_1600()
-  const isLargeScreen = useScreen_max1600()
-
   return (
-    <div
-      className={cls(
-        isMediumScreen && style['container'],
-        isLargeScreen && style['large-container'],
-        !isMediumScreen && !isLargeScreen && style['mini-container'],
-        className,
-      )}
-    >
+    <div className={cls(className)}>
       <Card
         className={cls(state.visible && style[`content`])}
         classNames={{

@@ -4,6 +4,7 @@ import { Flex } from 'antd'
 import { useEffect } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
+import { MobileMenu } from './mobile-menu'
 import { SideMenu } from './side-menu'
 
 const index = () => {
@@ -19,7 +20,7 @@ const index = () => {
   }, [pathname])
   return (
     <div className="container">
-      <Nav />
+      <Nav mobileMenu={<MobileMenu />} />
       <Flex className="container-content">
         <SideMenu />
         <div
