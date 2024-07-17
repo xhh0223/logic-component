@@ -26,8 +26,8 @@
       "@src/*": [
         "src/*"
       ],
-      "~react-logic-component/*": [
-        "../component/src/*"
+      "~react-logic-component": [
+        "../component/src/index.ts"
       ],
       "@style/*": [
         "src/style/*"

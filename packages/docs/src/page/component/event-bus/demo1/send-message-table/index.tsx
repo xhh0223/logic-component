@@ -1,7 +1,8 @@
 import { Button, Empty, Flex, Form, Input, Select } from 'antd'
 import { flatten } from 'lodash-es'
 import { useState } from 'react'
-import { EventBusItem } from 'react-logic-component'
+
+import { EventBusItem } from '~react-logic-component'
 
 import { EventTable, EventType } from '../../const'
 
