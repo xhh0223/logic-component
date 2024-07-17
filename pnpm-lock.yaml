@@ -120,8 +120,8 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0(react@18.3.1)
       react-logic-component:
-        specifier: 1.0.2-alpha.2
-        version: 1.0.2-alpha.2
+        specifier: 1.0.2-alpha.3
+        version: 1.0.2-alpha.3
       react-markdown:
         specifier: ^9.0.1
         version: 9.0.1(@types/react@18.3.3)(react@18.3.1)
@@ -2936,8 +2936,8 @@ packages:
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
-  react-logic-component@1.0.2-alpha.2:
-    resolution: {integrity: sha512-y0BNHAB4SlwtYAevlTNdQnVBXMICkDxl2mmW/XiYv1SIGjXEa6Q5Hj5JTet/fwakGvUU0PxxCc/B6BC6eahsBg==}
+  react-logic-component@1.0.2-alpha.3:
+    resolution: {integrity: sha512-eM9pHTQHyKlHvvlMZZuM6fQ3n0DBK+EBqlOGykh4dyfecNJ8s+MtA55knvQfy3Ceqi+e/drcxHFtw4Yjgqvemw==}
 
   react-markdown@9.0.1:
     resolution: {integrity: sha512-186Gw/vF1uRkydbsOIkcGXw7aHq0sZOCRFFjGrr7b9+nVZg4UfA4enXCaxm4fUzecU38sWfrNDitGhshuU7rdg==}
@@ -7066,9 +7066,13 @@ snapshots:
 
   react-is@18.3.1: {}
 
-  react-logic-component@1.0.2-alpha.2:
+  react-logic-component@1.0.2-alpha.3:
     dependencies:
+      classnames: 2.5.1
       lodash-es: 4.17.21
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-router-dom: 6.23.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
   react-markdown@9.0.1(@types/react@18.3.3)(react@18.3.1):
     dependencies:
