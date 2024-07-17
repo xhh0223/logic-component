@@ -7,7 +7,7 @@ import cls from 'classnames'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
-import style from './index.module.scss'
+import style from './code.module.scss'
 
 export const Code = (props: { className?: string; code: string; demo: React.ReactNode }) => {
   const { demo, code, className } = props
