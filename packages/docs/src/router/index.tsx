@@ -1,6 +1,6 @@
 import { Flex, Spin } from 'antd'
 import { lazy, Suspense } from 'react'
-import { createHashRouter as createRouter } from 'react-router-dom'
+import { createBrowserRouter as createRouter, RouteObject } from 'react-router-dom'
 
 const wrapLoading = (importComponent) => {
   const LazyComponent = lazy(importComponent)
@@ -31,7 +31,7 @@ export enum RouterPath {
   installation = '/document/installation',
 }
 
-export const Router = createRouter([
+const config: RouteObject[] = [
   {
     path: '/',
     element: wrapLoading(() => import('@src/page/index')),
@@ -81,4 +81,6 @@ export const Router = createRouter([
       },
     ],
   },
-])
+]
+
+export const Router = createRouter(config, { basename: '/logic-component' })

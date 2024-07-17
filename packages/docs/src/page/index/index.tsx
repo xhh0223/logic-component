@@ -16,7 +16,7 @@ const Index = () => {
   }, [pathname])
   return (
     <div className="container">
-      <Nav />
+      <Nav mobileMenu={null} />
       <Flex className="container-content">
         <div
           style={{ height: '100%', overflow: 'auto', boxSizing: 'border-box', paddingBottom: 100, width: '100%' }}
