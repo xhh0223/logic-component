@@ -46,7 +46,7 @@ export const Code = (props: { className?: string; code: string; demo: React.Reac
         }}
       >
         {demo}
-        <Flex align="flex-end" justify="flex-end" gap={16}>
+        <Flex justify="flex-end" gap={16}>
           <div
             className="cursor"
             onClick={() => {
@@ -59,18 +59,18 @@ export const Code = (props: { className?: string; code: string; demo: React.Reac
             </Tooltip>
           </div>
 
-          <CopyToClipboard
-            text={code}
-            onCopy={() => {
-              message.success('复制成功')
-            }}
-          >
-            <Tooltip title={'复制代码'}>
-              <div className="cursor">
-                <img width={14} height={14} src="/logic-component/copy.svg" />
+          <Tooltip title={'复制代码'}>
+            <CopyToClipboard
+              text={code}
+              onCopy={() => {
+                message.success('复制成功')
+              }}
+            >
+              <div>
+                <img className="cursor" width={14} height={14} src="/logic-component/copy-black.svg" />
               </div>
-            </Tooltip>
-          </CopyToClipboard>
+            </CopyToClipboard>
+          </Tooltip>
         </Flex>
       </Card>
 

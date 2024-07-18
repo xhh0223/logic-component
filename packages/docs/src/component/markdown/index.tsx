@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useScreen0_480 } from '@src/hooks/media'
+import { message, Tooltip } from 'antd'
 import classNames from 'classnames'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ReactMarkdown from 'react-markdown'
 import { Prism } from 'react-syntax-highlighter'
 import { materialOceanic } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -36,13 +38,26 @@ export const Markdown = (props: { children: string }) => {
           const { children, className } = props
           const language = className.replace(/language-(\w+)/, '$1')
           return (
-            <Prism
-              className={classNames(small && style['font-12'], classNames(style['code'], className))}
-              language={language}
-              style={materialOceanic}
-            >
-              {String(children).replace(/\n$/, '')}
-            </Prism>
+            <div className={style['markdown-code-container']}>
+              <Prism
+                showLineNumbers
+                className={classNames(small && style['font-12'], classNames(style['markdown-code'], className))}
+                language={language}
+                style={materialOceanic}
+              >
+                {String(children).replace(/\n$/, '')}
+              </Prism>
+              <CopyToClipboard
+                text={children}
+                onCopy={() => {
+                  message.success('复制成功')
+                }}
+              >
+                <Tooltip title={'复制代码'}>
+                  <img className={classNames('cursor', style['copy'])} src="/logic-component/copy.svg" />
+                </Tooltip>
+              </CopyToClipboard>
+            </div>
           )
         },
       }}

@@ -18,10 +18,18 @@
   font-size: 12px;
 }
 
-.code {
+.markdown-code {
   border-radius: 0.5em;
+
+  &-container {
+    position: relative;
+  }
 }
 
-.small-code {
-  font-size: 12px;
+.copy {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  top: 10px;
+  right: 10px;
 }
