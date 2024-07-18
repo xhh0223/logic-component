@@ -7,6 +7,14 @@ html {
   height: 100vh;
   overflow-y: hidden;
   min-width: 360px;
+
+  @media screen and (width >= 0) and (width <= 480px) {
+    font-size: 12px;
+  }
+
+  @media screen and (width >= 480px) {
+    font-size: 14px;
+  }
 }
 
 a {

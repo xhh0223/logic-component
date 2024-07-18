@@ -1,12 +1,13 @@
-import Markdown from 'react-markdown'
+import ReactMarkdown from 'react-markdown'
 import { Prism } from 'react-syntax-highlighter'
 import { materialOceanic } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import remarkGfm from 'remark-gfm'
 
 const theme = materialOceanic
-export const MarkDown = (props: { children: string }) => {
+
+export const Markdown = (props: { children: string }) => {
   return (
-    <Markdown
+    <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       components={{
         code(props) {
@@ -31,6 +32,6 @@ export const MarkDown = (props: { children: string }) => {
       }}
     >
       {props.children}
-    </Markdown>
+    </ReactMarkdown>
   )
 }

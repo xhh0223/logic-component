@@ -1,2 +1,2 @@
-export { MarkDown } from './markdown'
+export { Markdown } from './markdown'
 export { Code } from './code'
