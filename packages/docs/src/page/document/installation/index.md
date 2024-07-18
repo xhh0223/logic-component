@@ -2,6 +2,6 @@
 # 安装
 ## npm
 使用npm安装
-```shell
+```bash
 npm i -D react-logic-component
 ```
