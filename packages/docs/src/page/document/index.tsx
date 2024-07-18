@@ -27,7 +27,7 @@ const index = () => {
           style={{
             height: '100%',
             overflow: 'auto',
-            marginLeft: 16,
+            padding: ' 0px 16px 100px',
             boxSizing: 'border-box',
             paddingBottom: 100,
             width: '80%',
