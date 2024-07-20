@@ -1,5 +1,5 @@
 export const Anchor = {
-  key: 'demo4',
-  title: 'demo4',
-  href: '#demo4',
+  key: 'demo5',
+  title: 'checkbox 重复点击不可取消',
+  href: '#demo5',
 }

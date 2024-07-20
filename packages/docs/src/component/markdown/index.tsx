@@ -23,16 +23,16 @@ export const Markdown = (props: { children: string }) => {
         h2(props) {
           const { className, ...rest } = props
 
-          return <h1 className={classNames(className, small && style['h2'])} {...rest} />
+          return <h2 className={classNames(className, small && style['h2'])} {...rest} />
         },
         h3(props) {
           const { className, ...rest } = props
 
-          return <h1 className={classNames(className, small && style['h3'])} {...rest} />
+          return <h3 className={classNames(className, small && style['h3'])} {...rest} />
         },
         h4(props) {
           const { className, ...rest } = props
-          return <h1 className={classNames(className, small && style['h4'])} {...rest} />
+          return <h4 className={classNames(className, small && style['h4'])} {...rest} />
         },
         code(props) {
           const { children, className } = props

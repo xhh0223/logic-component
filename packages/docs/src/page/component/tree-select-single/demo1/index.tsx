@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 
 import { TreeSelectSingle, TreeSelectSingleHandler, TreeSelectSingleItem } from '~react-logic-component'
 
-const treeData = genTreeData([2, 3, 3])
+const treeData = genTreeData([2, 3, 2])
 const list = transformTreeDataToList(treeData, [])
 
 const Demo1 = () => {
@@ -15,39 +15,34 @@ const Demo1 = () => {
   const ref = useRef<TreeSelectSingleHandler>()
 
   return (
-    <Flex component={'article'} vertical gap={12}>
-      <div className="is-bold">tree</div>
-      <Flex component={'section'} vertical gap={12}>
-        <TreeSelectSingle ref={ref}>
-          {list.map((i) => (
-            <TreeSelectSingleItem
-              key={i.id}
-              id={i.id}
-              parentId={i.parentId}
-              childrenIds={i.children?.map((i) => i.id)}
-              render={({ handler, id, isChecked }) => {
-                return (
-                  <Flex>
-                    <Checkbox
-                      onClick={() => {
-                        const value = handler.select(id)
+    <Flex component={'section'} vertical gap={12} style={{ width: 328 }}>
+      <TreeSelectSingle ref={ref}>
+        {list.map((i) => (
+          <TreeSelectSingleItem
+            key={i.id}
+            id={i.id}
+            parentId={i.parentId}
+            childrenIds={i.children?.map((i) => i.id)}
+            render={({ handler, id, isChecked }) => {
+              return (
+                <Checkbox
+                  onClick={() => {
+                    const value = handler.select(id)
 
-                        setState({ currentValue: value })
-                      }}
-                      checked={isChecked}
-                    >
-                      {id}
-                    </Checkbox>
-                  </Flex>
-                )
-              }}
-            />
-          ))}
-        </TreeSelectSingle>
-        <Flex vertical gap={8}>
-          <div>选项状态：</div>
-          <div>{JSON.stringify(state.currentValue)}</div>
-        </Flex>
+                    setState({ currentValue: value })
+                  }}
+                  checked={isChecked}
+                >
+                  {id}
+                </Checkbox>
+              )
+            }}
+          />
+        ))}
+      </TreeSelectSingle>
+      <Flex vertical gap={8}>
+        <div>选项状态：</div>
+        <div>{JSON.stringify(state.currentValue)}</div>
       </Flex>
     </Flex>
   )

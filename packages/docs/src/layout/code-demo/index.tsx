@@ -1,4 +1,4 @@
-import { Code } from '@src/component'
+import { Code, Markdown } from '@src/component'
 import { useScreen_max1680, useScreen0_480, useScreen480_1680 } from '@src/hooks/media'
 import { groupByNum } from '@src/utils'
 import Flex from 'antd/es/flex'
@@ -30,23 +30,33 @@ export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsR
 
   const groupComponents = groupByNum(Object.entries(components), splitNumber)
   return (
-    <Flex gap={16} wrap>
-      {groupComponents.map((group, index) => {
-        return (
-          <Flex flex={'1'} style={{ width: mapWidth[splitNumber], minWidth: 328 }} key={index} vertical gap={16}>
-            {group.map((item) => {
-              const [path, module] = item
-              // @ts-ignore
-              const Component = module.default
-              return (
-                <div key={path} id={metasMap.get(path).Anchor.key}>
-                  <Code demo={<Component />} code={componentsRawMap.get(path).default} />
-                </div>
-              )
-            })}
-          </Flex>
-        )
-      })}
-    </Flex>
+    <div>
+      <Markdown>{'## 演示'}</Markdown>
+      <Flex gap={16} wrap>
+        {groupComponents.map((group, index) => {
+          return (
+            <Flex
+              flex={'1'}
+              style={{ boxSizing: 'border-box', width: mapWidth[splitNumber], minWidth: 328 }}
+              key={index}
+              vertical
+              gap={16}
+            >
+              {group.map((item) => {
+                const [path, module] = item
+                // @ts-ignore
+                const Component = module.default
+                const Anchor = metasMap.get(path).Anchor
+                return (
+                  <div key={path} id={Anchor.key}>
+                    <Code title={Anchor.title} demo={<Component />} code={componentsRawMap.get(path).default} />
+                  </div>
+                )
+              })}
+            </Flex>
+          )
+        })}
+      </Flex>
+    </div>
   )
 }
