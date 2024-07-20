@@ -4,7 +4,7 @@ import { Id } from '@/typing'
 
 import { CommonTreeSelectItemProps, RequiredITreeSelectItem } from '../typing'
 
-export interface TreeSelectSingleRef<ValueType = any> {
+export interface TreeSelectSingleHandler<ValueType = any> {
   select: (id: Id, options?: { allowRepeatSelect?: boolean }) => RequiredITreeSelectItem<ValueType> | undefined
   getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>
   getAllItems: () => Array<RequiredITreeSelectItem<ValueType>>
@@ -13,13 +13,13 @@ export interface TreeSelectSingleRef<ValueType = any> {
 }
 export interface TreeSelectSingleProps<ValueType = any> {
   children: React.ReactNode
-  ref?: Ref<TreeSelectSingleRef<ValueType>>
+  ref?: Ref<TreeSelectSingleHandler<ValueType>>
 }
 
 export type TreeSelectSingleItemProps<ValueType> = CommonTreeSelectItemProps<ValueType> & {
   render: (
     params: RequiredITreeSelectItem<ValueType> & {
-      handler: TreeSelectSingleRef<ValueType>
+      handler: TreeSelectSingleHandler<ValueType>
     },
   ) => React.ReactNode
 }

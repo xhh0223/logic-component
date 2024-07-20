@@ -22,7 +22,7 @@ export interface IEventBusCollect<Context = any> {
   emit: <Params = any>(multipleParams: MultipleParams<Params>) => void
 }
 
-export type EventBusRef<Context = any> = {
+export type EventBusHandler<Context = any> = {
   emit: IEventBusCollect<Context>['emit']
   on: <Params>(params: { id: Id; onIds: Id[]; callback: (multipleParams: MultipleParams<Params>) => void }) => void
   off: (id: Id) => void
@@ -30,19 +30,19 @@ export type EventBusRef<Context = any> = {
   setContext: IEventBusCollect<Context>['setContext']
 }
 export interface EventBusProps<Context> {
-  initCallback?: (params: { handler: EventBusRef<Context> }) => void
+  initCallback?: (params: { handler: EventBusHandler<Context> }) => void
   children: React.ReactNode
-  ref?: Ref<EventBusRef<Context>>
+  ref?: Ref<EventBusHandler<Context>>
 }
 export interface EventBusItemProps<Params = any, Context = any> {
   key: Id
   id: Id
   onIds?: Id[]
-  initCallback?: (params: { handler: EventBusRef<Context> }) => void
+  initCallback?: (params: { handler: EventBusHandler<Context> }) => void
   render: (params: {
     id: Id
     onIdsParams: MultipleParams<Params>
-    handler: EventBusRef<Context>
+    handler: EventBusHandler<Context>
     context: Context
   }) => React.ReactNode
 }

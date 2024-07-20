@@ -3,6 +3,7 @@ import { okaidia } from '@uiw/codemirror-theme-okaidia'
 import { useCodeMirror } from '@uiw/react-codemirror'
 import { Card, Flex, message, Tooltip } from 'antd'
 import cls from 'classnames'
+import classNames from 'classnames'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
@@ -74,15 +75,7 @@ export const Code = (props: { className?: string; code: string; demo: React.Reac
         </Flex>
       </Card>
 
-      {state.visible && (
-        <Card
-          classNames={{
-            body: cls(state.visible && style[`code`]),
-          }}
-        >
-          <div ref={editor} />
-        </Card>
-      )}
+      <div className={classNames(!state.visible && 'is-hidden')} style={{ fontSize: 12 }} ref={editor} />
     </div>
   )
 }

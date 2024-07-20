@@ -4,14 +4,14 @@ import { Id } from '@/typing'
 
 import { EventBusCollectContext } from './context'
 import { EventBusCollect } from './event-collect'
-import { EventBusProps, EventBusRef, MultipleParams } from './typing'
+import { EventBusHandler, EventBusProps, MultipleParams } from './typing'
 
-const InnerEventBus = <Context,>(props: EventBusProps<Context>, ref: Ref<EventBusRef<Context>>) => {
+const InnerEventBus = <Context,>(props: EventBusProps<Context>, ref: Ref<EventBusHandler<Context>>) => {
   const { children, initCallback } = props
   const { current: collect } = useRef(new EventBusCollect<Context>())
 
   const innerHandler = useMemo(() => {
-    const handler: EventBusRef<Context> = {
+    const handler: EventBusHandler<Context> = {
       emit: <Params = any,>(multipleParams: MultipleParams<Params>) => {
         collect.emit(multipleParams)
       },

@@ -5,17 +5,17 @@ import { Id } from '@/typing'
 import { SelectCollect } from '../select-collect'
 import { RequiredITreeSelectItem } from '../typing'
 import { TreeSelectMultipleCollectContext } from './context'
-import { type TreeSelectMultipleProps, TreeSelectMultipleRef } from './typing'
+import { TreeSelectMultipleHandler, type TreeSelectMultipleProps } from './typing'
 
 const InnerTreeSelectMultiple = <ValueType,>(
-  props: TreeSelectMultipleProps<ValueType>,
-  ref: Ref<TreeSelectMultipleRef<ValueType>>,
+  props: TreeSelectMultipleProps,
+  ref: Ref<TreeSelectMultipleHandler<ValueType>>,
 ) => {
   const { children } = props
   const { current: collect } = useRef(new SelectCollect<ValueType>())
 
   const innerHandler = useMemo(() => {
-    const handler: TreeSelectMultipleRef<ValueType> = {
+    const handler: TreeSelectMultipleHandler<ValueType> = {
       getItems: (ids) => {
         const result: Array<RequiredITreeSelectItem<ValueType>> = []
         ids?.forEach((id) => {

@@ -4,7 +4,7 @@ import { Id } from '@/typing'
 
 import { RequiredISelectItem } from '../typing'
 
-export interface SelectSingleRef<ValueType = any> {
+export interface SelectSingleHandler<ValueType = any> {
   select: (id: Id, options?: { allowRepeatSelect?: boolean }) => RequiredISelectItem<ValueType> | undefined
   getItems: (id: Id[]) => Array<RequiredISelectItem<ValueType>>
   getAllItems: () => Array<RequiredISelectItem<ValueType>>
@@ -12,7 +12,7 @@ export interface SelectSingleRef<ValueType = any> {
 
 export interface SelectSingleProps<ValueType = any> {
   children: React.ReactNode
-  ref?: Ref<SelectSingleRef<ValueType>>
+  ref?: Ref<SelectSingleHandler<ValueType>>
 }
 
 export type SelectSingleItemProps<ValueType> = {
@@ -21,7 +21,7 @@ export type SelectSingleItemProps<ValueType> = {
   value?: ValueType
   render: (
     params: RequiredISelectItem<ValueType> & {
-      handler: SelectSingleRef<ValueType>
+      handler: SelectSingleHandler<ValueType>
     },
   ) => React.ReactNode
 }

@@ -40,9 +40,19 @@ a {
 }
 
 .is-hidden {
-  display: none;
+  display: none !important;
 }
 
 .is-bold {
   font-weight: bold;
+}
+
+.anchor-container {
+  position: sticky;
+  box-sizing: border-box;
+  padding: 5% 12px 0;
+  margin-left: auto;
+  max-width: 30em;
+  min-width: 10em;
+  top: 0;
 }

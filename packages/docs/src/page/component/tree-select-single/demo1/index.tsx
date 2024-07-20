@@ -2,7 +2,7 @@ import { genTreeData, transformTreeDataToList } from '@src/utils'
 import { Checkbox, Flex } from 'antd'
 import { useRef, useState } from 'react'
 
-import { TreeSelectSingle, TreeSelectSingleItem, TreeSelectSingleRef } from '~react-logic-component'
+import { TreeSelectSingle, TreeSelectSingleHandler, TreeSelectSingleItem } from '~react-logic-component'
 
 const treeData = genTreeData([2, 3, 3])
 const list = transformTreeDataToList(treeData, [])
@@ -12,7 +12,7 @@ const Demo1 = () => {
     currentValue: undefined,
   })
 
-  const ref = useRef<TreeSelectSingleRef>()
+  const ref = useRef<TreeSelectSingleHandler>()
 
   return (
     <Flex component={'article'} vertical gap={12}>

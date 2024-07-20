@@ -1,8 +1,13 @@
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 
-import { EventBusRef, IEventBusCollect } from './typing'
+import { EventBusHandler, IEventBusCollect } from './typing'
 
 export const EventBusCollectContext = createContext<{
   collect: IEventBusCollect<any>
-  handler: EventBusRef<any>
+  handler: EventBusHandler<any>
 }>(null!)
+
+export const useEventBus = <Context = any>() => {
+  const { handler } = useContext(EventBusCollectContext)
+  return handler as EventBusHandler<Context>
+}

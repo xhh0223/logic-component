@@ -1,13 +1,13 @@
 import { Flex } from 'antd'
 import { useRef, useState } from 'react'
 
-import { SelectSingle, SelectSingleItem, SelectSingleRef } from '~react-logic-component'
+import { SelectSingle, SelectSingleHandler, SelectSingleItem } from '~react-logic-component'
 const Demo4 = () => {
   const [state, setState] = useState({
     currentValue: undefined,
   })
 
-  const ref = useRef<SelectSingleRef>()
+  const ref = useRef<SelectSingleHandler>()
 
   return (
     <Flex component={'article'} vertical gap={12}>

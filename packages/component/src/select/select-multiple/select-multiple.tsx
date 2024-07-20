@@ -5,17 +5,17 @@ import { Id } from '@/typing'
 import { SelectCollect } from '../select-collect'
 import { RequiredISelectItem } from '../typing'
 import { SelectMultipleCollectContext } from './context'
-import { type SelectMultipleProps, SelectMultipleRef } from './typing'
+import { SelectMultipleHandler, type SelectMultipleProps } from './typing'
 
 const InnerSelectMultiple = <ValueType,>(
   props: SelectMultipleProps<ValueType>,
-  ref: Ref<SelectMultipleRef<ValueType>>,
+  ref: Ref<SelectMultipleHandler<ValueType>>,
 ) => {
   const { children } = props
   const { current: collect } = useRef(new SelectCollect<ValueType>())
 
   const innerHandler = useMemo(() => {
-    const handler: SelectMultipleRef<ValueType> = {
+    const handler: SelectMultipleHandler<ValueType> = {
       getItems: (ids: Id[]) => {
         const result: Array<RequiredISelectItem<ValueType>> = []
         ids?.forEach((id) => {

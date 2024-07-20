@@ -1,9 +1,14 @@
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 
 import { type ISelectCollect } from '../typing'
-import { TreeSelectMultipleRef } from './typing'
+import { TreeSelectMultipleHandler } from './typing'
 
 export const TreeSelectMultipleCollectContext = createContext<{
   collect: ISelectCollect<any>
-  handler: TreeSelectMultipleRef<any>
+  handler: TreeSelectMultipleHandler<any>
 }>(null!)
+
+export const useTreeSelectMultiple = <ValueType = any>() => {
+  const { handler } = useContext(TreeSelectMultipleCollectContext)
+  return handler as TreeSelectMultipleHandler<ValueType>
+}
