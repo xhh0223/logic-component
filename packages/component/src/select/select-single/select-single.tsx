@@ -5,13 +5,16 @@ import { Id } from '@/typing'
 import { SelectCollect } from '../select-collect'
 import { RequiredISelectItem } from '../typing'
 import { SelectSingleCollectContext } from './context'
-import { type SelectSingleProps, SelectSingleRef } from './typing'
+import { SelectSingleHandler, type SelectSingleProps } from './typing'
 
-const InnerSelectSingle = <ValueType,>(props: SelectSingleProps<ValueType>, ref: Ref<SelectSingleRef<ValueType>>) => {
+const InnerSelectSingle = <ValueType,>(
+  props: SelectSingleProps<ValueType>,
+  ref: Ref<SelectSingleHandler<ValueType>>,
+) => {
   const { children } = props
   const { current: collect } = useRef(new SelectCollect<ValueType>())
   const innerHandler = useMemo(() => {
-    const handler: SelectSingleRef<ValueType> = {
+    const handler: SelectSingleHandler<ValueType> = {
       getItems: (ids: Id[]) => {
         const result: Array<RequiredISelectItem<ValueType>> = []
 

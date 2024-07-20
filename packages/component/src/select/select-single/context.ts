@@ -1,9 +1,14 @@
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 
 import { ISelectCollect } from '../typing'
-import { SelectSingleRef } from './typing'
+import { SelectSingleHandler } from './typing'
 
 export const SelectSingleCollectContext = createContext<{
   collect: ISelectCollect<any>
-  handler: SelectSingleRef<any>
+  handler: SelectSingleHandler<any>
 }>(null!)
+
+export const useSelectSingle = <ValueType = any>() => {
+  const { handler } = useContext(SelectSingleCollectContext)
+  return handler as SelectSingleHandler<ValueType>
+}

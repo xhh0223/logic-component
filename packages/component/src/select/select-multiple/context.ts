@@ -1,9 +1,14 @@
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 
 import { type ISelectCollect } from '../typing'
-import { SelectMultipleRef } from './typing'
+import { SelectMultipleHandler } from './typing'
 
 export const SelectMultipleCollectContext = createContext<{
   collect: ISelectCollect<any>
-  handler: SelectMultipleRef<any>
+  handler: SelectMultipleHandler<any>
 }>(null!)
+
+export const useSelectMultiple = <ValueType = any>() => {
+  const { handler } = useContext(SelectMultipleCollectContext)
+  return handler as SelectMultipleHandler<ValueType>
+}

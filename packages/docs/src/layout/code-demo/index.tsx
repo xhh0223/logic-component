@@ -3,8 +3,8 @@ import { useScreen_max1680, useScreen0_480, useScreen480_1680 } from '@src/hooks
 import { groupByNum } from '@src/utils'
 import Flex from 'antd/es/flex'
 
-export const CodeMemo = (props: { components: any[]; componentsRawMap: any }) => {
-  const { components, componentsRawMap } = props
+export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsRawMap: any }) => {
+  const { components, componentsRawMap, metasMap } = props
   const small = useScreen0_480()
   const medium = useScreen480_1680()
   const large = useScreen_max1680()
@@ -38,7 +38,11 @@ export const CodeMemo = (props: { components: any[]; componentsRawMap: any }) =>
               const [path, module] = item
               // @ts-ignore
               const Component = module.default
-              return <Code key={path} demo={<Component />} code={componentsRawMap.get(path).default} />
+              return (
+                <div key={path} id={metasMap.get(path).Anchor.key}>
+                  <Code demo={<Component />} code={componentsRawMap.get(path).default} />
+                </div>
+              )
             })}
           </Flex>
         )

@@ -2,7 +2,7 @@ import { genTreeData } from '@src/utils'
 import { Checkbox, Flex, Tag } from 'antd'
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 
-import { TreeSelectMultiple, TreeSelectMultipleItem, TreeSelectMultipleRef } from '~react-logic-component'
+import { TreeSelectMultiple, TreeSelectMultipleHandler, TreeSelectMultipleItem } from '~react-logic-component'
 
 const Demo2 = () => {
   const [isUpdate, update] = useState({})
@@ -10,7 +10,7 @@ const Demo2 = () => {
 
   const [everyLevelData, setEveryLevelData] = useState([genTreeData([5, 3, 3])])
 
-  const ref = useRef<TreeSelectMultipleRef>()
+  const ref = useRef<TreeSelectMultipleHandler>()
 
   useLayoutEffect(() => {
     const ids = [...map.values()]?.filter((i) => i.isChecked)?.map((i) => i.id)

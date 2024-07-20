@@ -3,13 +3,14 @@ import { okaidia } from '@uiw/codemirror-theme-okaidia'
 import { useCodeMirror } from '@uiw/react-codemirror'
 import { Card, Flex, message, Tooltip } from 'antd'
 import cls from 'classnames'
+import classNames from 'classnames'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import style from './code.module.scss'
 
-export const Code = (props: { className?: string; code: string; demo: React.ReactNode }) => {
-  const { demo, code, className } = props
+export const Code = (props: { code: string; demo: React.ReactNode }) => {
+  const { demo, code } = props
   const [state, setState] = useState({
     visible: false,
   })
@@ -38,7 +39,7 @@ export const Code = (props: { className?: string; code: string; demo: React.Reac
   }, [state.visible])
 
   return (
-    <div className={cls(className)}>
+    <div>
       <Card
         className={cls(state.visible && style[`content`])}
         classNames={{
@@ -46,7 +47,7 @@ export const Code = (props: { className?: string; code: string; demo: React.Reac
         }}
       >
         {demo}
-        <Flex align="flex-end" justify="flex-end" gap={16}>
+        <Flex justify="flex-end" gap={16}>
           <div
             className="cursor"
             onClick={() => {
@@ -59,30 +60,21 @@ export const Code = (props: { className?: string; code: string; demo: React.Reac
             </Tooltip>
           </div>
 
-          <CopyToClipboard
-            text={code}
-            onCopy={() => {
-              message.success('复制成功')
-            }}
-          >
-            <Tooltip title={'复制代码'}>
-              <div className="cursor">
-                <img width={14} height={14} src="/logic-component/copy.svg" />
+          <Tooltip title={'复制代码'}>
+            <CopyToClipboard
+              text={code}
+              onCopy={() => {
+                message.success('复制成功')
+              }}
+            >
+              <div>
+                <img className="cursor" width={14} height={14} src="/logic-component/copy-black.svg" />
               </div>
-            </Tooltip>
-          </CopyToClipboard>
+            </CopyToClipboard>
+          </Tooltip>
         </Flex>
       </Card>
-
-      {state.visible && (
-        <Card
-          classNames={{
-            body: cls(state.visible && style[`code`]),
-          }}
-        >
-          <div ref={editor} />
-        </Card>
-      )}
+      <div className={classNames(!state.visible && 'is-hidden')} style={{ fontSize: 12 }} ref={editor} />
     </div>
   )
 }

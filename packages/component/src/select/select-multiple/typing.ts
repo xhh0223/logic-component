@@ -4,7 +4,7 @@ import { Id } from '@/typing'
 
 import { MultipleOptions, RequiredISelectItem } from '../typing'
 
-export interface SelectMultipleRef<ValueType = any> {
+export interface SelectMultipleHandler<ValueType = any> {
   select(multipleParams: MultipleOptions): Array<RequiredISelectItem<ValueType>>
   cancel(id: Id[]): Array<RequiredISelectItem<ValueType>>
   getItems(id: Id[]): Array<RequiredISelectItem<ValueType>>
@@ -13,7 +13,7 @@ export interface SelectMultipleRef<ValueType = any> {
 
 export interface SelectMultipleProps<ValueType = any> {
   children: React.ReactNode
-  ref?: Ref<SelectMultipleRef<ValueType>>
+  ref?: Ref<SelectMultipleHandler<ValueType>>
 }
 
 export type SelectMultipleItemProps<ValueType> = {
@@ -22,7 +22,7 @@ export type SelectMultipleItemProps<ValueType> = {
   value?: ValueType
   render: (
     params: RequiredISelectItem<ValueType> & {
-      handler: SelectMultipleRef<ValueType>
+      handler: SelectMultipleHandler<ValueType>
     },
   ) => React.ReactNode
 }

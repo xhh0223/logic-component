@@ -1,12 +1,12 @@
 import { Card, Flex } from 'antd'
 import { useRef } from 'react'
 
-import { EventBus, EventBusItem, EventBusRef } from '~react-logic-component'
+import { EventBus, EventBusHandler, EventBusItem } from '~react-logic-component'
 
 import { EventType } from '../const'
 import SendMessageTable from './send-message-table'
 const Demo1 = () => {
-  const ref = useRef<EventBusRef>()
+  const ref = useRef<EventBusHandler>()
 
   return (
     <EventBus ref={ref}>

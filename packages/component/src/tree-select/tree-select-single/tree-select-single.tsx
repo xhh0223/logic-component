@@ -5,16 +5,16 @@ import { Id } from '@/typing'
 import { SelectCollect } from '../select-collect'
 import { RequiredITreeSelectItem } from '../typing'
 import { TreeSelectSingleCollectContext } from './context'
-import { type TreeSelectSingleProps, TreeSelectSingleRef } from './typing'
+import { TreeSelectSingleHandler, type TreeSelectSingleProps } from './typing'
 
 const InnerTreeSelectSingle = <ValueType,>(
   props: TreeSelectSingleProps<ValueType>,
-  ref: Ref<TreeSelectSingleRef<ValueType>>,
+  ref: Ref<TreeSelectSingleHandler<ValueType>>,
 ) => {
   const { children } = props
   const { current: collect } = useRef(new SelectCollect<ValueType>())
   const innerHandler = useMemo(() => {
-    const handler: TreeSelectSingleRef<ValueType> = {
+    const handler: TreeSelectSingleHandler<ValueType> = {
       getItems: (ids) => {
         const result: Array<RequiredITreeSelectItem<ValueType>> = []
         ids?.forEach((id) => {

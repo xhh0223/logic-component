@@ -2,7 +2,7 @@ import { genTreeData } from '@src/utils'
 import { Checkbox, Flex, Tag } from 'antd'
 import { useLayoutEffect, useRef, useState } from 'react'
 
-import { TreeSelectSingle, TreeSelectSingleItem, TreeSelectSingleRef } from '~react-logic-component'
+import { TreeSelectSingle, TreeSelectSingleHandler, TreeSelectSingleItem } from '~react-logic-component'
 
 const Demo2 = () => {
   const [state, setState] = useState({
@@ -10,7 +10,7 @@ const Demo2 = () => {
   })
   const [everyLevelData, setEveryLevelData] = useState([genTreeData([5, 3, 3])])
 
-  const ref = useRef<TreeSelectSingleRef>()
+  const ref = useRef<TreeSelectSingleHandler>()
 
   useLayoutEffect(() => {
     if (state.currentValue?.isChecked) {

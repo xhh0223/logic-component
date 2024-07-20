@@ -4,7 +4,7 @@ import { Id } from '@/typing'
 
 import { CommonTreeSelectItemProps, MultipleOptions, RequiredITreeSelectItem } from '../typing'
 
-export interface TreeSelectMultipleRef<ValueType = any> {
+export interface TreeSelectMultipleHandler<ValueType = any> {
   select: (multipleOptions: MultipleOptions) => Array<RequiredITreeSelectItem<ValueType>>
   cancel: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>
   getItems: (ids: Id[]) => Array<RequiredITreeSelectItem<ValueType>>
@@ -15,13 +15,13 @@ export interface TreeSelectMultipleRef<ValueType = any> {
 
 export interface TreeSelectMultipleProps<ValueType = any> {
   children: React.ReactNode
-  ref?: Ref<TreeSelectMultipleRef<ValueType>>
+  ref: Ref<TreeSelectMultipleHandler<ValueType>>
 }
 
 export type TreeSelectMultipleItemProps<ValueType> = CommonTreeSelectItemProps<ValueType> & {
   render: (
     params: RequiredITreeSelectItem<ValueType> & {
-      handler: TreeSelectMultipleRef<ValueType>
+      handler: TreeSelectMultipleHandler<ValueType>
     },
   ) => React.ReactNode
 }
