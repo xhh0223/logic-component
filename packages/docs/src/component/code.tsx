@@ -9,8 +9,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import style from './code.module.scss'
 
-export const Code = (props: { className?: string; code: string; demo: React.ReactNode }) => {
-  const { demo, code, className } = props
+export const Code = (props: { code: string; demo: React.ReactNode }) => {
+  const { demo, code } = props
   const [state, setState] = useState({
     visible: false,
   })
@@ -39,7 +39,7 @@ export const Code = (props: { className?: string; code: string; demo: React.Reac
   }, [state.visible])
 
   return (
-    <div className={cls(className)}>
+    <div>
       <Card
         className={cls(state.visible && style[`content`])}
         classNames={{
@@ -74,7 +74,6 @@ export const Code = (props: { className?: string; code: string; demo: React.Reac
           </Tooltip>
         </Flex>
       </Card>
-
       <div className={classNames(!state.visible && 'is-hidden')} style={{ fontSize: 12 }} ref={editor} />
     </div>
   )

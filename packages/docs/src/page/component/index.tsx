@@ -1,3 +1,4 @@
+import { AnchorID } from '@src/constant'
 import { useScreen0_480 } from '@src/hooks/media'
 import { Nav } from '@src/layout'
 import { RouterPath } from '@src/router'
@@ -5,6 +6,8 @@ import { Anchor, Flex } from 'antd'
 import classNames from 'classnames'
 import { useEffect } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+
+import { EventBusItem } from '~react-logic-component'
 
 import { MobileMenu } from './mobile-menu'
 import { SideMenu } from './side-menu'
@@ -41,19 +44,13 @@ const Index = () => {
             <Outlet />
           </div>
           <div className={classNames(small && 'is-hidden', 'anchor-container')}>
-            <Anchor
-              items={[
-                {
-                  key: '1',
-                  href: '#components-anchor-demo-basic',
-                  title: 'Basic demo',
-                },
-                {
-                  key: '2',
-                  href: '#components-anchor-demo-static',
-                  title: 'Static demo',
-                },
-              ]}
+            <EventBusItem
+              id={AnchorID.component}
+              key={AnchorID.component}
+              onIds={[AnchorID.component]}
+              render={({ onIdsParams }) => {
+                return onIdsParams?.length ? <Anchor items={onIdsParams[0].params as any} /> : null
+              }}
             />
           </div>
         </Flex>
