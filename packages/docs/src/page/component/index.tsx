@@ -13,14 +13,14 @@ import { MobileMenu } from './mobile-menu'
 import { SideMenu } from './side-menu'
 
 const Index = () => {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   const navigate = useNavigate()
 
   useEffect(() => {
     if ([RouterPath.component, RouterPath.root, RouterPath.document].includes(pathname as RouterPath)) {
-      return navigate(RouterPath.selectSingle)
+      return navigate(`${RouterPath.selectSingle}${hash}`)
     } else if (!Object.values(RouterPath).includes(pathname as RouterPath)) {
-      return navigate(RouterPath.selectSingle)
+      return navigate(`${RouterPath.selectSingle}${hash}`)
     }
   }, [pathname])
 
@@ -40,7 +40,7 @@ const Index = () => {
             padding: '0 16px 100px 16px',
           }}
         >
-          <div style={{ height: 'fit-content' }}>
+          <div style={{ height: 'fit-content', flexGrow: '1', maxWidth: '100%' }}>
             <Outlet />
           </div>
           <div className={classNames(small && 'is-hidden', 'anchor-container')}>
@@ -48,8 +48,21 @@ const Index = () => {
               id={AnchorID.component}
               key={AnchorID.component}
               onIds={[AnchorID.component]}
-              render={({ onIdsParams }) => {
-                return onIdsParams?.length ? <Anchor items={onIdsParams[0].params as any} /> : null
+              render={({ onIdsParams, handler }) => {
+                return onIdsParams?.length ? (
+                  <Anchor
+                    onClick={(_, linkInfo) => {
+                      handler.emit(
+                        // @ts-ignore
+                        onIdsParams[0].params?.map((i) => ({
+                          id: i.key,
+                          params: { isActive: linkInfo.href === i.href },
+                        })),
+                      )
+                    }}
+                    items={onIdsParams[0].params as any}
+                  />
+                ) : null
               }}
             />
           </div>

@@ -90,11 +90,11 @@ const InnerTreeSelectSingle = <ValueType,>(
         })
 
         const res: RequiredITreeSelectItem<ValueType> = {
-          id: item.id,
+          id,
           isChecked: collect.getItem(id).isChecked,
-          value: item.value,
-          childrenIds: item.childrenIds,
-          parentId: item.parentId,
+          value: collect.getItem(id).value,
+          childrenIds: collect.getItem(id).childrenIds,
+          parentId: collect.getItem(id).parentId,
         }
         return res
       },

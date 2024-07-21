@@ -61,9 +61,9 @@ const InnerSelectSingle = <ValueType,>(
           }
         })
         const result: RequiredISelectItem<ValueType> = {
-          isChecked: item.isChecked,
-          value: item.value,
-          id: item.id,
+          isChecked: collect.getItem(id).isChecked,
+          value: collect.getItem(id).value,
+          id,
         }
         return result
       },

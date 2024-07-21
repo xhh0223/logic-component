@@ -1,16 +1,17 @@
 import { javascript } from '@codemirror/lang-javascript'
+import { Code } from '@src/component'
 import { okaidia } from '@uiw/codemirror-theme-okaidia'
 import { useCodeMirror } from '@uiw/react-codemirror'
-import { Card, Flex, message, Tooltip } from 'antd'
+import { Card, Divider, Flex, message, Tooltip } from 'antd'
 import cls from 'classnames'
 import classNames from 'classnames'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
-import style from './code.module.scss'
+import style from './code-demo-card.module.scss'
 
-export const Code = (props: { code: string; demo: React.ReactNode }) => {
-  const { demo, code } = props
+export const CodeDemoCard = (props: { title: string; isActive: boolean; code: string; demo: React.ReactNode }) => {
+  const { demo, code, title, isActive } = props
   const [state, setState] = useState({
     visible: false,
   })
@@ -39,14 +40,13 @@ export const Code = (props: { code: string; demo: React.ReactNode }) => {
   }, [state.visible])
 
   return (
-    <div>
-      <Card
-        className={cls(state.visible && style[`content`])}
-        classNames={{
-          body: cls(state.visible && style[`content`]),
-        }}
-      >
-        {demo}
+    <Card
+      className={cls(isActive && style['is-active'])}
+      classNames={{
+        body: style['body'],
+      }}
+      title={title}
+      extra={
         <Flex justify="flex-end" gap={16}>
           <div
             className="cursor"
@@ -73,8 +73,13 @@ export const Code = (props: { code: string; demo: React.ReactNode }) => {
             </CopyToClipboard>
           </Tooltip>
         </Flex>
-      </Card>
-      <div className={classNames(!state.visible && 'is-hidden')} style={{ fontSize: 12 }} ref={editor} />
-    </div>
+      }
+    >
+      <div className={style.demo}> {demo}</div>
+      {state.visible && <Divider className={style.divider} />}
+      <div className={classNames(!state.visible && 'is-hidden', style.code)}>
+        <Code code={code} />
+      </div>
+    </Card>
   )
 }

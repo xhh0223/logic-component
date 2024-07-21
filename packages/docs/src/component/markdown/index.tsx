@@ -6,6 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ReactMarkdown from 'react-markdown'
 import { Prism } from 'react-syntax-highlighter'
 import { materialOceanic } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 
 import style from './index.module.scss'
@@ -14,6 +15,7 @@ export const Markdown = (props: { children: string }) => {
   const small = useScreen0_480()
   return (
     <ReactMarkdown
+      rehypePlugins={[rehypeRaw]}
       remarkPlugins={[remarkGfm]}
       components={{
         h1(props) {
@@ -23,16 +25,16 @@ export const Markdown = (props: { children: string }) => {
         h2(props) {
           const { className, ...rest } = props
 
-          return <h1 className={classNames(className, small && style['h2'])} {...rest} />
+          return <h2 className={classNames(className, small && style['h2'])} {...rest} />
         },
         h3(props) {
           const { className, ...rest } = props
 
-          return <h1 className={classNames(className, small && style['h3'])} {...rest} />
+          return <h3 className={classNames(className, small && style['h3'])} {...rest} />
         },
         h4(props) {
           const { className, ...rest } = props
-          return <h1 className={classNames(className, small && style['h4'])} {...rest} />
+          return <h4 className={classNames(className, small && style['h4'])} {...rest} />
         },
         code(props) {
           const { children, className } = props

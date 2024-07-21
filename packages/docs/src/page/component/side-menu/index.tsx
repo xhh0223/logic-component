@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { useEffect, useMemo } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 export const SideMenu = () => {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   const navigate = useNavigate()
 
   const MenuKey = {
@@ -37,7 +37,7 @@ export const SideMenu = () => {
   }, [])
 
   useEffect(() => {
-    navigate(defaultActiveMenuKey[1])
+    navigate(`${defaultActiveMenuKey[1]}${hash}`)
   }, [])
 
   const sideMenuData: MenuProps['items'] = [

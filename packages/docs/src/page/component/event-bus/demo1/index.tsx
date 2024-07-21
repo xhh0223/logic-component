@@ -5,7 +5,7 @@ import { EventBus, EventBusHandler, EventBusItem } from '~react-logic-component'
 
 import { EventType } from '../const'
 import SendMessageTable from './send-message-table'
-const Demo1 = () => {
+const App = () => {
   const ref = useRef<EventBusHandler>()
 
   return (
@@ -202,4 +202,4 @@ const Demo1 = () => {
   )
 }
 
-export default Demo1
+export default App

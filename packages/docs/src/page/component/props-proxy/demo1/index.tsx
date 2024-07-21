@@ -2,7 +2,7 @@ import { Flex, Spin } from 'antd'
 
 import { PropsProxy } from '~react-logic-component'
 
-const Demo1 = () => {
+const App = () => {
   return (
     <Flex component={'article'} vertical gap={12}>
       <div className="is-bold">loading场景</div>
@@ -35,4 +35,4 @@ const Demo1 = () => {
   )
 }
 
-export default Demo1
+export default App
