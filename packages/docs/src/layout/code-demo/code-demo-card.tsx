@@ -1,4 +1,5 @@
 import { javascript } from '@codemirror/lang-javascript'
+import { Code } from '@src/component'
 import { okaidia } from '@uiw/codemirror-theme-okaidia'
 import { useCodeMirror } from '@uiw/react-codemirror'
 import { Card, Divider, Flex, message, Tooltip } from 'antd'
@@ -7,9 +8,9 @@ import classNames from 'classnames'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
-import style from './code.module.scss'
+import style from './code-demo-card.module.scss'
 
-export const Code = (props: { title: string; isActive: boolean; code: string; demo: React.ReactNode }) => {
+export const CodeDemoCard = (props: { title: string; isActive: boolean; code: string; demo: React.ReactNode }) => {
   const { demo, code, title, isActive } = props
   const [state, setState] = useState({
     visible: false,
@@ -76,7 +77,9 @@ export const Code = (props: { title: string; isActive: boolean; code: string; de
     >
       <div className={style.demo}> {demo}</div>
       {state.visible && <Divider className={style.divider} />}
-      <div className={classNames(!state.visible && 'is-hidden', style.code)} ref={editor} />
+      <div className={classNames(!state.visible && 'is-hidden', style.code)}>
+        <Code code={code} />
+      </div>
     </Card>
   )
 }

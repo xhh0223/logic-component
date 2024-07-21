@@ -4,7 +4,7 @@ import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { TreeSelectMultiple, TreeSelectMultipleHandler, TreeSelectMultipleItem } from '~react-logic-component'
 
-const Demo2 = () => {
+const App = () => {
   const [isUpdate, update] = useState({})
   const map = useMemo(() => new Map(), [])
 
@@ -77,4 +77,4 @@ const Demo2 = () => {
   )
 }
 
-export default Demo2
+export default App

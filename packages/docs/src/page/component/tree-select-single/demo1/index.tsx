@@ -7,7 +7,7 @@ import { TreeSelectSingle, TreeSelectSingleHandler, TreeSelectSingleItem } from 
 const treeData = genTreeData([2, 3, 2])
 const list = transformTreeDataToList(treeData, [])
 
-const Demo1 = () => {
+const App = () => {
   const [state, setState] = useState({
     currentValue: undefined,
   })
@@ -48,4 +48,4 @@ const Demo1 = () => {
   )
 }
 
-export default Demo1
+export default App

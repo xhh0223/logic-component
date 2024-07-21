@@ -2,7 +2,7 @@ import { Card, Flex } from 'antd'
 import { useRef, useState } from 'react'
 
 import { SelectSingle, SelectSingleHandler, SelectSingleItem } from '~react-logic-component'
-const Demo5 = () => {
+const App = () => {
   const [state, setState] = useState({
     currentValue: undefined,
   })
@@ -48,4 +48,4 @@ const Demo5 = () => {
   )
 }
 
-export default Demo5
+export default App

@@ -2,7 +2,7 @@ import { Flex } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 
 import { SelectMultiple, SelectMultipleHandler, SelectMultipleItem } from '~react-logic-component'
-const Demo3 = () => {
+const App = () => {
   const [state, setState] = useState({
     currentValue: [],
   })
@@ -52,4 +52,4 @@ const Demo3 = () => {
   )
 }
 
-export default Demo3
+export default App

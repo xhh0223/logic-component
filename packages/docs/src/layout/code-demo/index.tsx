@@ -1,10 +1,11 @@
-import { Code, Markdown } from '@src/component'
+import { Markdown } from '@src/component'
 import { useScreen_max1680, useScreen0_480, useScreen480_1680 } from '@src/hooks/media'
 import { groupByNum } from '@src/utils'
 import Flex from 'antd/es/flex'
 
 import { EventBusItem } from '~react-logic-component'
 
+import { CodeDemoCard } from './code-demo-card'
 export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsRawMap: any }) => {
   const { components, componentsRawMap, metasMap } = props
   const small = useScreen0_480()
@@ -18,8 +19,8 @@ export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsR
 
   const mapWidth = {
     1: '100%',
-    2: 'calc(100% - 16px) / 2',
-    3: 'calc(100% - 32px) / 3',
+    2: 'calc( (100% - 16px) / 2 )',
+    3: 'calc( (100% - 32px) / 3 )',
   }
 
   const splitNumber = (() => {
@@ -39,7 +40,11 @@ export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsR
           return (
             <Flex
               flex={'1'}
-              style={{ boxSizing: 'border-box', width: mapWidth[splitNumber], minWidth: 328 }}
+              style={{
+                boxSizing: 'border-box',
+                minWidth: 328,
+                width: mapWidth[splitNumber],
+              }}
               key={index}
               vertical
               gap={16}
@@ -55,16 +60,18 @@ export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsR
                     key={Anchor.key}
                     onIds={[Anchor.key]}
                     id={Anchor.key}
-                    render={({ onIdsParams }) => {
+                    render={({ id, onIdsParams }) => {
                       // @ts-ignore
                       const isActive = onIdsParams?.[0]?.params?.isActive
                       return (
-                        <Code
-                          isActive={isActive}
-                          title={Anchor.title}
-                          demo={<Component />}
-                          code={componentsRawMap.get(path).default}
-                        />
+                        <div id={id}>
+                          <CodeDemoCard
+                            isActive={isActive}
+                            title={Anchor.title}
+                            demo={<Component />}
+                            code={componentsRawMap.get(path).default}
+                          />
+                        </div>
                       )
                     }}
                   />

@@ -2,7 +2,7 @@ import { Flex } from 'antd'
 import { useRef, useState } from 'react'
 
 import { SelectSingle, SelectSingleHandler, SelectSingleItem } from '~react-logic-component'
-const Demo1 = () => {
+const App = () => {
   const [state, setState] = useState({
     currentValue: undefined,
   })
@@ -43,4 +43,4 @@ const Demo1 = () => {
   )
 }
 
-export default Demo1
+export default App

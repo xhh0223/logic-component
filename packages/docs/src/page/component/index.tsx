@@ -40,7 +40,7 @@ const Index = () => {
             padding: '0 16px 100px 16px',
           }}
         >
-          <div style={{ height: 'fit-content' }}>
+          <div style={{ height: 'fit-content', flexGrow: '1', maxWidth: '100%' }}>
             <Outlet />
           </div>
           <div className={classNames(small && 'is-hidden', 'anchor-container')}>
