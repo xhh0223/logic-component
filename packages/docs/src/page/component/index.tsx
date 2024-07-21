@@ -13,14 +13,14 @@ import { MobileMenu } from './mobile-menu'
 import { SideMenu } from './side-menu'
 
 const Index = () => {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   const navigate = useNavigate()
 
   useEffect(() => {
     if ([RouterPath.component, RouterPath.root, RouterPath.document].includes(pathname as RouterPath)) {
-      return navigate(RouterPath.selectSingle)
+      return navigate(`${RouterPath.selectSingle}${hash}`)
     } else if (!Object.values(RouterPath).includes(pathname as RouterPath)) {
-      return navigate(RouterPath.selectSingle)
+      return navigate(`${RouterPath.selectSingle}${hash}`)
     }
   }, [pathname])
 
