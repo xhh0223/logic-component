@@ -1,5 +1,5 @@
 export const Anchor = {
-  key: 'demo6',
+  key: 'demo5',
   title: '可勾选卡片',
-  href: '#demo6',
+  href: '#demo5',
 }

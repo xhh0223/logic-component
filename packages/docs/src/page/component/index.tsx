@@ -48,8 +48,21 @@ const Index = () => {
               id={AnchorID.component}
               key={AnchorID.component}
               onIds={[AnchorID.component]}
-              render={({ onIdsParams }) => {
-                return onIdsParams?.length ? <Anchor items={onIdsParams[0].params as any} /> : null
+              render={({ onIdsParams, handler }) => {
+                return onIdsParams?.length ? (
+                  <Anchor
+                    onClick={(_, linkInfo) => {
+                      handler.emit(
+                        // @ts-ignore
+                        onIdsParams[0].params?.map((i) => ({
+                          id: i.key,
+                          params: { isActive: linkInfo.href === i.href },
+                        })),
+                      )
+                    }}
+                    items={onIdsParams[0].params as any}
+                  />
+                ) : null
               }}
             />
           </div>

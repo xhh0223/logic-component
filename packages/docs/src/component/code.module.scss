@@ -1,8 +1,21 @@
-.code {
+.body {
   padding: 0 !important;
+  overflow: hidden;
 }
 
-.content {
-  border-bottom-left-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
+.demo {
+  padding: 12px;
+}
+
+.code {
+  box-sizing: border-box;
+  padding: 0 8px 8px;
+}
+
+.is-active {
+  border: 1px solid #1677ff;
+}
+
+.divider {
+  margin: 8px 0;
 }

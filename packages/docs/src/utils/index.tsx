@@ -18,3 +18,5 @@ export const groupByNum = <T,>(arr: T[], num: number): Array<T[]> => {
   })
   return Object.values(map)
 }
+
+export const genRandomNumber = () => Math.random().toString(10).slice(2, 10)

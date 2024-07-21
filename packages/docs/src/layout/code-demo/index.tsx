@@ -3,6 +3,8 @@ import { useScreen_max1680, useScreen0_480, useScreen480_1680 } from '@src/hooks
 import { groupByNum } from '@src/utils'
 import Flex from 'antd/es/flex'
 
+import { EventBusItem } from '~react-logic-component'
+
 export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsRawMap: any }) => {
   const { components, componentsRawMap, metasMap } = props
   const small = useScreen0_480()
@@ -47,10 +49,25 @@ export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsR
                 // @ts-ignore
                 const Component = module.default
                 const Anchor = metasMap.get(path).Anchor
+
                 return (
-                  <div key={path} id={Anchor.key}>
-                    <Code title={Anchor.title} demo={<Component />} code={componentsRawMap.get(path).default} />
-                  </div>
+                  <EventBusItem
+                    key={Anchor.key}
+                    onIds={[Anchor.key]}
+                    id={Anchor.key}
+                    render={({ onIdsParams }) => {
+                      // @ts-ignore
+                      const isActive = onIdsParams?.[0]?.params?.isActive
+                      return (
+                        <Code
+                          isActive={isActive}
+                          title={Anchor.title}
+                          demo={<Component />}
+                          code={componentsRawMap.get(path).default}
+                        />
+                      )
+                    }}
+                  />
                 )
               })}
             </Flex>
