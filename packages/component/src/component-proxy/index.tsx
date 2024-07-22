@@ -2,8 +2,8 @@ import { forwardRef, Ref, useEffect, useImperativeHandle, useMemo, useRef, useSt
 
 export interface ComponentProxyHandler<Props = any> {
   getProps: () => Props
-  setProps: (params: Props) => void
-  setMergedProps: (params: Partial<Props>) => void
+  setProps: (params: Props) => Props
+  setMergedProps: (params: Partial<Props>) => Props
 }
 
 export interface ComponentProxyProps<Props, RefObj = any> {
@@ -34,6 +34,7 @@ const InnerComponentProxy = <Props, RefObj = any>(
       setProps: (params) => {
         cacheProps.current = params
         update({})
+        return cacheProps.current
       },
       setMergedProps: (params) => {
         cacheProps.current = {
@@ -41,6 +42,7 @@ const InnerComponentProxy = <Props, RefObj = any>(
           ...params,
         }
         update({})
+        return cacheProps.current
       },
     }),
     [],
@@ -65,34 +67,30 @@ const InnerComponentProxy = <Props, RefObj = any>(
 
 export const ComponentProxy = forwardRef(InnerComponentProxy) as typeof InnerComponentProxy
 
-export const useComponentProxy = <Props, RefObj = any>(
-  params: Omit<ComponentProxyProps<Props, RefObj>, 'ref'>,
-): {
-  renderNodeRef: Ref<RefObj>
-  renderNode: React.ReactNode
-  handler: ComponentProxyHandler<Props>
-} => {
+export const useComponentProxyRef = <Props, RefObj = any>(params: Omit<ComponentProxyProps<Props, RefObj>, 'ref'>) => {
   const { initProps, render, onMounted } = params
-  const result = useMemo(() => {
-    const renderNode = (
+
+  const ref = useRef<{
+    renderNode: React.ReactNode
+    handler: ComponentProxyHandler<Props>
+    renderNodeRef: Ref<RefObj>
+  }>({
+    renderNode: (
       <ComponentProxy
         onMounted={onMounted}
         initProps={initProps}
         render={(props, { handler, renderNodeRef }) => {
-          Object.assign(result, {
+          Object.assign(ref.current, {
             handler,
             renderNodeRef,
           })
           return render(props, { handler, renderNodeRef })
         }}
       />
-    )
-    return {
-      renderNode,
-      handler: null,
-      renderNodeRef: null,
-    } as any
-  }, [])
+    ),
+    handler: null,
+    renderNodeRef: null,
+  })
 
-  return result
+  return ref
 }

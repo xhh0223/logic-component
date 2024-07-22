@@ -2,8 +2,7 @@ import { AnchorID } from '@src/constant'
 import { CodeMemo } from '@src/layout'
 import { genRandomNumber } from '@src/utils'
 import { useEffect } from 'react'
-
-import { useEventBus } from '~react-logic-component'
+import { useEventBus } from 'react-logic-component'
 
 import { introduce } from './meta'
 

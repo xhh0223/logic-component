@@ -5,9 +5,8 @@ import { RouterPath } from '@src/router'
 import { Anchor, Flex } from 'antd'
 import classNames from 'classnames'
 import { useEffect } from 'react'
+import { EventBusItem } from 'react-logic-component'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-
-import { EventBusItem } from '~react-logic-component'
 
 import { MobileMenu } from './mobile-menu'
 import { SideMenu } from './side-menu'

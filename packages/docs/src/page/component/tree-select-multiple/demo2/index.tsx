@@ -1,8 +1,7 @@
 import { genTreeData } from '@src/utils'
 import { Checkbox, Flex, Tag } from 'antd'
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
-
-import { TreeSelectMultiple, TreeSelectMultipleHandler, TreeSelectMultipleItem } from '~react-logic-component'
+import { TreeSelectMultiple, TreeSelectMultipleHandler, TreeSelectMultipleItem } from 'react-logic-component'
 
 const App = () => {
   const [isUpdate, update] = useState({})
@@ -19,7 +18,7 @@ const App = () => {
   }, [isUpdate])
 
   return (
-    <Flex component={'section'} vertical gap={12} style={{ width: 328 }}>
+    <Flex component={'section'} vertical gap={12} style={{ maxHeight: 500, overflow: 'auto' }}>
       <TreeSelectMultiple ref={ref}>
         <Flex>
           {everyLevelData.map((levelData, level) => {
