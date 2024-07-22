@@ -1,6 +1,5 @@
 import { Button, Flex, Spin } from 'antd'
-
-import { useComponentProxyRef } from '~react-logic-component'
+import { useComponentProxyRef } from 'react-logic-component'
 
 const App = () => {
   const ref = useComponentProxyRef({

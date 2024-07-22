@@ -1,7 +1,6 @@
 import { Card, Flex } from 'antd'
 import { useEffect, useRef, useState } from 'react'
-
-import { SelectMultiple, SelectMultipleHandler, SelectMultipleItem } from '~react-logic-component'
+import { SelectMultiple, SelectMultipleHandler, SelectMultipleItem } from 'react-logic-component'
 const App = () => {
   const [state, setState] = useState({
     currentValue: [],

@@ -1,7 +1,6 @@
 import { Button, Card, Flex } from 'antd'
 import { useMemo } from 'react'
-
-import { EventBus, EventBusItem } from '~react-logic-component'
+import { EventBus, EventBusItem } from 'react-logic-component'
 
 const App = () => {
   const brother1 = useMemo(

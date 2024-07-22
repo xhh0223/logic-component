@@ -1,8 +1,7 @@
 import { genTreeData } from '@src/utils'
 import { Checkbox, Flex, Tag } from 'antd'
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
-
-import { TreeSelectMultiple, TreeSelectMultipleHandler, TreeSelectMultipleItem } from '~react-logic-component'
+import { TreeSelectMultiple, TreeSelectMultipleHandler, TreeSelectMultipleItem } from 'react-logic-component'
 
 const App = () => {
   const [isUpdate, update] = useState({})

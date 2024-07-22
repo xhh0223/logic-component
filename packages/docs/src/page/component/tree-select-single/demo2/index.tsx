@@ -1,8 +1,7 @@
 import { genTreeData } from '@src/utils'
 import { Checkbox, Flex, Tag } from 'antd'
 import { useLayoutEffect, useRef, useState } from 'react'
-
-import { TreeSelectSingle, TreeSelectSingleHandler, TreeSelectSingleItem } from '~react-logic-component'
+import { TreeSelectSingle, TreeSelectSingleHandler, TreeSelectSingleItem } from 'react-logic-component'
 
 const App = () => {
   const [state, setState] = useState({

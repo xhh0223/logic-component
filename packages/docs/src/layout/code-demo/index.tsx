@@ -2,8 +2,7 @@ import { Markdown } from '@src/component'
 import { useScreen_max1680, useScreen0_480, useScreen480_1680 } from '@src/hooks/media'
 import { groupByNum } from '@src/utils'
 import Flex from 'antd/es/flex'
-
-import { EventBusItem } from '~react-logic-component'
+import { EventBusItem } from 'react-logic-component'
 
 import { CodeDemoCard } from './code-demo-card'
 export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsRawMap: any }) => {

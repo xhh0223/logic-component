@@ -8,7 +8,7 @@ export const introduce = (() => {
   <h2>使用方式</h2>
   
   ~~~jsx
-  import { TreeSelectSingle, TreeSelectSingleHandler, TreeSelectSingleItem } from '~react-logic-component'
+  import { TreeSelectSingle, TreeSelectSingleHandler, TreeSelectSingleItem } from 'react-logic-component'
   ~~~
   `
   return (

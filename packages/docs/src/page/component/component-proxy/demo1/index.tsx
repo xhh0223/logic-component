@@ -1,6 +1,5 @@
-import { Button, Flex, Spin } from 'antd'
-
-import { ComponentProxy } from '~react-logic-component'
+import { Button, Flex } from 'antd'
+import { ComponentProxy } from 'react-logic-component'
 
 const App = () => {
   return (
@@ -12,6 +11,7 @@ const App = () => {
           const { loading } = params
           return (
             <Button
+              loading={loading}
               onClick={() => {
                 handler.setMergedProps({
                   loading: true,
@@ -23,8 +23,7 @@ const App = () => {
                 }, 1000)
               }}
             >
-              {loading && <Spin />}
-              {!loading && '新增'}
+              新增
             </Button>
           )
         }}
@@ -35,6 +34,7 @@ const App = () => {
           const { loading } = params
           return (
             <Button
+              loading={loading}
               onClick={() => {
                 handler.setMergedProps({
                   loading: true,
@@ -46,8 +46,7 @@ const App = () => {
                 }, 1000)
               }}
             >
-              {loading && <Spin />}
-              {!loading && '编辑'}
+              编辑
             </Button>
           )
         }}
@@ -58,6 +57,7 @@ const App = () => {
           const { loading } = params
           return (
             <Button
+              loading={loading}
               onClick={() => {
                 handler.setMergedProps({
                   loading: true,
@@ -69,8 +69,7 @@ const App = () => {
                 }, 1000)
               }}
             >
-              {loading && <Spin />}
-              {!loading && '删除'}
+              删除
             </Button>
           )
         }}
