@@ -1,5 +1,5 @@
 export * from './select'
 export * from './event-bus/index.ts'
 export * from './tree-select'
-export * from './props-proxy'
+export * from './component-proxy/index.tsx'
 export type { Id } from './typing/index.ts'

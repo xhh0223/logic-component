@@ -12,7 +12,7 @@ export const SideMenu = () => {
     select: 'select',
     treeSelect: 'tree-select',
     eventBus: 'event-bus',
-    propsProxy: 'props-proxy',
+    componentProxy: 'component-proxy',
   }
 
   const defaultActiveMenuKey = useMemo(() => {
@@ -29,8 +29,8 @@ export const SideMenu = () => {
       case RouterPath.eventBus:
         res = [MenuKey.eventBus, pathname]
         break
-      case RouterPath.propsProxy:
-        res = [MenuKey.propsProxy, pathname]
+      case RouterPath.componentProxy:
+        res = [MenuKey.componentProxy, pathname]
         break
     }
     return res
@@ -74,8 +74,8 @@ export const SideMenu = () => {
       label: <Link to={RouterPath.eventBus}>event-bus</Link>,
     },
     {
-      key: MenuKey.propsProxy,
-      label: <Link to={RouterPath.propsProxy}>props-proxy</Link>,
+      key: MenuKey.componentProxy,
+      label: <Link to={RouterPath.componentProxy}>component-proxy</Link>,
     },
   ]
 
