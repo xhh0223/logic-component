@@ -1,13 +1,13 @@
 import { Flex, Spin } from 'antd'
 
-import { PropsProxy } from '~react-logic-component'
+import { ComponentProxy } from '~react-logic-component'
 
 const App = () => {
   return (
     <Flex component={'article'} vertical gap={12}>
       <div className="is-bold">loading场景</div>
       <Flex component={'section'} gap={12} wrap>
-        <PropsProxy
+        <ComponentProxy
           initProps={{ loading: false }}
           render={(params, { handler }) => {
             const { loading } = params
