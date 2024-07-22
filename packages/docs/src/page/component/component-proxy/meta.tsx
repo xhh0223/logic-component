@@ -8,7 +8,7 @@ export const introduce = (() => {
   <h2>使用方式</h2>
   
   ~~~jsx
-  import { TreeSelectMultiple, TreeSelectMultipleHandler, TreeSelectMultipleItem } from '~react-logic-component'
+  import { ComponentProxy,useComponentProxyRef } from 'react-logic-component'
   ~~~
   `
   return (

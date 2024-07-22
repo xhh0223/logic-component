@@ -1,6 +1,6 @@
 {
   "name": "react-logic-component",
-  "version": "1.0.2-alpha.6",
+  "version": "1.0.2-alpha.7",
   "type": "module",
   "types": "dist/index.d.ts",
   "files": [

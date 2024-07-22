@@ -1,36 +1,80 @@
-import { Flex, Spin } from 'antd'
+import { Button, Flex, Spin } from 'antd'
 
 import { ComponentProxy } from '~react-logic-component'
 
 const App = () => {
   return (
-    <Flex component={'article'} vertical gap={12}>
-      <div className="is-bold">loading场景</div>
-      <Flex component={'section'} gap={12} wrap>
-        <ComponentProxy
-          initProps={{ loading: false }}
-          render={(params, { handler }) => {
-            const { loading } = params
-            return (
-              <div
-                onClick={() => {
+    <Flex component={'article'} wrap gap={12}>
+      当一个组件内部有许多loading的控件时，组件的需要props，不需要在父组件作用域上额外声明
+      <ComponentProxy
+        initProps={{ loading: false }}
+        render={(params, { handler }) => {
+          const { loading } = params
+          return (
+            <Button
+              onClick={() => {
+                handler.setMergedProps({
+                  loading: true,
+                })
+                setTimeout(() => {
                   handler.setMergedProps({
-                    loading: true,
+                    loading: false,
                   })
-                  setTimeout(() => {
-                    handler.setMergedProps({
-                      loading: false,
-                    })
-                  }, 1000)
-                }}
-              >
-                {loading && <Spin />}
-                {!loading && '获取数据'}
-              </div>
-            )
-          }}
-        />
-      </Flex>
+                }, 1000)
+              }}
+            >
+              {loading && <Spin />}
+              {!loading && '新增'}
+            </Button>
+          )
+        }}
+      />
+      <ComponentProxy
+        initProps={{ loading: false }}
+        render={(params, { handler }) => {
+          const { loading } = params
+          return (
+            <Button
+              onClick={() => {
+                handler.setMergedProps({
+                  loading: true,
+                })
+                setTimeout(() => {
+                  handler.setMergedProps({
+                    loading: false,
+                  })
+                }, 1000)
+              }}
+            >
+              {loading && <Spin />}
+              {!loading && '编辑'}
+            </Button>
+          )
+        }}
+      />
+      <ComponentProxy
+        initProps={{ loading: false }}
+        render={(params, { handler }) => {
+          const { loading } = params
+          return (
+            <Button
+              onClick={() => {
+                handler.setMergedProps({
+                  loading: true,
+                })
+                setTimeout(() => {
+                  handler.setMergedProps({
+                    loading: false,
+                  })
+                }, 1000)
+              }}
+            >
+              {loading && <Spin />}
+              {!loading && '删除'}
+            </Button>
+          )
+        }}
+      />
     </Flex>
   )
 }
