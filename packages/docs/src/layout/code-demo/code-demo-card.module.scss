@@ -4,12 +4,15 @@
 }
 
 .demo {
+  box-sizing: border-box;
   padding: 12px;
+  width: 100%;
 }
 
 .code {
   box-sizing: border-box;
   padding: 0 8px 8px;
+  word-break: break-all;
 }
 
 .is-active {
