@@ -5,8 +5,8 @@ import Flex from 'antd/es/flex'
 import { EventBusItem } from 'react-logic-component'
 
 import { CodeDemoCard } from './code-demo-card'
-export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsRawMap: any }) => {
-  const { components, componentsRawMap, metasMap } = props
+export const CodeMemo = (props: { demoMetaMap?: any; components: any[]; componentsRawCodeMap: any }) => {
+  const { components, componentsRawCodeMap, demoMetaMap } = props
   const small = useScreen0_480()
   const medium = useScreen480_1680()
   const large = useScreen_max1680()
@@ -31,8 +31,9 @@ export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsR
   })()
 
   const groupComponents = groupByNum(Object.entries(components), splitNumber)
+
   return (
-    <div>
+    <Flex vertical gap={16}>
       <Markdown>{'## 演示'}</Markdown>
       <Flex gap={16} wrap>
         {groupComponents.map((group, index) => {
@@ -52,7 +53,7 @@ export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsR
                 const [path, module] = item
                 // @ts-ignore
                 const Component = module.default
-                const Anchor = metasMap.get(path).Anchor
+                const Anchor = demoMetaMap.get(path).Anchor
 
                 return (
                   <EventBusItem
@@ -68,7 +69,7 @@ export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsR
                             isActive={isActive}
                             title={Anchor.title}
                             demo={<Component />}
-                            code={componentsRawMap.get(path).default}
+                            code={componentsRawCodeMap.get(path).default}
                           />
                         </div>
                       )
@@ -80,6 +81,6 @@ export const CodeMemo = (props: { metasMap?: any; components: any[]; componentsR
           )
         })}
       </Flex>
-    </div>
+    </Flex>
   )
 }
