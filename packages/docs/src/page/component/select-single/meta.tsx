@@ -9,7 +9,7 @@ export const introduce = (() => {
   <h2 id="use">使用方式</h2>
   
   ~~~jsx
-  import { SelectSingle, SelectSingleHandler, SelectSingleItem } from 'react-logic-component'
+  import { SelectSingle, SelectSingleItem } from 'react-logic-component'
   ~~~
   `
   return (

@@ -9,7 +9,7 @@ export const introduce = (() => {
   <h2 id="use">使用方式</h2>
   
   ~~~jsx
-  import { ComponentProxy,useComponentProxyRef } from 'react-logic-component'
+  import { EventBus, EventBusItem } from 'react-logic-component'
   ~~~
   `
   return (

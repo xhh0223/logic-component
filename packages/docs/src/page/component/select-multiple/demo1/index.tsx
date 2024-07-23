@@ -1,6 +1,7 @@
 import { Flex } from 'antd'
 import { useLayoutEffect, useRef, useState } from 'react'
 import { SelectMultiple, SelectMultipleHandler, SelectMultipleItem } from 'react-logic-component'
+
 const App = () => {
   const [state, setState] = useState({
     currentValue: [],
