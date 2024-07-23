@@ -11,7 +11,7 @@ const App = () => {
         onIds={['parent']}
         render={({ onIdsParams, handler }) => (
           <Card title={'parent'}>
-            <Flex vertical gap={12} style={{ width: 200, height: 100 }}>
+            <Flex vertical gap={12} style={{ width: 280, height: 100 }}>
               <Button
                 onClick={() => {
                   handler.emit([{ id: 'child', params: Math.random() }])
@@ -36,7 +36,7 @@ const App = () => {
         onIds={['child']}
         render={({ onIdsParams, handler }) => (
           <Card title={'child'}>
-            <Flex vertical gap={12} style={{ width: 200, height: 100 }}>
+            <Flex vertical gap={12} style={{ width: 280, height: 100 }}>
               <Button
                 onClick={() => {
                   handler.emit([{ id: 'parent', params: Math.random() }])
