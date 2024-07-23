@@ -47,7 +47,7 @@ export const CodeDemoCard = (props: { title: string; isActive: boolean; code: st
       }}
       title={title}
       extra={
-        <Flex justify="flex-end" gap={16}>
+        <Flex gap={16}>
           <div
             className="cursor"
             onClick={() => {
@@ -75,7 +75,7 @@ export const CodeDemoCard = (props: { title: string; isActive: boolean; code: st
         </Flex>
       }
     >
-      <div className={style.demo}> {demo}</div>
+      <div className={style.demo}>{demo}</div>
       {state.visible && <Divider className={style.divider} />}
       <div className={classNames(!state.visible && 'is-hidden', style.code)}>
         <Code code={code} />

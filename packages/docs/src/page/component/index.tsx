@@ -1,5 +1,5 @@
 import { AnchorID } from '@src/constant'
-import { useScreen0_480 } from '@src/hooks/media'
+import { useScreen_max1200 } from '@src/hooks/media'
 import { Nav } from '@src/layout'
 import { RouterPath } from '@src/router'
 import { Anchor, Flex } from 'antd'
@@ -23,7 +23,7 @@ const Index = () => {
     }
   }, [pathname])
 
-  const small = useScreen0_480()
+  const large = useScreen_max1200()
 
   return (
     <div className="container">
@@ -39,10 +39,10 @@ const Index = () => {
             padding: '0 16px 100px 16px',
           }}
         >
-          <div style={{ height: 'fit-content', flexGrow: '1', maxWidth: '100%' }}>
+          <div style={{ height: 'fit-content', flexGrow: '1' }}>
             <Outlet />
           </div>
-          <div className={classNames(small && 'is-hidden', 'anchor-container')}>
+          <div className={classNames(!large && 'is-hidden', 'anchor-container')}>
             <EventBusItem
               id={AnchorID.component}
               key={AnchorID.component}

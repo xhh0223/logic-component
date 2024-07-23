@@ -3,7 +3,7 @@ import { Markdown } from '@src/component'
 export const introduce = (() => {
   const text = `
   # select-multiple 
-  封装多选的逻辑组件
+  封装多选逻辑的组件
 
   <h2>使用方式</h2>
   

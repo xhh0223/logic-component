@@ -11,6 +11,7 @@ const metaModules = Object.entries(import.meta.glob('./demo*/meta.ts', { eager: 
   // @ts-ignore
   const Anchor = value.Anchor
   Anchor.key = `${Anchor.key}-${genRandomNumber()}`
+  Anchor.href = `${Anchor.href}-${genRandomNumber()}`
   // @ts-ignore
   return [key.replace('meta.ts', 'index.tsx'), { ...value, Anchor }]
 })
