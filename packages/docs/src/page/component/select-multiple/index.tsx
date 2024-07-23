@@ -3,18 +3,7 @@ import { SideAnchor } from '@src/layout/side-anchor'
 import { Flex } from 'antd'
 import { EventBus } from 'react-logic-component'
 
-import { introduce } from './meta'
-
-// @ts-ignore
-const demoMetaMap = Object.entries(import.meta.glob('./demo*/meta.ts', { eager: true })).map(([key, value]) => {
-  return [key.replace('meta.ts', 'index.tsx'), value]
-})
-
-const anchors = Object.values(Object.fromEntries(demoMetaMap))
-  // @ts-ignore
-  .filter((i) => i.Anchor)
-  // @ts-ignore
-  .map((i) => i.Anchor)
+import { anchors, components, componentsRawCodeMap, demoMetaMap, introduce } from './meta'
 
 const index = () => {
   return (
@@ -31,14 +20,8 @@ const index = () => {
           {introduce}
           <CodeMemo
             demoMetaMap={new Map(demoMetaMap as any)}
-            // @ts-ignore
-            components={import.meta.glob('./demo*/index.tsx', { eager: true })}
-            componentsRawCodeMap={
-              new Map<string, string>(
-                // @ts-ignore
-                Object.entries(import.meta.glob('./demo*/index.tsx', { eager: true, query: '?raw' })),
-              )
-            }
+            components={components}
+            componentsRawCodeMap={componentsRawCodeMap}
           />
         </Flex>
         <SideAnchor anchors={anchors} />

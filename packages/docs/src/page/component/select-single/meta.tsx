@@ -2,10 +2,11 @@ import { Markdown } from '@src/component'
 
 export const introduce = (() => {
   const text = `
-  # select-single 
+  <h1 id="title">select-single</h1>
+  
   封装单选逻辑的组件
 
-  <h2>使用方式</h2>
+  <h2 id="use">使用方式</h2>
   
   ~~~jsx
   import { SelectSingle, SelectSingleHandler, SelectSingleItem } from 'react-logic-component'
@@ -17,3 +18,39 @@ export const introduce = (() => {
     </div>
   )
 })()
+
+// @ts-ignore
+export const demoMetaMap = Object.entries(import.meta.glob('./demo*/meta.ts', { eager: true })).map(([key, value]) => {
+  return [key.replace('meta.ts', 'index.tsx'), value]
+})
+
+export const anchors = [
+  {
+    key: 'title',
+    title: 'select-single',
+    href: '#title',
+  },
+  {
+    key: 'use',
+    title: '使用方式',
+    href: '#use',
+  },
+  {
+    key: 'demo',
+    title: '演示',
+    href: '#demo',
+    children: Object.values(Object.fromEntries(demoMetaMap))
+      // @ts-ignore
+      .filter((i) => i.Anchor)
+      // @ts-ignore
+      .map((i) => i.Anchor),
+  },
+]
+
+// @ts-ignore
+export const components = import.meta.glob('./demo*/index.tsx', { eager: true })
+
+export const componentsRawCodeMap = new Map<string, string>(
+  // @ts-ignore
+  Object.entries(import.meta.glob('./demo*/index.tsx', { eager: true, query: '?raw' })),
+)

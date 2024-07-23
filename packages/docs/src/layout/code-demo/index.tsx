@@ -34,7 +34,7 @@ export const CodeMemo = (props: { demoMetaMap?: any; components: any[]; componen
 
   return (
     <Flex vertical gap={16}>
-      <Markdown>{'## 演示'}</Markdown>
+      <Markdown>{'<h2 id="demo">演示</h2>'}</Markdown>
       <Flex gap={16} wrap>
         {groupComponents.map((group, index) => {
           return (
