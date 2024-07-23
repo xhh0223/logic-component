@@ -1,7 +1,14 @@
 {
   "name": "react-logic-component",
-  "version": "1.0.2-alpha.7",
+  "version": "1.0.2-alpha.8",
   "type": "module",
+  "keywords": [
+    "logic",
+    "logic-component",
+    "react",
+    "component",
+    "head-less"
+  ],
   "types": "dist/index.d.ts",
   "files": [
     "dist"
