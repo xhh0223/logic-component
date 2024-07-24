@@ -12,6 +12,13 @@ interface ISelectItem<ValueType = any> {
 
 type RequiredISelectItem<ValueType> = Required<Pick<ISelectItem<ValueType>, 'id' | 'isChecked' | 'value'>>
 
+type MultipleOptions = Array<{
+  id: Id
+  options?: {
+    allowRepeatSelect?: boolean
+  }
+}>
+
 interface SelectMultipleHandler<ValueType = any> {
   select(multipleParams: MultipleOptions): Array<RequiredISelectItem<ValueType>>
   cancel(id: Id[]): Array<RequiredISelectItem<ValueType>>

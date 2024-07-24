@@ -1,6 +1,6 @@
 import { type Id } from '@/typing'
 
-export interface ITreeSelectItem<ValueType> {
+export interface ITreeSelectItem<ValueType = any> {
   id: Id
   isChecked: boolean
   value?: ValueType
