@@ -2,6 +2,8 @@ import { Markdown } from '@src/component'
 
 import apiMd from './api.md?raw'
 
+export const apiMarkdown = <Markdown>{apiMd}</Markdown>
+
 export const introduceMarkdown = (() => {
   const text = `
   <h1 id="title">select-multiple</h1>
@@ -20,8 +22,6 @@ export const introduceMarkdown = (() => {
     </div>
   )
 })()
-
-export const apiMarkdown = <Markdown>{apiMd}</Markdown>
 
 // @ts-ignore
 export const demoMetaMap = Object.entries(import.meta.glob('./demo*/meta.ts', { eager: true })).map(([key, value]) => {
