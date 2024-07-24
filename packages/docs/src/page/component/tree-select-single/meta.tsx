@@ -1,6 +1,10 @@
 import { Markdown } from '@src/component'
 
-export const introduce = (() => {
+import apiMd from './api.md?raw'
+
+export const apiMarkdown = <Markdown>{apiMd}</Markdown>
+
+export const introduceMarkdown = (() => {
   const text = `
   <h1 id="title">tree-select-single</h1>
   
@@ -44,6 +48,33 @@ export const anchors = [
       .filter((i) => i.Anchor)
       // @ts-ignore
       .map((i) => i.Anchor),
+  },
+  {
+    key: 'api',
+    title: 'API',
+    href: '#api',
+    children: [
+      {
+        key: 'api-1',
+        title: '类型声明',
+        href: '#api-1',
+      },
+      {
+        key: 'api-2',
+        title: 'TreeSelectSingleProps',
+        href: '#api-2',
+      },
+      {
+        key: 'api-3',
+        title: 'TreeSelectSingleItemProps',
+        href: '#api-3',
+      },
+      {
+        key: 'api-4',
+        title: 'useTreeSelectSingleHandler',
+        href: '#api-4',
+      },
+    ],
   },
 ]
 

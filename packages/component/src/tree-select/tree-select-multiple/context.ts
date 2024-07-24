@@ -8,7 +8,7 @@ export const TreeSelectMultipleCollectContext = createContext<{
   handler: TreeSelectMultipleHandler<any>
 }>(null!)
 
-export const useTreeSelectMultiple = <ValueType = any>() => {
+export const useTreeSelectMultipleHandler = <ValueType = any>() => {
   const { handler } = useContext(TreeSelectMultipleCollectContext)
   return handler as TreeSelectMultipleHandler<ValueType>
 }

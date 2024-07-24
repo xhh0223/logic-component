@@ -8,7 +8,7 @@ export const TreeSelectSingleCollectContext = createContext<{
   handler?: TreeSelectSingleHandler<any>
 }>(null!)
 
-export const useTreeSelectSingle = <ValueType = any>() => {
+export const useTreeSelectSingleHandler = <ValueType = any>() => {
   const { handler } = useContext(TreeSelectSingleCollectContext)
   return handler as TreeSelectSingleHandler<ValueType>
 }
