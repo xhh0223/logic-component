@@ -3,7 +3,7 @@ import { SideAnchor } from '@src/layout/side-anchor'
 import { Flex } from 'antd'
 import { EventBus } from 'react-logic-component'
 
-import { anchors, components, componentsRawCodeMap, demoMetaMap, introduce } from './meta'
+import { anchors, components, componentsRawCodeMap, demoMetaMap, introduceMarkdown } from './meta'
 
 const index = () => {
   return (
@@ -17,7 +17,7 @@ const index = () => {
         }}
       >
         <Flex vertical style={{ height: 'fit-content', flexGrow: '1', width: '100%' }}>
-          {introduce}
+          {introduceMarkdown}
           <CodeMemo
             demoMetaMap={new Map(demoMetaMap as any)}
             components={components}

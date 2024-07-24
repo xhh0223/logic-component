@@ -1,6 +1,6 @@
 import { Markdown } from '@src/component'
 
-export const introduce = (() => {
+export const introduceMarkdown = (() => {
   const text = `
   <h1 id="title">tree-select-single</h1>
   
