@@ -8,7 +8,7 @@ export const SelectSingleCollectContext = createContext<{
   handler: SelectSingleHandler<any>
 }>(null!)
 
-export const useSelectSingle = <ValueType = any>() => {
+export const useSelectSingleHandler = <ValueType = any>() => {
   const { handler } = useContext(SelectSingleCollectContext)
   return handler as SelectSingleHandler<ValueType>
 }
