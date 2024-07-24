@@ -8,7 +8,7 @@ export const SelectMultipleCollectContext = createContext<{
   handler: SelectMultipleHandler<any>
 }>(null!)
 
-export const useSelectMultiple = <ValueType = any>() => {
+export const useSelectMultipleHandler = <ValueType = any>() => {
   const { handler } = useContext(SelectMultipleCollectContext)
   return handler as SelectMultipleHandler<ValueType>
 }

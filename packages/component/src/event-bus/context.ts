@@ -7,7 +7,7 @@ export const EventBusCollectContext = createContext<{
   handler: EventBusHandler<any>
 }>(null!)
 
-export const useEventBus = <Context = any>() => {
+export const useEventBusHandler = <Context = any>() => {
   const { handler } = useContext(EventBusCollectContext)
   return handler as EventBusHandler<Context>
 }

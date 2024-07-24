@@ -2,7 +2,7 @@ import { useScreen_max1200 } from '@src/hooks/media'
 import { Anchor } from 'antd'
 import classNames from 'classnames'
 import { useMemo } from 'react'
-import { useEventBus } from 'react-logic-component'
+import { useEventBusHandler } from 'react-logic-component'
 
 const flattenAnchor = (anchor, result) => {
   anchor.forEach((i) => {
@@ -17,7 +17,7 @@ const flattenAnchor = (anchor, result) => {
 export const SideAnchor: React.FC<{ anchors: any[] }> = (props) => {
   const { anchors } = props
   const isShowAnchor = useScreen_max1200()
-  const eventBus = useEventBus()
+  const eventBus = useEventBusHandler()
   const anchorList = useMemo(() => flattenAnchor(anchors, []), [anchors])
   return (
     <div className={classNames(!isShowAnchor && 'is-hidden', 'anchor-container')}>
