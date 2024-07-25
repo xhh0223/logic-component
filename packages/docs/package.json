@@ -24,6 +24,8 @@
   "devDependencies": {
     "@rollup/plugin-inject": "^5.0.5",
     "@types/react-syntax-highlighter": "^15.5.13",
-    "sass": "^1.75.0"
+    "rollup-plugin-external-globals": "^0.11.0",
+    "sass": "^1.75.0",
+    "vite-plugin-html": "^3.2.2"
   }
 }
