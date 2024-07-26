@@ -6,7 +6,7 @@ const PageDir = path.resolve(__dirname)
 export default defineConfig({
   root: path.resolve(PageDir, 'src'),
   publicDir: path.resolve(PageDir, 'public'),
-  base: '/logic-component/',
+  base: '/',
   plugins: [
     react(),
     visualizer({

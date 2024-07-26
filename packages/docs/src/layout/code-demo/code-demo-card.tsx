@@ -1,5 +1,6 @@
 import { javascript } from '@codemirror/lang-javascript'
 import { Code } from '@src/component'
+import { Base } from '@src/router'
 import { okaidia } from '@uiw/codemirror-theme-okaidia'
 import { useCodeMirror } from '@uiw/react-codemirror'
 import { Card, Divider, Flex, message, Tooltip } from 'antd'
@@ -55,8 +56,8 @@ export const CodeDemoCard = (props: { title: string; isActive: boolean; code: st
             }}
           >
             <Tooltip title={!state.visible ? '展开代码' : '收起代码'}>
-              <img style={{ display: state.visible ? 'none' : null }} height={14} src="/logic-component/unexpand.svg" />
-              <img style={{ display: !state.visible ? 'none' : null }} height={14} src="/logic-component/expand.svg" />
+              <img style={{ display: state.visible ? 'none' : null }} height={14} src={`${Base}unexpand.svg`} />
+              <img style={{ display: !state.visible ? 'none' : null }} height={14} src={`${Base}expand.svg`} />
             </Tooltip>
           </div>
 
@@ -68,7 +69,7 @@ export const CodeDemoCard = (props: { title: string; isActive: boolean; code: st
               }}
             >
               <div>
-                <img className="cursor" width={14} height={14} src="/logic-component/copy-black.svg" />
+                <img className="cursor" width={14} height={14} src={`${Base}copy-black.svg`} />
               </div>
             </CopyToClipboard>
           </Tooltip>

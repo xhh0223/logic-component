@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useScreen0_480 } from '@src/hooks/media'
+import { Base } from '@src/router'
 import { message, Tooltip } from 'antd'
 import classNames from 'classnames'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -56,7 +57,7 @@ export const Markdown = (props: { children: string }) => {
                 }}
               >
                 <Tooltip title={'复制代码'}>
-                  <img className={classNames('cursor', style['copy'])} src="/logic-component/copy.svg" />
+                  <img className={classNames('cursor', style['copy'])} src={`${Base}copy.svg`} />
                 </Tooltip>
               </CopyToClipboard>
             </div>

@@ -1,7 +1,7 @@
 import './index.scss'
 
 import { useScreen0_480 } from '@src/hooks/media'
-import { RouterPath } from '@src/router'
+import { Base, RouterPath } from '@src/router'
 import { Flex } from 'antd'
 import classNames from 'classnames'
 import { NavLink } from 'react-router-dom'
@@ -13,7 +13,7 @@ export const Nav = (props: { mobileMenu: React.ReactNode }) => {
   return (
     <Flex className="nav" align="center" justify="space-between">
       <Flex component={'h2'} align="center" gap={4}>
-        <img style={{ width: 20, height: 20 }} src={'/logic-component/logic.svg'} />
+        <img style={{ width: 20, height: 20 }} src={`${Base}logic.svg`} />
         <div className={classNames(isMobile && 'screen-480')}>logic-component</div>
       </Flex>
       <Flex
@@ -35,7 +35,7 @@ export const Nav = (props: { mobileMenu: React.ReactNode }) => {
             href="https://github.com/xhh0223/logic-component"
             rel="noreferrer"
           >
-            <img style={{ width: 20, height: 20 }} src={'/logic-component/github.svg'} />
+            <img style={{ width: 20, height: 20 }} src={`${Base}github.svg`} />
             Github
           </a>
         </h3>
