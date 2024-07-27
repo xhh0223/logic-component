@@ -6,7 +6,6 @@
     "build": "vite build --emptyOutDir"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.3.7",
     "@codemirror/lang-javascript": "^6.2.2",
     "@uiw/codemirror-theme-okaidia": "^4.23.0",
     "@uiw/codemirror-theme-vscode": "^4.23.0",
@@ -22,7 +21,6 @@
     "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
-    "@rollup/plugin-inject": "^5.0.5",
     "@types/react-syntax-highlighter": "^15.5.13",
     "sass": "^1.75.0"
   }

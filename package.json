@@ -20,13 +20,12 @@
   },
   "scripts": {
     "dev": "cd packages/docs && pnpm run dev",
-    "build:docs": "cd packages/docs && pnpm run build  &&rm -rf ../../docs && mv   ./dist/ ../../docs/",
-    "build": "cd packages/component && pnpm run build &&rm -rf ../../dist && mv   ./dist/ ../../dist/",
+    "build:docs": "cd packages/docs && pnpm run build",
+    "build": "cd packages/component && pnpm run build",
     "prepare": "husky",
     "eslint:fix": "npx eslint"
   },
   "devDependencies": {
-    "rollup-plugin-visualizer": "^5.12.0",
     "@commitlint/cli": "^17.8.1",
     "@commitlint/config-conventional": "^17.8.1",
     "@eslint/js": "^9.3.0",
@@ -43,11 +42,14 @@
     "husky": "^9.0.11",
     "lint-staged": "^13.3.0",
     "prettier": "^3.0.3",
+    "rollup-plugin-visualizer": "^5.12.0",
     "stylelint": "^15.10.3",
     "stylelint-config-standard-scss": "^11.0.0",
     "typescript-eslint": "^7.9.0",
     "vite": "^5.2.10",
-    "vite-plugin-dts": "^3.9.0"
+    "vite-plugin-cdn-import": "^1.0.1",
+    "vite-plugin-dts": "^3.9.0",
+    "vite-plugin-imagemin": "^0.6.1"
   },
   "lint-staged": {
     "**/*.{ts,tsx,js}": [
@@ -61,10 +63,10 @@
   "license": "MIT",
   "repository": "https://github.com/xhh0223/logic-component.git",
   "dependencies": {
+    "classnames": "^2.3.2",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.6.1",
-    "classnames": "^2.3.2"
+    "react-router-dom": "^6.6.1"
   }
 }

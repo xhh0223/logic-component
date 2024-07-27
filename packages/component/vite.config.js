@@ -29,12 +29,12 @@ export default defineConfig(() => {
         entry: path.resolve(__dirname, 'src', 'index.ts'),
         formats: ['es'],
       },
+      outDir: path.resolve(__dirname, '../', '../', 'dist'),
       rollupOptions: {
         external: ['react'],
         output: {
           preserveModules: true,
           preserveModulesRoot: 'src',
-          dir: path.resolve(__dirname, 'dist'),
           exports: 'named',
           entryFileNames: '[name].js',
         },
