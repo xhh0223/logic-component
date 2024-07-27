@@ -3,9 +3,11 @@ import path from 'path'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
 import viteCDNPlugin from 'vite-plugin-cdn-import'
+// import { createHtmlPlugin } from 'vite-plugin-html'
 import viteImagemin from 'vite-plugin-imagemin'
-
 const PageDir = path.resolve(__dirname)
+// import externalGlobals from 'rollup-plugin-external-globals'
+import { chunkSplitPlugin } from 'vite-plugin-chunk-split'
 
 export default defineConfig({
   root: path.resolve(PageDir, 'src'),
@@ -15,6 +17,26 @@ export default defineConfig({
     react(),
     visualizer({
       open: false,
+    }),
+    viteCDNPlugin({
+      modules: [
+        {
+          name: 'react',
+          var: 'React',
+          path: 'https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js',
+        },
+        {
+          name: 'react-dom',
+          var: 'ReactDom',
+          alias: ['react-dom/client'],
+          path: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js',
+        },
+        // {
+        //   name: 'react-markdown',
+        //   var: 'ReactMarkdown',
+        //   path: 'https://esm.sh/react-markdown@9?bundle',
+        // },
+      ],
     }),
     viteImagemin({
       gifsicle: {
@@ -49,14 +71,16 @@ export default defineConfig({
         ],
       },
     }),
-    viteCDNPlugin({
-      modules: [
-        {
-          name: 'react',
-          var: 'React',
-          path: 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
-        },
-      ],
+    chunkSplitPlugin({
+      strategy: 'single-vendor',
+      customSplitting: {
+        'markdown-vendor': ['react-markdown', 'rehype-raw', 'remark-gfm'],
+        'react-codemirror-vendor': [
+          '@codemirror/lang-javascript',
+          '@uiw/codemirror-theme-okaidia',
+          '@uiw/react-codemirror',
+        ],
+      },
     }),
   ],
   resolve: {
@@ -66,25 +90,24 @@ export default defineConfig({
       'react-logic-component': path.resolve(__dirname, '..', 'component', 'src'),
     },
   },
+  preview: {
+    port: '8000',
+  },
   build: {
+    sourcemap: 'inline',
     esbuild: {
       drop: ['console', 'debugger'],
     },
     outDir: path.resolve(__dirname, '../', '../', 'docs'),
-  },
-  rollupOptions: {
-    treeshake: true,
-    external: ['react' /*  'react-dom', 'react-router', 'react-router-dom' */],
-    output: {
-      chunkFileNames: 'js/[name]-[hash].js', // 引入文件名的名称
-      entryFileNames: 'js/[name]-[hash].js', // 包的入口文件名称
-      assetFileNames: '[ext]/[name]-[hash].[ext]', // 资源文件像 字体，图片等
-      // manualChunks(id) {
-      //   if (id.includes('node_modules')) {
-      //     return 'vendor'
-      //   }
-      //   return 'index'
-      // },
+    emptyOutDir: true,
+    rollupOptions: {
+      treeshake: true,
+      external: ['react', 'react-dom'],
+      output: {
+        chunkFileNames: 'js/[name]-[hash].js', // 引入文件名的名称
+        entryFileNames: 'js/[name]-[hash].js', // 包的入口文件名称
+        assetFileNames: '[ext]/[name]-[hash].[ext]', // 资源文件像 字体，图片等
+      },
     },
   },
 })

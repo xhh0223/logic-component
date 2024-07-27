@@ -21,6 +21,7 @@
   "scripts": {
     "dev": "cd packages/docs && pnpm run dev",
     "build:docs": "cd packages/docs && pnpm run build",
+    "preview:docs": "cd  packages/docs  && pnpm run preview",
     "build": "cd packages/component && pnpm run build",
     "prepare": "husky",
     "eslint:fix": "npx eslint"
@@ -42,13 +43,16 @@
     "husky": "^9.0.11",
     "lint-staged": "^13.3.0",
     "prettier": "^3.0.3",
+    "rollup-plugin-external-globals": "^0.11.0",
     "rollup-plugin-visualizer": "^5.12.0",
     "stylelint": "^15.10.3",
     "stylelint-config-standard-scss": "^11.0.0",
     "typescript-eslint": "^7.9.0",
     "vite": "^5.2.10",
     "vite-plugin-cdn-import": "^1.0.1",
+    "vite-plugin-chunk-split": "^0.5.0",
     "vite-plugin-dts": "^3.9.0",
+    "vite-plugin-html": "^3.2.2",
     "vite-plugin-imagemin": "^0.6.1"
   },
   "lint-staged": {

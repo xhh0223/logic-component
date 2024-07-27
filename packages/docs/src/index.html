@@ -9,10 +9,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>logic-component</title>
   <link rel="icon" href="/logic.svg">
+  <!-- <script type="module">
+    import ReactMarkdown from 'https://cdn.jsdelivr.net/npm/react-markdown@9.0.1/+esm'
+    window.ReactMarkdown = ReactMarkdown
+  </script> -->
+  <script>
+    try {
+      // cdn打包插件有问题
+      var ReactDom = ReactDOM
+      var ReactRouterDom = ReactRouterDOM
+    } catch (error) {
+
+    }
+
+  </script>
 </head>
 
 <body>
   <div id="app"></div>
+
+
   <script type="module" src="./app.tsx"></script>
 </body>
 

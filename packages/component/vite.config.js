@@ -10,7 +10,7 @@ export default defineConfig(() => {
     plugins: [
       react(),
       dts({
-        outDir: path.resolve(__dirname, 'dist'),
+        outDir: path.resolve(__dirname, '../', '../', 'dist'),
       }),
     ],
     resolve: {
@@ -24,6 +24,7 @@ export default defineConfig(() => {
     },
     appType: 'custom',
     build: {
+      emptyOutDir: true,
       minify: false,
       lib: {
         entry: path.resolve(__dirname, 'src', 'index.ts'),

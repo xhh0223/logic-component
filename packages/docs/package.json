@@ -3,7 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --emptyOutDir"
+    "build": "vite build",
+    "preview": "npx vite preview"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.2",
