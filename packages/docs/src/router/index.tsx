@@ -16,7 +16,7 @@ const wrapLoading = (importComponent) => {
     </Suspense>
   )
 }
-export const Base = '/'
+export const Base = '/logic-component'
 
 export enum RouterPath {
   root = '/',
