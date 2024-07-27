@@ -12,7 +12,7 @@ import { chunkSplitPlugin } from 'vite-plugin-chunk-split'
 export default defineConfig({
   root: path.resolve(PageDir, 'src'),
   publicDir: path.resolve(PageDir, 'public'),
-  base: '/',
+  base: '/logic-component',
   plugins: [
     react(),
     visualizer({
