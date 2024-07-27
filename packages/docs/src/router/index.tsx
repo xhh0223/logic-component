@@ -1,6 +1,6 @@
 import { Flex, Spin } from 'antd'
 import { lazy, Suspense } from 'react'
-import { createHashRouter as createRouter, RouteObject } from 'react-router-dom'
+import { createBrowserRouter as createRouter, RouteObject } from 'react-router-dom'
 
 const wrapLoading = (importComponent) => {
   const LazyComponent = lazy(importComponent)
