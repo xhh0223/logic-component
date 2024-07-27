@@ -16,6 +16,7 @@ const wrapLoading = (importComponent) => {
     </Suspense>
   )
 }
+export const Base = '/'
 
 export enum RouterPath {
   root = '/',
@@ -83,4 +84,4 @@ const config: RouteObject[] = [
   },
 ]
 
-export const Router = createRouter(config, { basename: '/logic-component' })
+export const Router = createRouter(config, { basename: Base })

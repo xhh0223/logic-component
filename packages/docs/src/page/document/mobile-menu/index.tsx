@@ -1,5 +1,5 @@
 import { useScreen0_480 } from '@src/hooks/media'
-import { RouterPath } from '@src/router'
+import { Base, RouterPath } from '@src/router'
 import { Dropdown, MenuProps } from 'antd'
 import classNames from 'classnames'
 import { useEffect, useMemo } from 'react'
@@ -50,7 +50,7 @@ export const MobileMenu = () => {
   const isMobile = useScreen0_480()
   return (
     <Dropdown className={classNames(!isMobile && 'is-hidden')} menu={{ items: menuData }}>
-      <img width={14} height={14} src="/logic-component/menu.svg" />
+      <img width={14} height={14} src={`${Base}menu.svg`} />
     </Dropdown>
   )
 }

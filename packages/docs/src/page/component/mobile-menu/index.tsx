@@ -1,5 +1,5 @@
 import { useScreen0_480 } from '@src/hooks/media'
-import { RouterPath } from '@src/router'
+import { Base, RouterPath } from '@src/router'
 import { Dropdown, MenuProps } from 'antd'
 import classNames from 'classnames'
 import { useEffect, useMemo } from 'react'
@@ -12,7 +12,7 @@ export const MobileMenu = () => {
     select: 'select',
     treeSelect: 'tree-select',
     eventBus: 'event-bus',
-    propsProxy: 'props-proxy',
+    componentProxy: 'component-proxy',
   }
 
   const defaultActiveMenuKey = useMemo(() => {
@@ -29,8 +29,8 @@ export const MobileMenu = () => {
       case RouterPath.eventBus:
         res = [MenuKey.eventBus, pathname]
         break
-      case RouterPath.propsProxy:
-        res = [MenuKey.propsProxy, pathname]
+      case RouterPath.componentProxy:
+        res = [MenuKey.componentProxy, pathname]
         break
     }
     return res
@@ -74,14 +74,14 @@ export const MobileMenu = () => {
       label: <Link to={RouterPath.eventBus}>event-bus</Link>,
     },
     {
-      key: MenuKey.propsProxy,
-      label: <Link to={RouterPath.propsProxy}>props-proxy</Link>,
+      key: MenuKey.componentProxy,
+      label: <Link to={RouterPath.componentProxy}>component-proxy</Link>,
     },
   ]
   const isMobile = useScreen0_480()
   return (
     <Dropdown className={classNames(!isMobile && 'is-hidden')} menu={{ items: menuData }}>
-      <img width={14} height={14} src="/logic-component/menu.svg" />
+      <img width={14} height={14} src={`${Base}menu.svg`} />
     </Dropdown>
   )
 }

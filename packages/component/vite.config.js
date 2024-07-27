@@ -10,7 +10,7 @@ export default defineConfig(() => {
     plugins: [
       react(),
       dts({
-        outDir: path.resolve(__dirname, 'dist'),
+        outDir: path.resolve(__dirname, '../', '../', 'dist'),
       }),
     ],
     resolve: {
@@ -24,17 +24,18 @@ export default defineConfig(() => {
     },
     appType: 'custom',
     build: {
+      emptyOutDir: true,
       minify: false,
       lib: {
         entry: path.resolve(__dirname, 'src', 'index.ts'),
         formats: ['es'],
       },
+      outDir: path.resolve(__dirname, '../', '../', 'dist'),
       rollupOptions: {
         external: ['react'],
         output: {
           preserveModules: true,
           preserveModulesRoot: 'src',
-          dir: path.resolve(__dirname, 'dist'),
           exports: 'named',
           entryFileNames: '[name].js',
         },
