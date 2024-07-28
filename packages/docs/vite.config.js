@@ -1,13 +1,13 @@
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import externalGlobals from 'rollup-plugin-external-globals'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
-import viteCDNPlugin from 'vite-plugin-cdn-import'
-// import { createHtmlPlugin } from 'vite-plugin-html'
-import viteImagemin from 'vite-plugin-imagemin'
-const PageDir = path.resolve(__dirname)
-// import externalGlobals from 'rollup-plugin-external-globals'
 import { chunkSplitPlugin } from 'vite-plugin-chunk-split'
+import { createHtmlPlugin } from 'vite-plugin-html'
+import viteImagemin from 'vite-plugin-imagemin'
+
+const PageDir = path.resolve(__dirname)
 
 export default defineConfig({
   root: path.resolve(PageDir, 'src'),
@@ -18,25 +18,18 @@ export default defineConfig({
     visualizer({
       open: false,
     }),
-    viteCDNPlugin({
-      modules: [
-        {
-          name: 'react',
-          var: 'React',
-          path: 'https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js',
-        },
-        {
-          name: 'react-dom',
-          var: 'ReactDom',
-          alias: ['react-dom/client'],
-          path: 'https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js',
-        },
-        // {
-        //   name: 'react-markdown',
-        //   var: 'ReactMarkdown',
-        //   path: 'https://esm.sh/react-markdown@9?bundle',
-        // },
-      ],
+    createHtmlPlugin({
+      entry: path.resolve(__dirname, 'src', 'app.tsx'),
+      // inject: {
+      //   data: {
+      //     title: 'logic-component',
+      //     reactScript: `<script crossorigin src="/js/react.production.min.js"></script>`,
+      //     reactDomScript: `<script crossorigin src="/js/react-dom.production.min.js"></script>`,
+      //     initScript: `<script>
+      //       window.ReactDom = ReactDOM
+      //     </script>`,
+      //   },
+      // },
     }),
     viteImagemin({
       gifsicle: {
@@ -94,13 +87,19 @@ export default defineConfig({
     port: '8000',
   },
   build: {
-    sourcemap: 'inline',
+    // sourcemap: 'inline',
     esbuild: {
       drop: ['console', 'debugger'],
     },
     outDir: path.resolve(__dirname, '../', '../', 'docs'),
     emptyOutDir: true,
     rollupOptions: {
+      plugins: [
+        externalGlobals({
+          ['react']: 'React',
+          ['react-dom']: 'ReactDom',
+        }),
+      ],
       treeshake: true,
       external: ['react', 'react-dom'],
       output: {

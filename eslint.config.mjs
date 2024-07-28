@@ -12,7 +12,7 @@ const needCheckFiles = [
   'packages/component/src/**/*.js',
 ]
 
-/** @type {Array<import("eslint").Linter.FlatConfig>} */
+/** @type {Array<import("eslint").Linter.Config>} */
 export default [
   {
     languageOptions: {
@@ -42,5 +42,6 @@ export default [
       'no-console': 'error',
       'simple-import-sort/imports': 'error',
     },
+    files: needCheckFiles,
   },
 ]

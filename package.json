@@ -24,12 +24,13 @@
     "preview:docs": "cd  packages/docs  && pnpm run preview",
     "build": "cd packages/component && pnpm run build",
     "prepare": "husky",
-    "eslint:fix": "npx eslint"
+    "eslint": "npx eslint -c eslint.config.mjs ."
   },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
     "@commitlint/config-conventional": "^17.8.1",
     "@eslint/js": "^9.3.0",
+    "@types/eslint": "^9.6.0",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
@@ -57,7 +58,7 @@
   },
   "lint-staged": {
     "**/*.{ts,tsx,js}": [
-      "eslint --fix",
+      "npm run eslint",
       "prettier --write"
     ],
     "**/*.scss": [
