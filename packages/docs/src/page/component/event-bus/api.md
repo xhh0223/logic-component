@@ -63,5 +63,5 @@ interface EventBusItemProps<Params = any, Context = any> {
 <h3 id="api-4">useEventBusHandler</h3>
 
 ```tsx
-const useEventBusHandler = <Context = any>(): EventBusHandler<Context>
+type useEventBusHandler: <Context = any>(): EventBusHandler<Context>
 ```

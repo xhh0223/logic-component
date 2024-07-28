@@ -57,5 +57,5 @@ type TreeSelectSingleItemProps<ValueType> = CommonTreeSelectItemProps<ValueType>
 <h3 id="api-4">useTreeSelectSingleHandler</h3>
 
 ```tsx
-const useTreeSelectSingleHandler = <ValueType = any>(): TreeSelectSingleHandler<ValueType>
+type useTreeSelectSingleHandler: <ValueType = any>(): TreeSelectSingleHandler<ValueType>
 ```

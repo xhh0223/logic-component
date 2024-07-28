@@ -66,5 +66,5 @@ type TreeSelectMultipleItemProps<ValueType> = CommonTreeSelectItemProps<ValueTyp
 <h3 id="api-4">useTreeSelectMultipleHandler</h3>
 
 ```tsx
-const useTreeSelectMultipleHandler = <ValueType = any>(): TreeSelectMultipleHandler<ValueType>
+type useTreeSelectMultipleHandler: <ValueType = any>(): TreeSelectMultipleHandler<ValueType>
 ```

@@ -54,5 +54,5 @@ type SelectMultipleItemProps<ValueType> = {
 <h3 id="api-4">useSelectMultipleHandler</h3>
 
 ```tsx
-const useSelectMultipleHandler = <ValueType = any>(): SelectMultipleHandler<ValueType>
+type useSelectMultipleHandler: <ValueType = any>(): SelectMultipleHandler<ValueType>
 ```

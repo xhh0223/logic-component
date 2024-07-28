@@ -27,7 +27,7 @@ interface ComponentProxyProps<Props, RefObj = any> {
 <h3 id="api-3">useComponentProxyRef</h3>
 
 ```tsx
-const useComponentProxyRef = <Props, RefObj = any>(params: Omit<ComponentProxyProps<Props, RefObj>, 'ref'>) : Ref<{
+type useComponentProxyRef: <Props, RefObj = any>(params: Omit<ComponentProxyProps<Props, RefObj>, 'ref'>) : Ref<{
     renderNode: React.ReactNode
     handler: ComponentProxyHandler<Props>
     renderNodeRef: Ref<RefObj>
