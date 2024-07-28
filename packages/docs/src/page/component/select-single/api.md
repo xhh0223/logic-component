@@ -46,5 +46,5 @@ type SelectSingleItemProps<ValueType> = {
 <h3 id="api-4">useSelectSingleHandler</h3>
 
 ```tsx
-const useSelectSingleHandler = <ValueType = any>(): SelectSingleHandler<ValueType>
+type useSelectSingleHandler: <ValueType = any>(): SelectSingleHandler<ValueType>
 ```

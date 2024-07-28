@@ -7,29 +7,17 @@
   <meta name="keywords" content="logic,component,react,logic-component">
   <meta name="author" content="xuhuihui">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>logic-component</title>
   <link rel="icon" href="/logic.svg">
-  <!-- <script type="module">
-    import ReactMarkdown from 'https://cdn.jsdelivr.net/npm/react-markdown@9.0.1/+esm'
-    window.ReactMarkdown = ReactMarkdown
-  </script> -->
+  <title>logic-component</title>
+  <script crossorigin src="/js/react.production.min.js"></script>
+  <script crossorigin src="/js/react-dom.production.min.js"></script>
   <script>
-    try {
-      // cdn打包插件有问题
-      var ReactDom = ReactDOM
-      var ReactRouterDom = ReactRouterDOM
-    } catch (error) {
-
-    }
-
+    window.ReactDom = ReactDOM
   </script>
 </head>
 
 <body>
   <div id="app"></div>
-
-
-  <script type="module" src="./app.tsx"></script>
 </body>
 
 </html>

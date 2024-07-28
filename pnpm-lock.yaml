@@ -33,6 +33,9 @@ importers:
       '@eslint/js':
         specifier: ^9.3.0
         version: 9.4.0
+      '@types/eslint':
+        specifier: ^9.6.0
+        version: 9.6.0
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
@@ -875,6 +878,9 @@ packages:
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
 
+  '@types/eslint@9.6.0':
+    resolution: {integrity: sha512-gi6WQJ7cHRgZxtkQEoyHMppPjq9Kxo5Tjn2prSKDSmZrCz8TZ3jSRCeTJm+WoM+oB0WG37bRqLzaaU3q7JypGg==}
+
   '@types/estree-jsx@1.0.5':
     resolution: {integrity: sha512-52CcUVNFyfb1A2ALocQw/Dd1BQFNmSdkuC3BkZ6iqhdMfQz7JWOFRuJFloOzjk+6WijU56m9oKXFAXc7o3Towg==}
 
@@ -910,6 +916,9 @@ packages:
 
   '@types/imagemin@7.0.1':
     resolution: {integrity: sha512-xEn5+M3lDBtI3JxLy6eU3ksoVurygnlG7OYhTqJfGGP4PcvYnfn+IABCmMve7ziM/SneHDm5xgJFKC8hCYPicw==}
+
+  '@types/json-schema@7.0.15':
+    resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
@@ -5665,6 +5674,11 @@ snapshots:
     dependencies:
       '@types/ms': 0.7.34
 
+  '@types/eslint@9.6.0':
+    dependencies:
+      '@types/estree': 1.0.5
+      '@types/json-schema': 7.0.15
+
   '@types/estree-jsx@1.0.5':
     dependencies:
       '@types/estree': 1.0.5
@@ -5712,6 +5726,8 @@ snapshots:
   '@types/imagemin@7.0.1':
     dependencies:
       '@types/node': 18.19.33
+
+  '@types/json-schema@7.0.15': {}
 
   '@types/keyv@3.1.4':
     dependencies:
