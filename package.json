@@ -19,10 +19,10 @@
     }
   },
   "scripts": {
-    "dev": "cd packages/docs && pnpm run dev",
-    "build:docs": "cd packages/docs && pnpm run build",
-    "preview:docs": "cd  packages/docs  && pnpm run preview",
-    "build": "cd packages/component && pnpm run build",
+    "dev": "cd packages/docs &&pnpm run dev",
+    "build:docs": "cd packages/docs &&pnpm run build",
+    "preview:docs": "cd  packages/docs  &&pnpm run build&& pnpm run preview",
+    "build": "cd packages/component &&pnpm run build",
     "prepare": "husky",
     "eslint": "npx eslint -c eslint.config.mjs ."
   },
